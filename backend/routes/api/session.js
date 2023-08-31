@@ -23,10 +23,7 @@ const validateLogin = [
 
 
 // Log in
-router.post(
-    '/',
-    validateLogin,
-    async (req, res, next) => {
+router.post('/', validateLogin, async (req, res, next) => {
       const { credential, password } = req.body;
 
       const user = await User.unscoped().findOne({
@@ -63,18 +60,14 @@ router.post(
   );
 
 // Log out
-router.delete(
-    '/',
-    (_req, res) => {
+router.delete('/', (_req, res) => {
       res.clearCookie('token');
       return res.json({ message: 'success' });
     }
   );
 
 // Restore session user
-router.get(
-    '/',
-    (req, res) => {
+router.get('/', (req, res) => {
       const { user } = req;
       if (user) {
         const safeUser = {
