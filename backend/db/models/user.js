@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    // static async signup({email, firstName, lastName, username, password}) {
+    //   const hashedPassword = bcrypt.hashSync(password);
+    //   const user = await User.create({ email, firstName, lastName, username, hashedPassword });
+    // }
   };
 
   User.init(
@@ -26,9 +31,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       firstName: {
         type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1, 50]
+        }
       },
       lastName: {
         type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1, 50]
+        }
       },
       email: {
         type: DataTypes.STRING,
