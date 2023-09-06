@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+ const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
 const { User } = require('../db/models');
 
@@ -6,7 +6,7 @@ const { secret, expiresIn } = jwtConfig;
 
 
 // Sends a JWT Cookie
-const setTokenCookie = (res, user) => {
+const  setTokenCookie = (res, user) => {
     // Create the token.
     const safeUser = {
       id: user.id,
@@ -62,6 +62,7 @@ const setTokenCookie = (res, user) => {
   };
 
   // If there is no current user, return an error
+  // this middleware is required to set pages for only logged in users
 const requireAuth = function (req, _res, next) {
     if (req.user) return next();
 

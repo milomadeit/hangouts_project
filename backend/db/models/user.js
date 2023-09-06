@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    // static async signup({email, firstName, lastName, username, password}) {
+    //   const hashedPassword = bcrypt.hashSync(password);
+    //   const user = await User.create({ email, firstName, lastName, username, hashedPassword });
+    // }
   };
 
   User.init(
