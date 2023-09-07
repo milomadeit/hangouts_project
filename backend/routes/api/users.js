@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
@@ -31,7 +31,7 @@ const validateSignup = [
   ];
 
 
-   
+
 // Sign up
 router.post('/', validateSignup, async (req, res) => {
       const { email, firstName, lastName, password, username } = req.body;

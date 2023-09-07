@@ -45,6 +45,8 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
+
+    console.log('created user table')
   },
 
   down: async (queryInterface, Sequelize) => {
