@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; // define your schema in options object
+  options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 module.exports = {
@@ -27,8 +27,6 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
-
-    console.log('seeded user table')
   },
 
   async down (queryInterface, Sequelize) {

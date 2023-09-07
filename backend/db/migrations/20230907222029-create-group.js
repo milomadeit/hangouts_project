@@ -55,6 +55,7 @@ module.exports = {
     console.log('created group table')
   },
   async down(queryInterface, Sequelize) {
+    options.tableName = "Groups";
     await queryInterface.dropTable('Groups', options);
   },
 };
