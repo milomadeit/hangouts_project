@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const groupData = [
   {
+    organizerId: 1,
     name: 'Dog People Hangout',
     about: 'Where people who love dogs hangout',
     type: 'In person',
@@ -19,6 +20,7 @@ const groupData = [
     state: 'GA',
   },
   {
+    organizerId: 2,
     name: 'Cat People Hangout',
     about: 'Where people who love cats hangout',
     type: 'In person',

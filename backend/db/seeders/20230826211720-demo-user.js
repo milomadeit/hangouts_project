@@ -14,19 +14,26 @@ module.exports = {
       {
         email: 'demo@user.io',
         username: 'Demo-lition',
+        firstName: 'Bill',
+        lastName: 'Adams',
         hashedPassword: bcrypt.hashSync('password')
       },
       {
         email: 'user1@user.io',
         username: 'FakeUser1',
+        firstName: 'Ohmy',
+        lastName: 'God',
         hashedPassword: bcrypt.hashSync('password2')
       },
       {
         email: 'user2@user.io',
         username: 'FakeUser2',
+        firstName: 'Thisone',
+        lastName: 'Gotit',
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
+    console.log('seeded user table')
   },
 
   async down (queryInterface, Sequelize) {

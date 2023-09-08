@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      Group.belongsTo(models.User, {
+        foreignKey: 'organizerId',
+      })
     }
   }
   Group.init({
@@ -53,6 +57,13 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    numMembers: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
+    previewImage: {
+      type: DataTypes.STRING,
     }
   }, {
     sequelize,

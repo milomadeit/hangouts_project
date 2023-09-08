@@ -41,6 +41,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      numMembers: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1,
+      },
+      previewImage: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
