@@ -21,9 +21,11 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING(30),
+        allowNull: false,
       },
       lastName: {
         type: Sequelize.STRING(30),
+        allowNull: false,
       },
       email: {
         type: Sequelize.STRING(256),
@@ -45,8 +47,6 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-
-    console.log('created user table')
   },
 
   down: async (queryInterface, Sequelize) => {
