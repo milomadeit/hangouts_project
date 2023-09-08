@@ -33,6 +33,7 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
+    console.log('seeded user table')
   },
 
   async down (queryInterface, Sequelize) {
