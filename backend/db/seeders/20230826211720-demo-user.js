@@ -13,7 +13,7 @@ module.exports = {
     await User.bulkCreate([
       {
         email: 'demo@user.io',
-        username: 'Demo-lition',
+        username: 'Demo',
         firstName: 'Bill',
         lastName: 'Adams',
         hashedPassword: bcrypt.hashSync('password')
@@ -33,7 +33,6 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
-    console.log('seeded user table')
   },
 
   async down (queryInterface, Sequelize) {

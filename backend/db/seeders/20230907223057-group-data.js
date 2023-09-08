@@ -42,9 +42,7 @@ module.exports = {
      * }], {});
     */
 
-    await Group.bulkCreate(groupData);
-
-    console.log('seeded group table')
+    await Group.bulkCreate(groupData, { validate: true });
   },
 
   async down (queryInterface, Sequelize) {

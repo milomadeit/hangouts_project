@@ -59,7 +59,6 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-    console.log('created group table')
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Groups";
