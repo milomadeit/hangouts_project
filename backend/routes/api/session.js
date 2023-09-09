@@ -3,7 +3,7 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
@@ -21,6 +21,10 @@ const validateLogin = [
     handleValidationErrors
   ];
 
+// protected route requires user to be logged in.
+router.get('/protected', restoreUser, requireAuth, async (req, res) => {
+      res.json('this route is protected');
+ })
 
 // Log in
 router.post('/', validateLogin, async (req, res, next) => {
