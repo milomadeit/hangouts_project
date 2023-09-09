@@ -63,14 +63,14 @@ router.post('/', validateLogin, async (req, res, next) => {
     }
   );
 
-// Log out
+// Log out user
 router.delete('/', (_req, res) => {
       res.clearCookie('token');
       return res.json({ message: 'success' });
     }
   );
 
-// Restore session user
+// Get current user if logged in
 router.get('/', restoreUser, (req, res) => {
       const { user } = req;
       if (user) {
