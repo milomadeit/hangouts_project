@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [50, 250],
+        len: [10, 250],
       }
     },
     type: {
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         validType(value) {
-          if (value !== 'Online' || value !== 'In person') {
+          if (value !== 'Online' && value !== 'In person') {
             throw new Error("Type must be 'Online' or 'In person")
           }
         }
