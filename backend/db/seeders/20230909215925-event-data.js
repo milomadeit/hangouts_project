@@ -36,7 +36,7 @@ const eventData = [
   },
   {
     id: 3,
-    groupId: 3,
+    groupId: 1,
     venueId: 3,
     name: "Outdoor Movie Night Under the Stars",
     type: "In person",
