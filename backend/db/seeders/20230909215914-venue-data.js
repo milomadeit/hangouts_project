@@ -1,7 +1,12 @@
 'use strict';
+const { Venue } = require('../models');
 
-/** @type {import('sequelize-cli').Migration} */
+// /** @type {import('sequelize-cli').Migration} */
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
 const venueData = [
   {
@@ -41,7 +46,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulk
+   await Venue.bulkCreate(venueData, { validate: true });
   },
 
   async down (queryInterface, Sequelize) {
@@ -51,5 +56,11 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+
+    options.tableName = 'Venues';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      groupId: { [Op.in]: [1, 2, 3] }
+    }, {});
   }
 };
