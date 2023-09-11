@@ -2,7 +2,7 @@
 
 const { Group } = require('../models');
 
-/** @type {import('sequelize-cli').Migration} */
+// /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -13,7 +13,7 @@ const groupData = [
   {
     organizerId: 1,
     name: 'Dog People Group',
-    about: 'A group for people who love dogs,
+    about: 'A group for people who love dogs',
     type: 'In person',
     private: false,
     city: 'Decatur',
