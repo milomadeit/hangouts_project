@@ -70,7 +70,10 @@ const requireAuth = function (req, _res, next) {
     err.title = 'Authentication required';
     err.errors = { message: 'Authentication required' };
     err.status = 401;
-    return next(err);
+
+    const errObj = {};
+    errObj.message = 'Authentication required'
+    return next(errObj);
   }
 
 
