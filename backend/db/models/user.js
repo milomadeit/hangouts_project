@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Group, {
         foreignKey: 'organizerId',
       })
+
+      User.hasMany(models.Member, {
+        foreignKey: 'memberId'
+      })
     }
 
     // static async signup({email, firstName, lastName, username, password}) {

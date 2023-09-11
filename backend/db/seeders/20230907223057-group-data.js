@@ -12,8 +12,8 @@ if (process.env.NODE_ENV === 'production') {
 const groupData = [
   {
     organizerId: 1,
-    name: 'Dog People Hangout',
-    about: 'Where people who love dogs hangout',
+    name: 'Dog People Group',
+    about: 'A group for people who love dogs,
     type: 'In person',
     private: false,
     city: 'Decatur',
@@ -21,8 +21,8 @@ const groupData = [
   },
   {
     organizerId: 2,
-    name: 'Cat People Hangout',
-    about: 'Where people who love cats hangout',
+    name: 'Cat People Group',
+    about: 'A group for people who love cats',
     type: 'In person',
     private: false,
     city: 'Atlanta',

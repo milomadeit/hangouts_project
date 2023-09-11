@@ -15,7 +15,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       organizerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       name: {
         type: Sequelize.STRING(60),
@@ -61,7 +67,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Groups";
+    options.tableName = 'Groups';
     await queryInterface.dropTable(options);
   },
 };
