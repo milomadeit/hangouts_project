@@ -48,7 +48,7 @@ router.post('/', validateSignup, async (req, res) => {
    }
 
   if (errorsObj.email || errorsObj.firstName || errorsObj.lastName) {
-    return res.json ({
+    return res.status(400).json ({
       message: 'Bad Request',
       errors: errorsObj,
     })
@@ -67,7 +67,7 @@ router.post('/', validateSignup, async (req, res) => {
   });
 
   if (userEmailExists) {
-    return res.json(
+    return res.status(500).json(
       {
         "message": "User already exists",
         "errors": {
@@ -78,7 +78,7 @@ router.post('/', validateSignup, async (req, res) => {
   }
 
   if (userUsernameExists) {
-    return res.json(
+    return res.status(500).json(
       {
         "message": "User already exists",
         "errors": {
