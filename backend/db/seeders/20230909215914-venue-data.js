@@ -27,7 +27,7 @@ const venueData = [
   },
   {
     address: "789 Parkside Drive",
-    groupId: 3,
+    groupId: 1,
     city: "Chicago",
     state: "IL",
     lat: 41.878113,
