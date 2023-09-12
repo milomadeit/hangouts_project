@@ -37,10 +37,10 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
 
     if (!type || type !== "Online" && type !== 'In person') errObj.type = "Type must be 'Online' or 'In person'";
     if (!private || typeof private !== 'boolean') errObj.private = 'Private must be a boolean';
-    if (!city) errObj.city = 'City is required';
-    if (!state) errObj.state = 'State is required';
+    if (!city || city === null || city.length < 1) errObj.city = 'City is required';
+    if (!state || state === null || state.length < 1) errObj.state = 'State is required';
 
-    if (errObj.name || errObj.about || errObj.type || errObj.private || errObj.city | errObj.state) {
+    if (errObj.name || errObj.about || errObj.type || errObj.private || errObj.city || errObj.state) {
         return res.status(400).json({
             message: 'Bad Request',
             errors: errObj,
