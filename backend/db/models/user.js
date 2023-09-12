@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Member, {
         foreignKey: 'memberId'
       })
+
+      User.hasMany(models.Image, {
+        foreignKey: 'imageableId',
+        constraints: false,
+        scope: {
+          imageableType: 'UserImages'
+        }
+      });
     }
 
     // static async signup({email, firstName, lastName, username, password}) {
