@@ -18,14 +18,14 @@ module.exports = {
       groupId: {
         type: Sequelize.INTEGER,
         references: {
-          model: models.Group,
+          model: 'Groups',
           key: 'id'
         }
       },
       venueId: {
         type: Sequelize.INTEGER,
         references: {
-          model: models.Venue,
+          model: 'Venues',
           key: 'id'
         }
       },
