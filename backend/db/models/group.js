@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     /**
@@ -21,7 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(models.Venue, {
         foreignKey: 'groupId',
       } )
-    }
+
+      Group.hasMany(models.Image, {
+        foreignKey: 'imageableId',
+        constraints: false,
+        scope: {
+          imageableType: 'GroupImages',
+        }
+      });
+   }
   }
   Group.init({
     organizerId: {
@@ -47,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         validType(value) {
           if (value !== 'Online' && value !== 'In person') {
-            throw new Error("Type must be 'Online' or 'In person")
+            throw new Error("Type must be 'Online' or 'In person'")
           }
         }
       }
