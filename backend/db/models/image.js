@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    getImageable(options) {
+      // if unknown type return null promise
+      if (!this.imageableType) return Promise.resolve(null);
+
+      const mixinMethodName = `get${this.imageableType}`;
+      return this[mixinMethodName](options);
+    }
+
     static associate(models) {
       // define association here
       Image.belongsTo(models.User, {
@@ -27,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image.init({
     url: DataTypes.STRING,
-    preview: DataTypes.STRING,
+    preview: DataTypes.BOOLEAN,
     imageableType: {
       type: DataTypes.ENUM('GroupImages', 'EventImages', 'UserImages')
     },
@@ -35,6 +43,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Image',
+    defaultScope:{
+      attributes : {
+        where: ['id', 'url', 'preview']
+      }
+    }
   });
   return Image;
 };
+
+

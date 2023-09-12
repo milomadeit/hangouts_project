@@ -2,16 +2,44 @@ const express = require('express');
 const router = express.Router();
 
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { User, Group } = require('../../db/models');
+const { User, Group, Image } = require('../../db/models');
 
 
 const { check } = require('express-validator');
+
+//create an image for the group.
+
+router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
+    const { url, preview } = req.body;
+    const group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        });
+    }
+
+    const image = await Image.create({ url, preview, imageableType: 'GroupImages', imageableId: req.params.groupId})
+
+    if (preview === true) {
+        await group.update({ previewImage: url })
+    }
+
+    const createdImage = {
+        id:image.id,
+        url:image.url,
+        preview:image.preview
+    }
+
+    res.status(200).json(createdImage);
+})
 
 //get all groups ORGANIZED OR JOINED by current user,
 router.get('/current', async (req, res) => {
     // const user = req.user;
     return res.json('yooooo');
 })
+
 
 //get details of a group by id
 router.get('/:groupId', async (req, res) => {
