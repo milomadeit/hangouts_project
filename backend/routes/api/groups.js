@@ -29,6 +29,7 @@ const groupValidation = (name, about, type, private, city, state) => {
 // create an image for the group.
 router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
     const { url, preview } = req.body;
+    const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
 
     if (!group) {
@@ -36,6 +37,14 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
             message: "Group couldn't be found"
         });
     }
+
+    if (userId !== group.organizerId) {
+        return res.status(403).json(
+            {
+             "message": "Forbidden"
+            })
+        }
+
 
     const image = await Image.create({ url, preview, imageableType: 'GroupImages', imageableId: req.params.groupId})
 
@@ -69,7 +78,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
     const allGroups = [...organizedGroups, ...joinedGroups]
 
-    return res.json({
+    return res.status(200).json({
         Groups: allGroups
     })
 
@@ -147,7 +156,7 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     //CREATE NEW GROUP WITH CURRENT USER ID
     const organizerId = req.user.id;
     const group = await Group.create({organizerId, name, about, type, private, city, state});
-    return res.json(group)
+    return res.status(200).json(group)
     } else {
         res.status(400).json(groupValidation(name, about, type, private, city, state));
     }
@@ -197,7 +206,7 @@ router.delete('/:groupId', restoreUser,requireAuth, async (req, res) => {
 router.get('/', async (req, res) => {
     const allGroups = await Group.findAll()
 
-    return res.json(allGroups);
+    return res.status(200).json(allGroups);
 })
 
 
