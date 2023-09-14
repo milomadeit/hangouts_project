@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { User, Group, Image, Member, Venue, Event } = require('../../db/models');
+const { User, Group, Image, Member, Venue, Event, Attendance } = require('../../db/models');
 const { check } = require('express-validator');
 
 // validate group body data
@@ -75,21 +75,24 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         })
     }
     const groupId = group.id
-    const newEvent = await Event.create({groupId, venueId, name, type, capacity, price, description, startDate, endDate});
+    const event = await Event.create({groupId, venueId, name, type, capacity, price, description, startDate, endDate});
+    const eventId = event.id
+    const status = 'host'
+    const setHost = await Attendance.create({userId, eventId, status});
     const createdEvent = {
-        id:newEvent.id,
-        groupId:newEvent.groupId,
-        venueId:newEvent.venueId,
-        name:newEvent.name,
-        type:newEvent.type,
-        capacity:newEvent.capacity,
-        price:newEvent.price,
-        description:newEvent.description,
-        startDate:newEvent.startDate,
-        endDate:newEvent.endDate
+        id:event.id,
+        groupId:event.groupId,
+        venueId:event.venueId,
+        name:event.name,
+        type:event.type,
+        capacity:event.capacity,
+        price:event.price,
+        description:event.description,
+        startDate:event.startDate,
+        endDate:event.endDate
     }
 
-    return res.status(200).json(createdEvent)
+    return res.status(200).json({event:createdEvent, host: setHost})
 
 })
 
@@ -261,7 +264,7 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
         preview:image.preview
     }
 
-    res.status(200).json(createdImage);
+    return res.status(200).json(createdImage);
 })
 
 // get all groups ORGANIZED OR JOINED by current user,
