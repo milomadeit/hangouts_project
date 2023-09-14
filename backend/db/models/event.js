@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Event.belongsToMany(models.User, {
-        through: models.Attendance
+        through: models.Attendance,
+        foreignKey: 'eventId',
+        otherKey: 'userId'
       });
 
       Event.hasMany(models.Image, {
@@ -34,9 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       })
       Event.belongsTo(models.Venue, {
         foreignKey: 'venueId'
-      })
-      Event.hasMany(models.Attendance, {
-        foreignKey: 'eventId',
       })
     }
   }
