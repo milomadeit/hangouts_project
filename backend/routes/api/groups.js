@@ -78,7 +78,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     const event = await Event.create({groupId, venueId, name, type, capacity, price, description, startDate, endDate});
     const eventId = event.id
     const status = 'host'
-    const setHost = await Attendance.create({userId, eventId, status});
+    // const setHost = await Attendance.create({userId, eventId, status});
     const createdEvent = {
         id:event.id,
         groupId:event.groupId,
