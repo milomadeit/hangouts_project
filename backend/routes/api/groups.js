@@ -218,7 +218,10 @@ router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
 
     const groupVenues = await Venue.findAll({
         where: {
-            groupId:group.id
+            groupId:group.id,
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
         }
     })
 
