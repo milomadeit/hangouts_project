@@ -18,12 +18,14 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
         });
     }
 
-    const authorizedUser = await Attendance.findByPk(userId, {
+    const authorizedUser = await Attendance.findAll({
         where: {
+            userId:userId,
+            eventId:event.id,
             [Op.or]: [{status: 'attendee'}, {status: 'host'}, {status: 'co-host'}]
         }
     })
-    console.log(authorizedUser, 'yoooooooooooooooooooooo')
+
     if (!authorizedUser) {
         return res.status(403).json(
             {
