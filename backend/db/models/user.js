@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
           imageableType: 'UserImages'
         }
       });
+      User.hasMany(models.Attendance, {
+        foreignKey: 'userId',
+      })
     }
 
     // static async signup({email, firstName, lastName, username, password}) {
