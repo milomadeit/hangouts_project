@@ -26,6 +26,74 @@ const groupValidation = (name, about, type, private, city, state) => {
     return true
 }
 
+
+// create an event by group id
+router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const userId = req.user.id;
+    const group = await Group.findByPk(req.params.groupId);
+    const venue = await Venue.findByPk(venueId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        });
+    }
+
+    const isCohost = await Member.findAll({
+        where: {
+            memberId: userId,
+            groupId: group.id,
+            status: 'co-host'
+        }
+    })
+
+    if (userId !== group.organizerId || !isCohost) {
+        return res.status(403).json(
+            {
+             "message": "Forbidden"
+            })
+    }
+
+    const eventErr = {}
+    if (!venue) eventErr.venueId = 'Venue does not exist'
+    if (!name || name.length < 5) eventErr.name = 'Name must be at least 5 characters'
+    if (type !== 'Online' && type !== 'In person') eventErr.type = 'Type must be Online or In person'
+    if (!capacity || typeof capacity !== 'number') eventErr.capacity = 'Capacity must be an integer'
+    if (!price || typeof price !== 'number' || price < 0) eventErr.price = 'Price is invalid'
+    if (!description || description.length < 1) eventErr.description = 'Description is required'
+    const currentDate = new Date();
+    const compareDate = new Date(startDate)
+    // console.log(currentDate.toLocaleString(), 'YOOOOOOOOOOOOOOOOOOOOOOOO')
+    if (!startDate || compareDate < currentDate) eventErr.startDate = 'Start date must be in the future'
+    if (!endDate || endDate < startDate) eventErr.endDate = 'End date is less than start date'
+
+    if (Object.keys(eventErr).length > 0) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            errors: eventErr,
+        })
+    }
+    const groupId = group.id
+    const newEvent = await Event.create({groupId, venueId, name, type, capacity, price, description, startDate, endDate});
+    const createdEvent = {
+        id:newEvent.id,
+        groupId:newEvent.groupId,
+        venueId:newEvent.venueId,
+        name:newEvent.name,
+        type:newEvent.type,
+        capacity:newEvent.capacity,
+        price:newEvent.price,
+        description:newEvent.description,
+        startDate:newEvent.startDate,
+        endDate:newEvent.endDate
+    }
+
+    return res.status(200).json(createdEvent)
+
+})
+
+
 // get all events by group id
 router.get('/:groupId/events', async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
@@ -77,7 +145,7 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
         where: {
             memberId: userId,
             groupId: group.id,
-            status: "co-host"
+            status: 'co-host'
         }
     })
 
