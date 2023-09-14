@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { User, Group, Image, Member, Venue } = require('../../db/models');
+const { User, Group, Image, Member, Venue, Event } = require('../../db/models');
 const { check } = require('express-validator');
 
+// validate group body data
 const groupValidation = (name, about, type, private, city, state) => {
     const errObj = {};
     // console.log(type)
@@ -25,6 +25,141 @@ const groupValidation = (name, about, type, private, city, state) => {
     }
     return true
 }
+
+// get all events by group id
+router.get('/:groupId/events', async (req, res) => {
+    const group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        });
+    }
+    const groupEvents = await Event.findAll({
+        where: {
+            groupId: group.id
+        },
+        attributes: {
+            exclude: [ 'description', 'capacity', 'price', 'createdAt', 'updatedAt']
+
+        },
+        include: [
+        {
+            model: Group,
+            attributes: ['id', 'name', 'city', 'state']
+        },
+        {
+            model: Venue,
+            attributes: ['id', 'city', 'state']
+        }
+    ]
+    })
+
+    return res.status(200).json({
+        Events: groupEvents
+    })
+
+})
+
+// create a venue by group id
+router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
+    const { address, city, state, lat, lng } = req.body;
+    const userId = req.user.id;
+    const group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        });
+    }
+
+    const isCohost = await Member.findAll({
+        where: {
+            memberId: userId,
+            groupId: group.id,
+            status: "co-host"
+        }
+    })
+
+    if (userId !== group.organizerId || !isCohost) {
+        return res.status(403).json(
+            {
+             "message": "Forbidden"
+            })
+        }
+
+
+    const venueErr = {};
+    if (!address|| address === null || address.length < 1) venueErr.address = 'Address is required';
+    if (!city || city === null || city.length < 1) venueErr.city = 'City is required';
+    if (!state || state === null || state.length < 1) venueErr.state = 'State is required';
+    if (!lat || lat === null || typeof lat !== 'number' || lat > 90 || lat < -90 ) venueErr.lat = 'Latitude is not valid';
+    if (!lng || lng === null || typeof lng !== 'number' || lng > 180 || lng < -180 ) venueErr.lng = 'Longitude is not valid';
+
+    if (venueErr.address || venueErr.city || venueErr.state || venueErr.lat || venueErr.lng) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            errors: venueErr,
+        })
+    }
+    const groupId = group.id
+    const newVenue = await Venue.create({ groupId, address, city, state, lat, lng})
+
+    const createdVenue = {
+        id: newVenue.id,
+        groupId: newVenue.groupId,
+        address: newVenue.address,
+        city: newVenue.city,
+        state: newVenue.state,
+        lat: newVenue.lat,
+        lng: newVenue.lng
+    }
+
+    res.status(200).json(createdVenue);
+})
+
+
+// get all venues by groupId
+router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
+    const userId = req.user.id;
+    const group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        });
+    }
+
+    const isCohost = await Member.findAll({
+        where: {
+            memberId: userId,
+            groupId: group.id,
+            status: 'co-host'
+        }
+    })
+
+    if (userId !== group.organizerId || !isCohost) {
+        return res.status(403).json(
+            {
+             "message": "Forbidden"
+            })
+        }
+
+    const groupVenues = await Venue.findAll({
+        where: {
+            groupId:group.id
+        }
+    })
+
+    if (groupVenues.length < 1) {
+        return res.json({
+            message: 'Group has no venues'
+        })
+    }
+
+    return res.status(200).json({
+        Venues: groupVenues})
+})
 
 // create an image for the group.
 router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
@@ -90,12 +225,15 @@ router.get('/:groupId', async (req, res) => {
     // should include array of GroupImages
     // should include Organizer info (name + id)
     // should include array of Venues
-    const group = await Group.findByPk(req.params.groupId, {
+    console.log(req.params.groupId)
+    const group = await Group.findByPk(req.params.groupId
+        , {
         include: [
         {
             model: Image,
             where: {imageableType: 'GroupImages'},
-            attributes: ['id', 'url', 'preview']
+            attributes: ['id', 'url', 'preview'],
+            required: false,
         },
         {
             model: User,
@@ -107,11 +245,12 @@ router.get('/:groupId', async (req, res) => {
             attributes: {
                 exclude: ['createdAt', 'updatedAt']}
         }
-    ]});
+    ]}
+    );
 
     if (!group) {
         return res.status(404).json({
-          message: "Group couldn't be found",
+          message: "Group couldn't be found!!!!!",
         });
       }
 
@@ -156,6 +295,14 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     //CREATE NEW GROUP WITH CURRENT USER ID
     const organizerId = req.user.id;
     const group = await Group.create({organizerId, name, about, type, private, city, state});
+    // add organizerId and memberId to members table.
+    await Member.create({
+        groupId: group.id,
+        userId: organizerId,
+        status: 'member',
+        // You might want to specify additional member attributes here
+      });
+
     return res.status(200).json(group)
     } else {
         res.status(400).json(groupValidation(name, about, type, private, city, state));

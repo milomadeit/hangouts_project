@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    async updateNumAttending() {
+      const numAttending = this.countAttendances();
+      this.numAttending = numAttending;
+      await this.save();
+    }
+
     static associate(models) {
       // define association here
       Event.belongsToMany(models.User, {
@@ -23,7 +29,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       Event.belongsTo(models.Group, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'CASCADE'
+      })
+      Event.belongsTo(models.Venue, {
+        foreignKey: 'venueId'
+      })
+      Event.hasMany(models.Attendance, {
+        foreignKey: 'eventId',
       })
     }
   }
@@ -48,6 +61,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.DECIMAL
+    },
+    numAttending: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    previewImage: {
+      type: DataTypes.STRING,
     },
     startDate: {
       type: DataTypes.DATE

@@ -46,11 +46,17 @@ module.exports = {
       price: {
         type: Sequelize.DECIMAL
       },
+      numAttending: {
+        type: Sequelize.INTEGER
+      },
       startDate: {
         type: Sequelize.DATE
       },
       endDate: {
         type: Sequelize.DATE
+      },
+      previewImage: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
