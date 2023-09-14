@@ -64,7 +64,6 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     if (!description || description.length < 1) eventErr.description = 'Description is required'
     const currentDate = new Date();
     const compareDate = new Date(startDate)
-    // console.log(currentDate.toLocaleString(), 'YOOOOOOOOOOOOOOOOOOOOOOOO')
     if (!startDate || compareDate < currentDate) eventErr.startDate = 'Start date must be in the future'
     if (!endDate || endDate < startDate) eventErr.endDate = 'End date is less than start date'
 
@@ -92,7 +91,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         endDate:event.endDate
     }
 
-    return res.status(200).json({event:createdEvent, host: setHost}) //
+    return res.status(200).json(createdEvent) //
 })
 
 
