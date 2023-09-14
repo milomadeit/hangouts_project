@@ -27,7 +27,7 @@ router.put('/:venueId', restoreUser, requireAuth, async (req, res) => {
         where: {
             memberId: userId,
             groupId: group.id,
-            coHost: true
+            status: 'co-host'
         }
     })
 
