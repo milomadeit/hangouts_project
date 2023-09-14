@@ -92,7 +92,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         endDate:event.endDate
     }
 
-    return res.status(200).json({event:createdEvent, host: setHost})
+    return res.status(200).json({event:createdEvent}) // , host: setHost
 
 })
 
