@@ -64,7 +64,6 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     if (!description || description.length < 1) eventErr.description = 'Description is required'
     const currentDate = new Date();
     const compareDate = new Date(startDate)
-    // console.log(currentDate.toLocaleString(), 'YOOOOOOOOOOOOOOOOOOOOOOOO')
     if (!startDate || compareDate < currentDate) eventErr.startDate = 'Start date must be in the future'
     if (!endDate || endDate < startDate) eventErr.endDate = 'End date is less than start date'
 
@@ -75,10 +74,17 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         })
     }
     const groupId = group.id
-    const event = await Event.create({groupId, venueId, name, type, capacity, price, description, startDate, endDate});
+    const numAttending = 1
+    const event = await Event.create({groupId, venueId, name, type, capacity, price, description, numAttending, startDate, endDate});
     const eventId = event.id
     const status = 'host'
     const setHost = await Attendance.create({userId, eventId, status});
+
+    // const attendees = await event.getAttendances(eventId)
+
+    // console.log(attendees, '========================')
+
+    // console.log(attendees, 'yoooooooooooooooo')
     const createdEvent = {
         id:event.id,
         groupId:event.groupId,
@@ -92,7 +98,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         endDate:event.endDate
     }
 
-    return res.status(200).json({event:createdEvent, host: setHost}) //
+    return res.status(200).json(createdEvent) //
 })
 
 
@@ -299,8 +305,7 @@ router.get('/:groupId', async (req, res) => {
     // should include Organizer info (name + id)
     // should include array of Venues
     console.log(req.params.groupId)
-    const group = await Group.findByPk(req.params.groupId
-        , {
+    const group = await Group.findByPk(req.params.groupId, {
         include: [
         {
             model: Image,
@@ -333,9 +338,9 @@ router.get('/:groupId', async (req, res) => {
 
 // update a group by id
 router.put('/:groupId', restoreUser,requireAuth, async (req, res) => {
-    const {name, about, type, private, city, state} = req.body
+    const {name, about, type, private, city, state} = req.body;
     const userId = req.user.id;
-    const group = await Group.findByPk(req.params.groupId)
+    const group = await Group.findByPk(req.params.groupId);
     if (!group) {
         return res.status(404).json({
           message: "Group couldn't be found",
