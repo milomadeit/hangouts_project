@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+
+const {Attendance} = require('./attendance')
+
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
     /**
@@ -9,11 +12,25 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    async updateNumAttending() {
-      const numAttending = this.countAttendances();
-      this.numAttending = numAttending;
-      await this.save();
-    }
+    // static async getAttendees(eventId) {
+    //   const attendees = await Attendance.findAll({
+    //     where: {
+    //       eventId: eventId,
+    //     },
+    //     include: [
+    //       {
+    //         model: User, // Include user details
+    //         attributes: ['id', 'username', 'email'],
+    //       },
+    //     ],
+    //   });
+    // }
+
+    // async updateNumAttending() {
+    //   const numAttending = this.countAttendances();
+    //   this.numAttending = numAttending;
+    //   await this.save();
+    // }
 
     static associate(models) {
       // define association here
@@ -25,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Event.hasMany(models.Image, {
         foreignKey: 'imageableId',
+        as: 'EventImages',
         constraints: false,
         scope: {
           imageableType: 'EventImages'
