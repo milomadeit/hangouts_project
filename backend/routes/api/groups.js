@@ -634,30 +634,6 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 });
 
 
-// // get all groups ORGANIZED OR JOINED by current user,
-// router.get('/current', restoreUser, requireAuth, async (req, res) => {
-//     console.log(req.user.id)
-
-//     const organizedGroups = await Group.findAll({
-//         where: {
-//             organizerId:req.user.id
-//         },
-//       })
-//     const joinedGroups = await Member.findAll({
-//         where: {
-//             memberId: req.user.id
-//         }
-//     })
-
-//     const allGroups = [...organizedGroups, ...joinedGroups]
-
-//     return res.status(200).json({
-//         Groups: allGroups
-//     })
-
-// })
-
-
 // get details of a group by id
 router.get('/:groupId', async (req, res) => {
     // should include array of GroupImages

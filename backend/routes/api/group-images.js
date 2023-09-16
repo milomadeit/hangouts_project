@@ -13,6 +13,8 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
+    if (!group) res.status(404).json({message: 'Group does not exist'});
+
     const isCohost = await Member.findAll({
         where: {
             memberId: userId,
