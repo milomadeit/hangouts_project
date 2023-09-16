@@ -40,14 +40,16 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
         }
     })
 
-
+    // check if group exists
     if (!group) {
         res.status(404).json({
             message: `Group couldn't be found`
         })
     }
 
+    // check if user is organizer or co-host
     if (userId === group.organizerId || isCohost.status === 'co-host' ) {
+        // all members in group including those with 'pending' status
         const allMembers = await User.findAll({
             attributes: ['id', 'firstName', 'lastName'],
             include: [
@@ -71,7 +73,7 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
         return res.status(200).json(members)
 
     } else {
-
+        // get all members for group available to public
         const publicMembers = await User.findAll({
             attributes: ['id', 'firstName', 'lastName'],
             include: [
@@ -137,6 +139,7 @@ router.post('/:groupId/membership', restoreUser, requireAuth, async (req, res) =
         })
     }
 
+    // create new member record
     const member = await Member.create({memberId, groupId, status});
 
     const newMember = {
@@ -157,7 +160,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         memberId:memberId,
         groupId:group.id,
     }})
-
+    // query for cohost
     const isCohost = await Member.findAll({
         where: {
             memberId: userId,
@@ -166,7 +169,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         }
     })
 
-    // is the member a user
+    // query to see if user exists by memberId
     const isUser = await User.findByPk(memberId);
 
     //! MUST BE A COHOST OR ORGANIZER TO SET MEMBER STATUS
@@ -183,6 +186,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
+    // status cannot be pending
     if(status === 'pending') {
         return res.status(400).json({
             message: 'Validations Error',
@@ -192,7 +196,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-
+    // if user does not exist
     if(!isUser) {
         return res.status(400).json({
             message: 'Validations Error',
@@ -202,12 +206,13 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
+    // if group does not exist
     if (!group) {
         return res.status(404).json({
             message: `Group couldn't be found`
         })
     }
-
+    // if the member is not part of group
     if (!member || member.length === 0) {
         return res.status(404).json({
             message: 'Membership between the user and the group does not exist'
@@ -234,6 +239,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
 
 });
 
+// delete member
 router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
     const userId = req.user.id;
@@ -256,23 +262,23 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
         })
     }
 
+    // check if group exists
     if (!group) {
         return res.status(404).json({
             message: `Group couldn't be found`
         })
     }
-
+    // check if member exists
     if (!member || member.length === 0) {
         return res.status(404).json({
             message: 'Membership does not exist for this User'
         })
     }
 
-    console.log(member[0], 'BEFORE DESTROOOOYYYYYYYYYY')
-
+    // delete membership
     const deletedMembership = await member[0].destroy()
 
-
+    // query to see if member does not exist
     const checkMember = await Member.findAll({
         where:{
         memberId:memberId,
@@ -284,15 +290,10 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
         return res.status(200).json({
             message: 'Successfully deleted membership from group'
         })
-    // } else {
-    //     return res.status(400).json({
-    //         message: 'Problem with deleting membership'
-    //     })
-    // }
     }
-    console.log(member[0], 'AFTER DESTROYYYYYYYYYYYY')
-    console.log(deletedMembership), '======================='
-    res.json('nope')
+    return res.status(400).json({
+        message: 'Could not confirm deletion'
+    })
 })
 
 
@@ -303,12 +304,14 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
     const venue = await Venue.findByPk(venueId);
 
+    // check if group exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         });
     }
 
+    // query to see if user is cohost
     const isCohost = await Member.findAll({
         where: {
             memberId: userId,
@@ -317,6 +320,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
+    // check if user is organizer or cohost of group
     if (userId !== group.organizerId || !isCohost) {
         return res.status(403).json(
             {
@@ -324,6 +328,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
             })
     }
 
+    // body validation for a new event
     const eventErr = {}
     if (!venue) eventErr.venueId = 'Venue does not exist'
     if (!name || name.length < 5) eventErr.name = 'Name must be at least 5 characters'
@@ -375,11 +380,14 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
 router.get('/:groupId/events', async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
 
+    // check if group exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         });
     }
+
+    // query to find all events for a group
     const groupEvents = await Event.findAll({
         where: {
             groupId: group.id
@@ -412,12 +420,13 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
     const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
 
+    // check if group exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         });
     }
-
+    // query to see if user is a co-host
     const isCohost = await Member.findAll({
         where: {
             memberId: userId,
@@ -426,6 +435,7 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
+    // check if user if organizer or cohost of group
     if (userId !== group.organizerId || !isCohost) {
         return res.status(403).json(
             {
@@ -433,7 +443,7 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
             })
         }
 
-
+    // body validation for a venue
     const venueErr = {};
     if (!address|| address === null || address.length < 1) venueErr.address = 'Address is required';
     if (!city || city === null || city.length < 1) venueErr.city = 'City is required';
@@ -447,6 +457,8 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
             errors: venueErr,
         })
     }
+
+    // create new venue
     const groupId = group.id
     const newVenue = await Venue.create({ groupId, address, city, state, lat, lng})
 
@@ -469,12 +481,15 @@ router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
     const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
 
+
+    // check if group exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         });
     }
 
+    // query to see is user is a co-host
     const isCohost = await Member.findAll({
         where: {
             memberId: userId,
@@ -483,6 +498,7 @@ router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
         }
     })
 
+    //! check if user is the organizer or co-host of group
     if (userId !== group.organizerId || !isCohost) {
         return res.status(403).json(
             {
@@ -521,6 +537,7 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
         });
     }
 
+    // user must be the group organizer
     if (userId !== group.organizerId) {
         return res.status(403).json(
             {
@@ -528,7 +545,7 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
             })
         }
 
-
+    // create image
     const image = await Image.create({ url, preview, imageableType: 'GroupImages', imageableId: req.params.groupId})
 
     if (preview === true) {
