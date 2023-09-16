@@ -50,6 +50,7 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
 // get event by eventId
 router.get('/:eventId', async (req, res) => {
     const event = await Event.findByPk(req.params.eventId, {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
             {
                 model: Group,

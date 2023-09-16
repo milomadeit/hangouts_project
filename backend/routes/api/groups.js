@@ -27,7 +27,7 @@ const groupValidation = (name, about, type, private, city, state) => {
     return true
 }
 
-
+// get all members by groupId
 router.get('/:groupId/members', restoreUser, async (req, res) => {
     const userId = req.user.id;
     const groupId = req.params.groupId;
@@ -42,7 +42,7 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
 
     // check if group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: `Group couldn't be found`
         })
     }
