@@ -269,9 +269,15 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
 
 // delete member
 router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res) => {
-    const group = await Group.findByPk(req.params.groupId);
     const userId = req.user.id;
     const { memberId } = req.body;
+    const group = await Group.findByPk(req.params.groupId);
+    // check if group exists
+    if (!group) {
+        return res.status(404).json({
+            message: `Group couldn't be found`
+        })
+    }
     const member = await Member.findAll({
         where:{
         memberId:memberId,
@@ -290,12 +296,6 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
         })
     }
 
-    // check if group exists
-    if (!group) {
-        return res.status(404).json({
-            message: `Group couldn't be found`
-        })
-    }
     // check if member exists
     if (!member || member.length === 0) {
         return res.status(404).json({

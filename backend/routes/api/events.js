@@ -418,8 +418,88 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
         return res.status(200).json(updatedEvent) //
 })
 
+// delete an event by id
+router.delete('/:eventId', restoreUser, requireAuth, async (req, res) => {
+    const event = await Event.findByPk(req.params.eventId);
+    const userId = req.user.id;
+
+    if (!event) return res.status(404).json({message: `Event couldn't be found`})
+
+    const group = await Group.findByPk(event.groupId);
+    const isCohost = await Member.findAll({
+        where: {
+            memberId: userId,
+            groupId: event.groupId,
+            status: 'co-host'
+        }
+    })
+
+    //! check if user is the organizer or co-host of group
+    if (userId !== group.organizerId || !isCohost) {
+        return res.status(403).json(
+            {
+             "message": "Forbidden"
+            })
+        }
+
+    await event.destroy()
+
+    const checkEvent = await Event.findByPk(req.params.eventId);
+
+    if (!checkEvent) return res.status(200).json({message: 'Successfully deleted'})
+
+    return res.status(400).json({message: 'Could not confirm event deletion'});
+
+})
+
 // get all events
 router.get('/', async (req, res) => {
+    let { page, size, name, type, startDate } = req.query;
+
+    // Set default values for page and size if not provided
+    page = page ? Number(page) : 1;
+    size = size ? Number(size) : 20;
+
+    const errObj = {}
+
+    page = Number(page);
+    size = Number(size);
+
+    if (page && page < 1) errObj.page = 'Page must be greater than or equal to 1';
+    if (size && size < 1) errObj.size = 'Size must be greater than or equal to 1';
+    if (name && typeof name !== 'string') errObj.name = 'Name must be a string';
+    if (type && type !== 'Online' && type !== 'In Person') errObj.type = `Type must be 'Online' or 'In Person'`;
+    const timestamp = Date.parse(startDate);
+    if (startDate && timestamp === NaN ) errObj.startDate = 'Start date must be a valid datetime'
+
+    if (Object.keys(errObj).length) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            errors: errObj
+        })
+    }
+
+    if (page > 10) page = 10;
+    if (size > 20) size = 20;
+
+
+    const pagination = {};
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
+
+    const whereStatement = {};
+    if (name) {
+        whereStatement.name = { [Op.iLike]: `%${name}%` }; // Case-insensitive search
+    }
+
+    if (type) {
+        whereStatement.type = type;
+    }
+
+    if (startDate) {
+        whereStatement.startDate = { [Op.gte]: new Date(startDate) };
+    }
+
     const allEvents = await Event.findAll({
         attributes: {
             exclude: [ 'description', 'capacity', 'price', 'createdAt', 'updatedAt']
@@ -434,7 +514,8 @@ router.get('/', async (req, res) => {
             model: Venue,
             attributes: ['id', 'city', 'state']
         }
-    ]
+    ], where: whereStatement,
+    ...pagination
     })
 
     return res.status(200).json({
