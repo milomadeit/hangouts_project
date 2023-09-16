@@ -589,28 +589,73 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
     return res.status(200).json(createdImage);
 })
 
+
 // get all groups ORGANIZED OR JOINED by current user,
 router.get('/current', restoreUser, requireAuth, async (req, res) => {
     console.log(req.user.id)
 
     const organizedGroups = await Group.findAll({
         where: {
-            organizerId:req.user.id
+            organizerId: req.user.id
         },
-      })
+    });
+
     const joinedGroups = await Member.findAll({
         where: {
-            memberId: req.user.id
-        }
-    })
+            memberId: req.user.id,
+            [Op.or]: [ { status: 'co-host' }, { status: 'member' }]
+        },
+        attributes: {
+            exclude: ['id', 'memberId', 'groupId', 'status', 'createdAt', 'updatedAt']
+        },
+        include: {
+            model: Group,
+            as: 'group', // This should match the alias used in the Member-Group association
+            attributes: [
+                'id',
+                'organizerId',
+                'name',
+                'about',
+                'type',
+                'private',
+                'city',
+                'state',
+                'numMembers',
+                'previewImage',
+            ],
+        },
+    });
 
-    const allGroups = [...organizedGroups, ...joinedGroups]
+    const allGroups = [...organizedGroups, ...joinedGroups.map(member => member.group)];
 
     return res.status(200).json({
         Groups: allGroups
-    })
+    });
+});
 
-})
+
+// // get all groups ORGANIZED OR JOINED by current user,
+// router.get('/current', restoreUser, requireAuth, async (req, res) => {
+//     console.log(req.user.id)
+
+//     const organizedGroups = await Group.findAll({
+//         where: {
+//             organizerId:req.user.id
+//         },
+//       })
+//     const joinedGroups = await Member.findAll({
+//         where: {
+//             memberId: req.user.id
+//         }
+//     })
+
+//     const allGroups = [...organizedGroups, ...joinedGroups]
+
+//     return res.status(200).json({
+//         Groups: allGroups
+//     })
+
+// })
 
 
 // get details of a group by id
