@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasMany(models.Attendance, {
         foreignKey: 'userId',
+        as: 'Attendance'
       })
     }
 

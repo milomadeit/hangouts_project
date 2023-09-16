@@ -29,17 +29,8 @@ const groupValidation = (name, about, type, private, city, state) => {
 
 // get all members by groupId
 router.get('/:groupId/members', restoreUser, async (req, res) => {
-    const userId = req.user.id;
     const groupId = req.params.groupId;
     const group = await Group.findByPk(groupId)
-    const isCohost = await Member.findAll({
-        where: {
-            memberId: userId,
-            groupId: groupId,
-            status: 'co-host'
-        }
-    })
-
     // check if group exists
     if (!group) {
         return res.status(404).json({
@@ -47,32 +38,8 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
         })
     }
 
-    // check if user is organizer or co-host
-    if (userId === group.organizerId || isCohost.status === 'co-host' ) {
-        // all members in group including those with 'pending' status
-        const allMembers = await User.findAll({
-            attributes: ['id', 'firstName', 'lastName'],
-            include: [
-                {
-                    model: Member,
-                    attributes: ['status'],
-                    as: 'Membership',
-                    where: { groupId: groupId }
-                }
-            ]
-        })
-
-        if (!allMembers || allMembers.length === 0) return res.json({message: 'No members found for this group'});
-        // Modify the structure of the "Membership" field to be an obj NOT an array smh
-        const members = { Members: allMembers.map(member => ({
-            id: member.id,
-            firstName: member.firstName,
-            lastName: member.lastName,
-            Membership: { status: member.Membership[0].status }
-        }))};
-        return res.status(200).json(members)
-
-    } else {
+    // if no current user is logged in
+    if (!req.user) {
         // get all members for group available to public
         const publicMembers = await User.findAll({
             attributes: ['id', 'firstName', 'lastName'],
@@ -96,12 +63,73 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
             lastName: member.lastName,
             Membership: { status: member.Membership[0].status }
           })
-         )
-        };
+        )};
         return res.status(200).json(members)
+    } else {
+        // get user id
+        const userId = req.user.id;
+
+        const isCohost = await Member.findAll({
+            where: {
+                memberId: userId,
+                groupId: groupId,
+                status: 'co-host'
+            }
+        });
+
+        // check if user is organizer or co-host
+        if (userId === group.organizerId || isCohost.status === 'co-host' ) {
+            // all members in group including those with 'pending' status
+            const allMembers = await User.findAll({
+                attributes: ['id', 'firstName', 'lastName'],
+                include: [
+                    {
+                        model: Member,
+                        attributes: ['status'],
+                        as: 'Membership',
+                        where: { groupId: groupId }
+                    }
+                ]
+            })
+
+            if (!allMembers || allMembers.length === 0) return res.json({message: 'No members found for this group'});
+                // Modify the structure of the "Membership" field to be an obj NOT an array smh
+                const members = { Members: allMembers.map(member => ({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: { status: member.Membership[0].status }
+            }))};
+                return res.status(200).json(members);
+        } else {
+            // current user is logged in BUT NOT the organizer or co-host
+            // get all members for group available to public
+            const publicMembers = await User.findAll({
+                attributes: ['id', 'firstName', 'lastName'],
+                include: [
+                    {
+                        model: Member,
+                        attributes: ['status'],
+                        as: 'Membership',
+                        where: {
+                            [Op.or]: [ { status: 'co-host' }, { status: 'member' }
+                        ]}
+                    }
+                ]
+            })
+
+            if (!publicMembers || publicMembers.length === 0) return res.json({message: 'No members found for this group'})
+
+            const members = { Members: publicMembers.map(member => ({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: { status: member.Membership[0].status }
+            }))};
+            return res.status(200).json(members)
+        }
     }
 })
-
 
 
 //request membership for a group by groups id
@@ -150,7 +178,7 @@ router.post('/:groupId/membership', restoreUser, requireAuth, async (req, res) =
     return res.status(200).json(newMember)
 })
 
-// change status of a membership
+// change status of a membership by groupId
 router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) => {
     const { memberId, status } = req.body;
     const userId = req.user.id;
