@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       User.hasMany(models.Member, {
-        foreignKey: 'memberId'
+        foreignKey: 'memberId',
+        as: 'Membership'
       })
 
       User.belongsToMany(models.Event, {
