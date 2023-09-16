@@ -60,6 +60,7 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
             ]
         })
 
+        if (!allMembers || allMembers.length === 0) return res.json({message: 'No members found for this group'});
         // Modify the structure of the "Membership" field to be an obj NOT an array smh
         const members = { Members: allMembers.map(member => ({
             id: member.id,
@@ -84,6 +85,8 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
                 }
             ]
         })
+
+        if (!publicMembers || publicMembers.length === 0) return res.json({message: 'No members found for this group'})
 
         const members = { Members: publicMembers.map(member => ({
             id: member.id,
