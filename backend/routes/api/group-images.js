@@ -32,7 +32,7 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if (!image) return res.status(404).json({message: `Event Image couldn't be found`})
+    if (!image) return res.status(404).json({message: `Group Image couldn't be found`})
 
     await image.destroy();
 

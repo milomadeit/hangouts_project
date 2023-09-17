@@ -217,6 +217,13 @@ router.put('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =>
         status:status
     })
 
+    // Increment attendance
+    event.numAttending += 1;
+
+    // save in database 
+    await event.save();
+
+
     const updatedAttendance = {
         userId:attendance.userId,
         status:attendance.status
@@ -315,7 +322,7 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
 // get event by eventId
 router.get('/:eventId', async (req, res) => {
     const event = await Event.findByPk(req.params.eventId, {
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        attributes: { exclude: ['previewImage', 'createdAt', 'updatedAt'] },
         include: [
             {
                 model: Group,
@@ -351,12 +358,26 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
     const userId = req.user.id;
     const event = await Event.findByPk(req.params.eventId);
     const venue = await Venue.findByPk(venueId);
-    const group = await Group.findByPk(event.groupId)
 
     if (!event) {
         return res.status(404).json({
           message: `Event couldn't be found`,
         });
+    }
+
+    const group = await Group.findByPk(event.groupId)
+
+    if(!group) {
+        return res.status(404).json({
+            message: `Event couldn't be found`,
+        })
+    }
+
+    // the venue and event must belong to the same group
+    if (venue.groupId !== event.groupId) {
+        return res.status(404).json({
+            message: `Venue couldn't be found`
+        })
     }
 
     const isCohost = await Member.findAll({
@@ -373,6 +394,8 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
              "message": "Forbidden"
             })
         }
+
+
 
         const eventErr = {}
         if (!venue) eventErr.venueId = 'Venue does not exist'
@@ -393,11 +416,6 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
             })
         }
 
-        if (venue.groupId !== event.groupId) {
-            return res.status(404).json({
-                message: `Venue couldn't be found`
-            })
-        }
 
         const groupId = group.id
         await event.update({venueId, name, type, capacity, price, description, startDate, endDate});
