@@ -183,6 +183,13 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     const { memberId, status } = req.body;
     const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
+    // if group does not exist
+    if (!group) {
+        return res.status(404).json({
+            message: `Group couldn't be found`
+        })
+    }
+
     const member = await Member.findAll({
         where:{
         memberId:memberId,
@@ -234,12 +241,6 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-    // if group does not exist
-    if (!group) {
-        return res.status(404).json({
-            message: `Group couldn't be found`
-        })
-    }
     // if the member is not part of group
     if (!member || member.length === 0) {
         return res.status(404).json({
@@ -258,8 +259,11 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     })
 
     const updatedMember = {
+        id:member[0].id,
+        groupId:member[0].groupId,
         memberId:member[0].memberId,
         status:member[0].status
+
     }
 
     return res.status(200).json(updatedMember)

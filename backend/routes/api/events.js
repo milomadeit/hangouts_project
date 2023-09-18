@@ -154,6 +154,13 @@ router.post('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =
             });
         }
 
+        // if status is pending
+        if (isAttendee.status === 'host') {
+            return res.status(400).json({
+                message: 'You are the host of this event'
+            });
+        }
+
         // if status is attending
         if (isAttendee.status === 'attending') {
             return res.status(400).json({
@@ -220,7 +227,7 @@ router.put('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =>
     // Increment attendance
     event.numAttending += 1;
 
-    // save in database 
+    // save in database
     await event.save();
 
 
@@ -237,18 +244,19 @@ router.put('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =>
 router.delete('/:eventId/attendance', restoreUser, requireAuth, async (req, res) => {
     const { userId } = req.body;
     const eventId = req.params.eventId;
-    const event = await Event.findByPk(eventId);
-    // check if event exists
-    if (!event) return res.status(404).json({message: `Event couldn't be found`});
-    const group = await Group.findByPk(event.groupId);
-    // const isUser = await Attendance.findOne({
-    //     where: {
-    //         memberId:userId,
-    //         groupId:group.id,
-    //         status: 'member'
-    //     }
-    // })
 
+
+    // check if event exists
+    const event = await Event.findByPk(eventId);
+    if (!event) return res.status(404).json({message: `Event couldn't be found`});
+
+
+    // Check if the user has provided a valid userId
+    if (!userId || isNaN(userId)) {
+        return res.status(400).json({ message: 'Invalid userId' });
+    }
+
+    const group = await Group.findByPk(event.groupId);
 
     const attendance = await Attendance.findOne({
         where: {
@@ -260,7 +268,7 @@ router.delete('/:eventId/attendance', restoreUser, requireAuth, async (req, res)
     if (!attendance) return res.status(404).json({message: 'Attendance does not exist for this User'});
 
 
-    if (req.user.id === group.organizerId || req.user.id === userId) {
+    if (req.user.id === group.organizerId || req.user.id === parseInt(userId)) {
         await attendance.destroy()
 
         const checkAttendance = await Attendance.findOne({
@@ -270,12 +278,14 @@ router.delete('/:eventId/attendance', restoreUser, requireAuth, async (req, res)
             }
         })
 
-        if (!checkAttendance) return res.status(200).json({message: 'Successfully deleted attendance from event'})
-        return res.status(400).json({message:'Could not confirm deletion'})
-
+        if (!checkAttendance) {
+            return res.status(200).json({message: 'Successfully deleted attendance from event'})
+        } else {
+            return res.status(400).json({message:'Could not confirm deletion'})
+        }
     }
     return res.status(403).json({message: 'Only the User or organizer may delete an Attendance'});
-})
+});
 
 
 // add image to an event
@@ -283,6 +293,17 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
     const { url, preview } = req.body;
     const userId = req.user.id;
     const event = await Event.findByPk(req.params.eventId);
+
+    const errObj = {}
+    if (!url) errObj.url = 'Please provide a URL'
+    if (!preview || typeof preview !== 'boolean') errObj.preview = 'Please provide true or false for preview'
+    if (Object.keys(errObj).length) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            errors: errObj
+        })
+    }
+
 
     if (!event) {
         return res.status(404).json({
