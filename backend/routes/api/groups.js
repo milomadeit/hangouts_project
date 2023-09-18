@@ -183,6 +183,13 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     const { memberId, status } = req.body;
     const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
+    // if group does not exist
+    if (!group) {
+        return res.status(404).json({
+            message: `Group couldn't be found`
+        })
+    }
+
     const member = await Member.findAll({
         where:{
         memberId:memberId,
@@ -234,12 +241,6 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-    // if group does not exist
-    if (!group) {
-        return res.status(404).json({
-            message: `Group couldn't be found`
-        })
-    }
     // if the member is not part of group
     if (!member || member.length === 0) {
         return res.status(404).json({
@@ -258,8 +259,11 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     })
 
     const updatedMember = {
+        id:member[0].id,
+        groupId:member[0].groupId,
         memberId:member[0].memberId,
         status:member[0].status
+
     }
 
     return res.status(200).json(updatedMember)
@@ -641,9 +645,13 @@ router.get('/:groupId', async (req, res) => {
     // should include array of Venues
     console.log(req.params.groupId)
     const group = await Group.findByPk(req.params.groupId, {
+        attributes: {
+            exclude: ['previewImage']
+        },
         include: [
         {
             model: Image,
+            as: 'GroupImages',
             where: {imageableType: 'GroupImages'},
             attributes: ['id', 'url', 'preview'],
             required: false,
@@ -671,7 +679,7 @@ router.get('/:groupId', async (req, res) => {
     return res.status(200).json(group)
 })
 
-// update a group by id
+// edit a group by id
 router.put('/:groupId', restoreUser,requireAuth, async (req, res) => {
     const {name, about, type, private, city, state} = req.body;
     const userId = req.user.id;
@@ -693,7 +701,18 @@ router.put('/:groupId', restoreUser,requireAuth, async (req, res) => {
         //CREATE NEW GROUP WITH CURRENT USER ID
         // const organizerId = req.user.id;
         await group.update({name, about, type, private, city, state});
-        return res.json(group)
+
+        const updatedGroup = {
+            name:group.name,
+            about:group.about,
+            type:group.type,
+            private:group.private,
+            city:group.city,
+            state:group.state,
+            createdAt:group.createdAt,
+            updatedAt:group.updatedAt
+        }
+        return res.json(updatedGroup)
         } else {
             return res.status(400).json(groupValidation(name, about, type, private, city, state));
         }
@@ -716,7 +735,20 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
         // You might want to specify additional member attributes here
       });
 
-    return res.status(200).json(group)
+    const newGroup = {
+        id:group.id,
+        organizerId:group.organizerId,
+        name:group.name,
+        about:group.about,
+        type:group.type,
+        private:group.private,
+        city:group.city,
+        state:group.state,
+        createdAt:group.createdAt,
+        updatedAt:group.updatedAtx
+    }
+
+    return res.status(200).json(newGroup)
     } else {
         res.status(400).json(groupValidation(name, about, type, private, city, state));
     }
@@ -766,7 +798,7 @@ router.delete('/:groupId', restoreUser,requireAuth, async (req, res) => {
 router.get('/', async (req, res) => {
     const allGroups = await Group.findAll()
 
-    return res.status(200).json(allGroups);
+    return res.status(200).json({Groups:allGroups});
 })
 
 
