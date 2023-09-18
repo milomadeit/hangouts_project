@@ -13,7 +13,11 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if (!group) res.status(404).json({message: 'Group does not exist'});
+
+    // Check if the group exists for the organizer
+    if (!group) {
+        return res.status(403).json({ message: 'Forbidden' });
+    }
 
     const isCohost = await Member.findAll({
         where: {
@@ -23,12 +27,15 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         }
     });
 
-    if (group.organizerId !== userId || !isCohost ) return res.status(403).json({message: 'Forbidden'})
+    // Check if the user is either the organizer or a co-host
+    if (!(group.organizerId === userId || isCohost.length > 0)) {
+        return res.status(403).json({ message: 'Forbidden' });
+    }
 
     const image = await Image.findOne({
         where: {
+            id:imageId,
             imageableType:imageableType,
-            id:imageId
         }
     })
 

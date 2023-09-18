@@ -126,7 +126,7 @@ router.post('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =
             groupId: event.groupId
         }
     });
-
+    console.log(isMember, 'yooooooooooo')
     // check if the user is a member
     if (isMember && (isMember.status === 'member' || isMember.status === 'co-host')) {
         const isAttendee = await Attendance.findOne({
