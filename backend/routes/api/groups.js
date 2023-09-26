@@ -332,7 +332,6 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
 // create an event by group id
 router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-
     const userId = req.user.id;
     const group = await Group.findByPk(req.params.groupId);
     const venue = await Venue.findByPk(venueId);
@@ -363,7 +362,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
 
     // body validation for a new event
     const eventErr = {}
-    if (!venue || typeof venueId !== 'number') eventErr.venueId = 'Venue does not exist'
+    if (!venue) eventErr.venueId = 'Venue does not exist'
     if (!name || name.length < 5) eventErr.name = 'Name must be at least 5 characters'
     if (type !== 'Online' && type !== 'In person') eventErr.type = 'Type must be Online or In person'
     if (!capacity || typeof capacity !== 'number') eventErr.capacity = 'Capacity must be an integer'
@@ -387,11 +386,6 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     const status = 'host'
     const setHost = await Attendance.create({userId, eventId, status});
 
-    // const attendees = await event.getAttendances(eventId)
-
-    // console.log(attendees, '========================')
-
-    // console.log(attendees, 'yoooooooooooooooo')
     const createdEvent = {
         id:event.id,
         groupId:event.groupId,
@@ -732,8 +726,7 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     const newMember = await Member.create({
         groupId: group.id,
         memberId: organizerId,
-        status: 'member',
-        // You might want to specify additional member attributes here
+        status: 'host',
       });
 
     const newGroup = {

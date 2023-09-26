@@ -296,7 +296,7 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
 
     const errObj = {}
     if (!url) errObj.url = 'Please provide a URL'
-    if (!preview || typeof preview !== 'boolean') errObj.preview = 'Please provide true or false for preview'
+    if (typeof preview !== 'boolean') errObj.preview = 'Please provide true or false for preview'
     if (Object.keys(errObj).length) {
         return res.status(400).json({
             message: 'Bad Request',
