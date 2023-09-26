@@ -572,12 +572,28 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res) => {
             })
         }
 
-    // create image
-    const image = await Image.create({ url, preview, imageableType: 'GroupImages', imageableId: req.params.groupId})
+    // Find all images for the group
+    const groupImages = await Image.findAll({
+        where: {
+            imageableType: 'GroupImages',
+            imageableId: req.params.groupId
+        }
+    });
 
-    if (preview === true) {
-        await group.update({ previewImage: url })
+    if (group.previewImage && preview === true) {
+        // Iterate through the images and update their preview status
+        for (const image of groupImages) {
+            image.preview = false;
+            await image.save(); // Save the changes to each image
+        }
     }
+
+    if (group.previewImage === null && preview === true) {
+        await group.update({ previewImage: url });
+    }
+
+    // Create the new image
+    const image = await Image.create({ url, preview, imageableType: 'GroupImages', imageableId: req.params.groupId })
 
     const createdImage = {
         id:image.id,
@@ -726,7 +742,7 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     const newMember = await Member.create({
         groupId: group.id,
         memberId: organizerId,
-        status: 'host',
+        status: 'member',
       });
 
     const newGroup = {
