@@ -324,12 +324,30 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
             {
              "message": "Forbidden"
             })
-        }
-
-    const image = await Image.create({url, preview, imageableType: 'EventImages', imageableId: req.params.eventId})
-    if (preview === true) {
-        await event.update({ previewImage: url})
     }
+
+    // Find all images for the event
+    const eventImages = await Image.findAll({
+        where: {
+            imageableType: 'EventImages',
+            imageableId: req.params.eventId
+        }
+    });
+
+    if (event.previewImage && preview === true) {
+        // Iterate through the images and update their preview status
+        for (const image of eventImages) {
+            image.preview = false;
+            await image.save(); // Save the changes to each image
+        }
+    }
+
+    if (event.previewImage === null && preview === true) {
+        await event.update({ previewImage: url });
+    }
+
+    // create new image
+    const image = await Image.create({url, preview, imageableType: 'EventImages', imageableId: req.params.eventId});
 
     const createdImage = {
         id:image.id,
