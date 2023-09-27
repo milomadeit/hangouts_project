@@ -682,7 +682,7 @@ router.get('/:groupId', async (req, res) => {
 
     if (!group) {
         return res.status(404).json({
-          message: "Group couldn't be found!!!!!",
+          message: "Group couldn't be found",
         });
       }
 
@@ -742,7 +742,7 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     const newMember = await Member.create({
         groupId: group.id,
         memberId: organizerId,
-        status: 'member',
+        status: 'host',
       });
 
     const newGroup = {
