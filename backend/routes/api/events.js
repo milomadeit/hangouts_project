@@ -279,6 +279,12 @@ router.delete('/:eventId/attendance', restoreUser, requireAuth, async (req, res)
         })
 
         if (!checkAttendance) {
+            // Increment attendance
+            event.numAttending -= 1;
+
+            // save in database
+            await event.save();
+
             return res.status(200).json({message: 'Successfully deleted attendance from event'})
         } else {
             return res.status(400).json({message:'Could not confirm deletion'})
