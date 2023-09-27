@@ -161,7 +161,7 @@ router.post('/:groupId/membership', restoreUser, requireAuth, async (req, res) =
     }
 
     // User is already a member of the group
-    if (isMember.length > 0 && (isMember[0].status === 'member' || isMember.status === 'co-host' || memberId === group.organizerId)) {
+    if (isMember.length > 0 && (isMember[0].status === 'member' || isMember[0].status === 'co-host' || memberId === group.organizerId)) {
         return res.status(400).json({
             message: 'User is already a member of the group'
         })
@@ -224,7 +224,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     // status cannot be pending
     if(status === 'pending') {
         return res.status(400).json({
-            message: 'Validations Error',
+            message: 'Validation Error',
             errors: {
                 status : 'Cannot change a membership status to pending'
             }
@@ -234,7 +234,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     // if user does not exist
     if(!isUser) {
         return res.status(400).json({
-            message: 'Validations Error',
+            message: 'Validation Error',
             errors: {
                 memberId : `User couldn't be found`
             }
@@ -293,7 +293,7 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
     const isUser = await User.findByPk(memberId);
     if(!isUser) {
         return res.status(400).json({
-            message: 'Validations Error',
+            message: 'Validation Error',
             errors: {
                 memberId : `User couldn't be found`
             }
