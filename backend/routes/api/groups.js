@@ -13,7 +13,7 @@ const groupValidation = (name, about, type, private, city, state) => {
     if (!about || about.length < 50 ) errObj.about = 'About must be 50 characters or more';
 
     if (!type || type !== "Online" && type !== 'In person') errObj.type = "Type must be 'Online' or 'In person'";
-    if (!private || typeof private !== 'boolean') errObj.private = 'Private must be a boolean';
+    if (typeof private !== 'boolean') errObj.private = 'Private must be a boolean';
     if (!city || city === null || city.length < 1) errObj.city = 'City is required';
     if (!state || state === null || state.length < 1) errObj.state = 'State is required';
 
@@ -69,7 +69,7 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
         // get user id
         const userId = req.user.id;
 
-        const isCohost = await Member.findAll({
+        const isCohost = await Member.findOne({
             where: {
                 memberId: userId,
                 groupId: groupId,
@@ -78,7 +78,7 @@ router.get('/:groupId/members', restoreUser, async (req, res) => {
         });
 
         // check if user is organizer or co-host
-        if (userId === group.organizerId || isCohost.status === 'co-host' ) {
+        if (userId === group.organizerId && !isCohost ) {
             // all members in group including those with 'pending' status
             const allMembers = await User.findAll({
                 attributes: ['id', 'firstName', 'lastName'],
@@ -138,7 +138,7 @@ router.post('/:groupId/membership', restoreUser, requireAuth, async (req, res) =
     const memberId = req.user.id
     const status = 'pending'
     const group = await Group.findByPk(groupId);
-    const isMember = await Member.findAll({
+    const isMember = await Member.findOne({
         where: {
             memberId:memberId,
             groupId:groupId,
@@ -154,14 +154,14 @@ router.post('/:groupId/membership', restoreUser, requireAuth, async (req, res) =
 
 
     // Membership has already been requested
-    if (isMember.length > 0 && isMember[0].status === 'pending') {
+    if (isMember && isMember.status === 'pending') {
         return res.status(400).json({
             message: 'Membership has already been requested'
         })
     }
 
     // User is already a member of the group
-    if (isMember.length > 0 && (isMember[0].status === 'member' || isMember[0].status === 'co-host' || memberId === group.organizerId)) {
+    if (isMember && (isMember.status === 'member' || isMember.status === 'co-host' || memberId === group.organizerId)) {
         return res.status(400).json({
             message: 'User is already a member of the group'
         })
@@ -190,13 +190,13 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-    const member = await Member.findAll({
+    const member = await Member.findOne({
         where:{
         memberId:memberId,
         groupId:group.id,
     }})
     // query for cohost
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -208,7 +208,7 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
     const isUser = await User.findByPk(memberId);
 
     //! MUST BE A COHOST OR ORGANIZER TO SET MEMBER STATUS
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json({
              "message": "Forbidden"
         })
@@ -254,15 +254,15 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-    await member[0].update({
+    await member.update({
         status:status
     })
 
     const updatedMember = {
-        id:member[0].id,
-        groupId:member[0].groupId,
-        memberId:member[0].memberId,
-        status:member[0].status
+        id:member.id,
+        groupId:member.groupId,
+        memberId:member.memberId,
+        status:member.status
 
     }
 
@@ -282,7 +282,7 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
             message: `Group couldn't be found`
         })
     }
-    const member = await Member.findAll({
+    const member = await Member.findOne({
         where:{
         memberId:memberId,
         groupId:group.id,
@@ -307,18 +307,23 @@ router.delete('/:groupId/membership', restoreUser, requireAuth, async (req, res)
         })
     }
 
+    if (userId !== group.organizerId && memberId !== userId) {
+        return res.status(403).json({
+             "message": "Forbidden"
+        })
+    }
     // delete membership
-    const deletedMembership = await member[0].destroy()
+    const deletedMembership = await member.destroy()
 
     // query to see if member does not exist
-    const checkMember = await Member.findAll({
+    const checkMember = await Member.findOne({
         where:{
         memberId:memberId,
         groupId:group.id,
         [Op.or]: [{status: 'pending'}, {status: 'member'}, {status: 'co-host'}]
     }})
 
-    if (!checkMember[0]) {
+    if (!checkMember) {
         return res.status(200).json({
             message: 'Successfully deleted membership from group'
         })
@@ -344,7 +349,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     }
 
     // query to see if user is cohost
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -353,7 +358,7 @@ router.post('/:groupId/events', restoreUser, requireAuth, async (req, res) => {
     })
 
     // check if user is organizer or cohost of group
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
@@ -454,7 +459,7 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
         });
     }
     // query to see if user is a co-host
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -463,7 +468,7 @@ router.post('/:groupId/venues', restoreUser, requireAuth, async (req, res) => {
     })
 
     // check if user if organizer or cohost of group
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
@@ -517,7 +522,7 @@ router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
     }
 
     // query to see is user is a co-host
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -526,7 +531,7 @@ router.get('/:groupId/venues', restoreUser, requireAuth, async (req,res) => {
     })
 
     //! check if user is the organizer or co-host of group
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
