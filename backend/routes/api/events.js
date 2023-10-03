@@ -48,7 +48,7 @@ router.get('/:eventId/attendees', restoreUser, async (req, res) => {
         // get user id
         const userId = req.user.id;
 
-        const isCohost = await Member.findAll({
+        const isCohost = await Member.findOne({
             where: {
                 memberId: userId,
                 groupId: event.groupId,
@@ -60,7 +60,7 @@ router.get('/:eventId/attendees', restoreUser, async (req, res) => {
         const group = await Group.findByPk(event.groupId);
 
         // check if user is organizer or co-host
-        if (userId === group.organizerId || isCohost.status === 'co-host' ) {
+        if (userId === group.organizerId && !isCohost) {
             // all attendees including those with 'pending' status
             const allAttendees = await User.findAll({
                 attributes: ['id', 'firstName', 'lastName'],
@@ -192,7 +192,7 @@ router.put('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =>
     // 1st query the group
     const group = await Group.findByPk(event.groupId);
     // 2nd query for cohost
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: currentUserId,
             groupId: group.id,
@@ -200,7 +200,7 @@ router.put('/:eventId/attendance', restoreUser, requireAuth, async (req, res) =>
         }
     })
     // NOW....
-    if (currentUserId !== group.organizerId || !isCohost) {
+    if (currentUserId !== group.organizerId && !isCohost) {
         return res.status(403).json({
             "message": "Forbidden"
         })
@@ -418,14 +418,8 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
-    // the venue and event must belong to the same group
-    if (venue.groupId !== event.groupId) {
-        return res.status(404).json({
-            message: `Venue couldn't be found`
-        })
-    }
 
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -433,7 +427,7 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
@@ -443,7 +437,7 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
 
 
         const eventErr = {}
-        if (!venue) eventErr.venueId = 'Venue does not exist'
+        if (!venueId || !venue) eventErr.venueId = 'Venue does not exist'
         if (!name || name.length < 5) eventErr.name = 'Name must be at least 5 characters'
         if (type !== 'Online' && type !== 'In person') eventErr.type = 'Type must be Online or In person'
         if (!capacity || typeof capacity !== 'number') eventErr.capacity = 'Capacity must be an integer'
@@ -458,6 +452,13 @@ router.put('/:eventId', restoreUser, requireAuth, async (req, res) => {
             return res.status(400).json({
                 message: 'Bad Request',
                 errors: eventErr,
+            })
+        }
+
+        // the venue and event must belong to the same group
+        if (venue.groupId !== event.groupId) {
+            return res.status(404).json({
+                message: `Venue couldn't be found`
             })
         }
 
@@ -489,7 +490,7 @@ router.delete('/:eventId', restoreUser, requireAuth, async (req, res) => {
     if (!event) return res.status(404).json({message: `Event couldn't be found`})
 
     const group = await Group.findByPk(event.groupId);
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: event.groupId,
@@ -498,12 +499,12 @@ router.delete('/:eventId', restoreUser, requireAuth, async (req, res) => {
     })
 
     //! check if user is the organizer or co-host of group
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
             })
-        }
+    }
 
     await event.destroy()
 

@@ -23,7 +23,7 @@ router.put('/:venueId', restoreUser, requireAuth, async (req, res) => {
         });
     }
 
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -31,7 +31,7 @@ router.put('/:venueId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if (userId !== group.organizerId || !isCohost) {
+    if (userId !== group.organizerId && !isCohost) {
         return res.status(403).json(
             {
              "message": "Forbidden"
@@ -52,7 +52,17 @@ router.put('/:venueId', restoreUser, requireAuth, async (req, res) => {
             })
         }
 
-        const updatedVenue = await venue.update({ address, city, state, lat, lng });
+        await venue.update({ address, city, state, lat, lng });
+
+        const updatedVenue = {
+            id:venue.id,
+            groupId:venue.groupId,
+            address:venue.address,
+            city:venue.city,
+            state:venue.state,
+            lat:venue.lat,
+            lng:venue.lng,
+        }
 
         return res.status(200).json(updatedVenue)
 })

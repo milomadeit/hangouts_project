@@ -19,7 +19,7 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         return res.status(403).json({ message: 'Forbidden' });
     }
 
-    const isCohost = await Member.findAll({
+    const isCohost = await Member.findOne({
         where: {
             memberId: userId,
             groupId: group.id,
@@ -28,7 +28,7 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     });
 
     // Check if the user is either the organizer or a co-host
-    if (!(group.organizerId === userId || isCohost.length > 0)) {
+    if (!group.organizerId === userId && !isCohost) {
         return res.status(403).json({ message: 'Forbidden' });
     }
 
