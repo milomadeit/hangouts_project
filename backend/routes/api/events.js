@@ -531,9 +531,9 @@ router.get('/', async (req, res) => {
     if (page && page < 1) errObj.page = 'Page must be greater than or equal to 1';
     if (size && size < 1) errObj.size = 'Size must be greater than or equal to 1';
     if (name && typeof name !== 'string') errObj.name = 'Name must be a string';
-    if (type && type !== 'Online' && type !== 'In Person') errObj.type = `Type must be 'Online' or 'In Person'`;
+    if (type && (type !== 'Online' && type !== 'In Person')) errObj.type = `Type must be 'Online' or 'In Person'`;
     const timestamp = Date.parse(startDate);
-    if (startDate && timestamp === NaN ) errObj.startDate = 'Start date must be a valid datetime'
+    if (startDate && timestamp === NaN) errObj.startDate = 'Start date must be a valid datetime'
 
     if (Object.keys(errObj).length) {
         return res.status(400).json({
