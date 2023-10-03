@@ -254,9 +254,9 @@ router.put('/:groupId/membership', restoreUser, requireAuth, async (req, res) =>
         })
     }
 
-    await member.update({
-        status:status
-    })
+    member.status = status;
+    await member.save();
+
 
     const updatedMember = {
         id:member.id,
