@@ -28,7 +28,7 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     });
 
     // Check if the user is either the organizer or a co-host
-    if (!group.organizerId === userId && !isCohost) {
+    if (group.organizerId !== userId && !isCohost) {
         return res.status(403).json({ message: 'Forbidden' });
     }
 
