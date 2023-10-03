@@ -317,11 +317,11 @@ router.post('/:eventId/images', restoreUser, requireAuth, async (req, res) => {
         });
     }
 
-    const authorizedUser = await Attendance.findAll({
+    const authorizedUser = await Attendance.findOne({
         where: {
             userId:userId,
             eventId:event.id,
-            [Op.or]: [{status: 'attendee'}, {status: 'host'}, {status: 'co-host'}]
+            [Op.or]: [{status: 'attending'}, {status: 'host'}, {status: 'co-host'}]
         }
     })
 
