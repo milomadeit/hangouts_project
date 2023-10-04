@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { User, Group, Image, Member } = require('../../db/models');
+const { User, Group, Image, Member, Event } = require('../../db/models');
 
 router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     const imageId = req.params.imageId;
@@ -15,17 +15,17 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if (!image) return res.status(404).json({message: `Event Image couldn't be found`})
+    if (!image) return res.status(404).json({message: `Group Image couldn't be found`})
 
-    const event = await Event.findByPk(image.imageableId)
+    const group = await Group.findByPk(image.imageableId)
 
-    if (!event) res.status(404).json({message: `Event Image couldn't be found`})
+    if (!group) res.status(404).json({message: `Group couldn't be found`})
 
-    const group = await Group.findOne({
-        where: {
-            organizerId: userId
-        }
-    })
+    // const group = await Group.findOne({
+    //     where: {
+    //         organizerId: userId
+    //     }
+    // })
 
 
     // Check if the group exists for the organizer
