@@ -520,9 +520,7 @@ router.delete('/:eventId', restoreUser, requireAuth, async (req, res) => {
 // get all events
 router.get('/', async (req, res) => {
 
-    try {
-
-        let { page, size, name, type, startDate } = req.query;
+    let { page, size, name, type, startDate } = req.query;
 
     // Set default values for page and size if not provided
     page = page ? Number(page) : 1;
@@ -535,11 +533,19 @@ router.get('/', async (req, res) => {
 
     if (page && page < 1) errObj.page = 'Page must be greater than or equal to 1';
     if (size && size < 1) errObj.size = 'Size must be greater than or equal to 1';
-    if (typeof name !== 'string' || !isNaN(Number(name))) errObj.name = 'Name must be a string';
-    if (type !== `"Online"` && type !== `"In Person"`) errObj.type = `Type must be 'Online' or 'In Person'`;
-    startDate = startDate.replace(/"/g, '');
-    const isValidDate = moment(startDate, 'YYYY-MM-DD HH:mm:ss').isValid();
-    if (!isValidDate) errObj.startDate = 'Start date must be a valid datetime';
+    if ( name && (typeof name !== 'string' || !isNaN(Number(name)))) errObj.name = 'Name must be a string';
+    if (type) {
+        type = type.replaceAll(`"`, '');  // Remove quotes from the type string
+        if (type !== 'Online' && type !== 'In person') {
+            errObj.type = `Type must be 'Online' or 'In person'`;
+        }
+    }
+    if (startDate) {
+        startDate = startDate.replaceAll(`"`, ''); // Remove quotes from the type string
+        const isValidDate = moment(startDate, 'YYYY-MM-DD HH:mm:ss').isValid();
+        if (!isValidDate) errObj.startDate = 'Start date must be a valid datetime';
+
+    }
 
 
     if (Object.keys(errObj).length) {
@@ -560,7 +566,7 @@ router.get('/', async (req, res) => {
     const whereStatement = {};
 
     if (name) {
-        name = name.replace(/"/g, '');
+        name = name.replaceAll(`"`, '');
         whereStatement.name = { [Op.like]: `%${name}%` }; // Case-insensitive search
     }
 
@@ -571,6 +577,8 @@ router.get('/', async (req, res) => {
     if (startDate) {
         whereStatement.startDate = { [Op.gte]: new Date(startDate) };
     }
+
+    try {
 
     const allEvents = await Event.findAll({
         attributes: {
@@ -586,7 +594,8 @@ router.get('/', async (req, res) => {
             model: Venue,
             attributes: ['id', 'city', 'state']
         }
-    ], where: whereStatement,
+    ],
+    where: whereStatement,
     ...pagination
     })
 
