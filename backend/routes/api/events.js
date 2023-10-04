@@ -4,6 +4,7 @@ const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth')
 const { User, Group, Image, Member, Venue, Event, Attendance } = require('../../db/models');
 const { check } = require('express-validator');
 const { Op } = require("sequelize");
+const moment = require('moment');
 
 
 // get all attendees by eventId
@@ -531,10 +532,12 @@ router.get('/', async (req, res) => {
 
     if (page && page < 1) errObj.page = 'Page must be greater than or equal to 1';
     if (size && size < 1) errObj.size = 'Size must be greater than or equal to 1';
-    if (name && typeof name !== 'string') errObj.name = 'Name must be a string';
-    if (type && (type !== 'Online' && type !== 'In Person')) errObj.type = `Type must be 'Online' or 'In Person'`;
-    const timestamp = Date.parse(startDate);
-    if (startDate && timestamp === NaN) errObj.startDate = 'Start date must be a valid datetime'
+    if (typeof name !== 'string' || !isNaN(Number(name))) errObj.name = 'Name must be a string';
+    if (type !== `"Online"` && type !== `"In Person"`) errObj.type = `Type must be 'Online' or 'In Person'`;
+    startDate = startDate.replace(/"/g, '');
+    const isValidDate = moment(startDate, 'YYYY-MM-DD HH:mm:ss').isValid();
+    if (!isValidDate) errObj.startDate = 'Start date must be a valid datetime';
+
 
     if (Object.keys(errObj).length) {
         return res.status(400).json({
@@ -553,7 +556,7 @@ router.get('/', async (req, res) => {
 
     const whereStatement = {};
     if (name) {
-        whereStatement.name = { [Op.iLike]: `%${name}%` }; // Case-insensitive search
+        whereStatement.name = { name: `${name}` }; // Case-insensitive search
     }
 
     if (type) {
