@@ -7,6 +7,20 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     const imageId = req.params.imageId;
     const imageableType = 'GroupImages';
     const userId = req.user.id;
+    // image has imageableId which IS the eventId
+    const image = await Image.findOne({
+        where: {
+            id:imageId,
+            imageableType:imageableType,
+        }
+    })
+
+    if (!image) return res.status(404).json({message: `Event Image couldn't be found`})
+
+    const event = await Event.findByPk(image.imageableId)
+
+    if (!event) res.status(404).json({message: `Event Image couldn't be found`})
+
     const group = await Group.findOne({
         where: {
             organizerId: userId
@@ -15,9 +29,9 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
 
 
     // Check if the group exists for the organizer
-    if (!group) {
-        return res.status(403).json({ message: 'Forbidden' });
-    }
+    // if (!group) {
+    //     return res.status(403).json({ message: 'Forbidden' });
+    // }
 
     const isCohost = await Member.findOne({
         where: {
@@ -31,15 +45,6 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     if (group.organizerId !== userId && !isCohost) {
         return res.status(403).json({ message: 'Forbidden' });
     }
-
-    const image = await Image.findOne({
-        where: {
-            id:imageId,
-            imageableType:imageableType,
-        }
-    })
-
-    if (!image) return res.status(404).json({message: `Group Image couldn't be found`})
 
     await image.destroy();
 
