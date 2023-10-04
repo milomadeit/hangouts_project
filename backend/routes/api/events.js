@@ -535,7 +535,7 @@ router.get('/', async (req, res) => {
     if (size && size < 1) errObj.size = 'Size must be greater than or equal to 1';
     if ( name && (typeof name !== 'string' || !isNaN(Number(name)))) errObj.name = 'Name must be a string';
     if (type) {
-        type = type.replaceAll(`"`, '');  // Remove quotes from the type string
+        type = type.replace(/"/g, '');  // Remove quotes from the type string
         if (type !== 'Online' && type !== 'In person') {
             errObj.type = `Type must be 'Online' or 'In person'`;
         }
@@ -566,7 +566,7 @@ router.get('/', async (req, res) => {
     const whereStatement = {};
 
     if (name) {
-        name = name.replaceAll(`"`, '');
+        name = name.replace(/"/g, '');
         whereStatement.name = { [Op.like]: `%${name}%` }; // Case-insensitive search
     }
 
