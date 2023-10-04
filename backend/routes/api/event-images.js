@@ -20,13 +20,9 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
 
     const event = await Event.findByPk(image.imageableId)
 
-    if (!event) res.status(404).json({message: `Event Image couldn't be found`})
+    if (!event) res.status(404).json({message: `Event couldn't be found`})
 
-    const group = await Group.findOne({
-        where: {
-            organizerId: event.groupId
-        }
-    })
+    const group = await Group.findByPk(event.groupId);
 
     // Check if the group exists for the organizer
     // if (!group) {
