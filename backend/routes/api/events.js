@@ -555,8 +555,10 @@ router.get('/', async (req, res) => {
     pagination.offset = size * (page - 1);
 
     const whereStatement = {};
+
     if (name) {
-        whereStatement.name = { name: `${name}` }; // Case-insensitive search
+        name = name.replace(/"/g, '');
+        whereStatement.name = { [Op.like]: `%${name}%` }; // Case-insensitive search
     }
 
     if (type) {
