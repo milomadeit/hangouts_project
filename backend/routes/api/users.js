@@ -11,22 +11,30 @@ const router = express.Router();
 
 // middleware to check keys of a new user signup
 const validateSignup = [
-    // check('email')
-    //   .exists({ checkFalsy: true })
-    //   .isEmail()
-    //   .withMessage('Please provide a valid email.'),
-    check('username')
-      .exists({ checkFalsy: true })
-      .isLength({ min: 4 })
-      .withMessage('Please provide a username with at least 4 characters.'),
-    check('username')
-      .not()
-      .isEmail()
-      .withMessage('Username cannot be an email.'),
-    check('password')
-      .exists({ checkFalsy: true })
-      .isLength({ min: 6 })
-      .withMessage('Password must be 6 characters or more.'),
+    check('email')
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage('Invalid email'),
+  check('username')
+    .exists({ checkFalsy: true })
+    // .isLength({ min: 4 })
+    .withMessage('Username is required.'),
+  check('username')
+    .not()
+    .isEmail()
+    .withMessage('Username cannot be an email'),
+  check('password')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 6 })
+    .withMessage('Password must be 6 characters or more'),
+  check('firstName')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 1})
+    .withMessage('First name is required'),
+    check('lastName')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 1})
+    .withMessage('Last name is required'),
     handleValidationErrors
   ];
 
@@ -37,22 +45,22 @@ router.post('/', validateSignup, async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password);
   const errorsObj = {};
 
-  if (email === undefined || !email || !email.includes('@') ) {
-    errorsObj.email = 'Invalid email'
-   }
-  if (!firstName) {
-    errorsObj.firstName = 'First Name is required'
-   }
-  if (!lastName) {
-    errorsObj.lastName = 'Last Name is required'
-   }
+  // if (email === undefined || !email || !email.includes('@') ) {
+  //   errorsObj.email = 'Invalid email'
+  //  }
+  // if (!firstName) {
+  //   errorsObj.firstName = 'First Name is required'
+  //  }
+  // if (!lastName) {
+  //   errorsObj.lastName = 'Last Name is required'
+  //  }
 
-  if (errorsObj.email || errorsObj.firstName || errorsObj.lastName) {
-    return res.status(400).json ({
-      message: 'Bad Request',
-      errors: errorsObj,
-    })
-  }
+  // if (errorsObj.email || errorsObj.firstName || errorsObj.lastName) {
+  //   return res.status(400).json ({
+  //     message: 'Bad Request',
+  //     errors: errorsObj,
+  //   })
+  // }
 
   const userEmailExists = await User.findOne({
     where: {
