@@ -541,7 +541,7 @@ router.get('/', async (req, res) => {
         }
     }
     if (startDate) {
-        startDate = startDate.replaceAll(`"`, ''); // Remove quotes from the type string
+        startDate = startDate.replace(/"/g, ''); // Remove quotes from the type string
         const isValidDate = moment(startDate, 'YYYY-MM-DD HH:mm:ss').isValid();
         if (!isValidDate) errObj.startDate = 'Start date must be a valid datetime';
 
