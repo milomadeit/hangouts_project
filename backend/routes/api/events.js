@@ -519,7 +519,10 @@ router.delete('/:eventId', restoreUser, requireAuth, async (req, res) => {
 
 // get all events
 router.get('/', async (req, res) => {
-    let { page, size, name, type, startDate } = req.query;
+
+    try {
+
+        let { page, size, name, type, startDate } = req.query;
 
     // Set default values for page and size if not provided
     page = page ? Number(page) : 1;
@@ -589,6 +592,13 @@ router.get('/', async (req, res) => {
 
     return res.status(200).json({
         Events: allEvents});
+
+    }
+    catch {
+        return res.status(200).json({
+            message: 'No events'
+        })
+    }
 
 })
 
