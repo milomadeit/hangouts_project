@@ -45,23 +45,6 @@ router.post('/', validateSignup, async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password);
   const errorsObj = {};
 
-  // if (email === undefined || !email || !email.includes('@') ) {
-  //   errorsObj.email = 'Invalid email'
-  //  }
-  // if (!firstName) {
-  //   errorsObj.firstName = 'First Name is required'
-  //  }
-  // if (!lastName) {
-  //   errorsObj.lastName = 'Last Name is required'
-  //  }
-
-  // if (errorsObj.email || errorsObj.firstName || errorsObj.lastName) {
-  //   return res.status(400).json ({
-  //     message: 'Bad Request',
-  //     errors: errorsObj,
-  //   })
-  // }
-
   const userEmailExists = await User.findOne({
     where: {
         email: email
