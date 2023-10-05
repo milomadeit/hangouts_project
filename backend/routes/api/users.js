@@ -43,7 +43,6 @@ const validateSignup = [
 router.post('/', validateSignup, async (req, res) => {
   const { email, firstName, lastName, password, username } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
-  const errorsObj = {};
 
   const userEmailExists = await User.findOne({
     where: {
