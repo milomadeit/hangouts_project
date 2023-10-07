@@ -719,6 +719,8 @@ router.put('/:groupId', restoreUser,requireAuth, async (req, res) => {
         await group.update({name, about, type, private, city, state});
 
         const updatedGroup = {
+            id:group.id,
+            organizerId:group.organizerId,
             name:group.name,
             about:group.about,
             type:group.type,
