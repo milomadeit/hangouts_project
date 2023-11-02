@@ -30,20 +30,22 @@ function LoginFormPage() {
   };
 
   return (
-    <div>
-      <h2>Login Form</h2>
+    <div className='LoginFormDiv'>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label className='inputField'>
           Email or Username:{" "}
           <input
+            className='inputField'
             type='text'
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
           ></input>
         </label>
-        <label>
+        <label className='inputField'>
           Password:{" "}
           <input
+            className='inputField'
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
