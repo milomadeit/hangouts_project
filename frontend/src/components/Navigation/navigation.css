@@ -1,0 +1,8 @@
+/* This will apply when the dropdown is meant to be shown */
+.profile-dropdown {
+    display: block;
+  }
+
+  .hidden {
+    display: none;
+  }
