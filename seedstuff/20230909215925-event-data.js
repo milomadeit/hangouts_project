@@ -1,6 +1,6 @@
 'use strict';
 
-const { Event } = require('../models');
+const { Event } = require('./backend/db/models');
 
 // /** @type {import('sequelize-cli').Migration} */
 let options = {};
