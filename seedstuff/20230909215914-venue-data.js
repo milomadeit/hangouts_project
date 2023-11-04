@@ -1,11 +1,11 @@
-'use strict';
-const { Venue } = require('../models');
+"use strict";
+const { Venue } = require("../backend/db/models");
 
 // /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
 const venueData = [
@@ -15,7 +15,7 @@ const venueData = [
     city: "New York",
     state: "NY",
     lat: 37.7645358,
-    lng: -122.4730327
+    lng: -122.4730327,
   },
   {
     address: "456 Oceanfront Avenue",
@@ -23,7 +23,7 @@ const venueData = [
     city: "Los Angeles",
     state: "CA",
     lat: 34.052235,
-    lng: -118.243683
+    lng: -118.243683,
   },
   {
     address: "789 Parkside Drive",
@@ -31,12 +31,12 @@ const venueData = [
     city: "Chicago",
     state: "IL",
     lat: 41.878113,
-    lng: -87.629799
-  }
+    lng: -87.629799,
+  },
 ];
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -45,11 +45,11 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-    */
-   await Venue.bulkCreate(venueData, { validate: true });
+     */
+    await Venue.bulkCreate(venueData, { validate: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
@@ -57,10 +57,14 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    options.tableName = 'Venues';
+    options.tableName = "Venues";
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      groupId: { [Op.in]: [1, 2, 3] }
-    }, {});
-  }
+    return queryInterface.bulkDelete(
+      options,
+      {
+        groupId: { [Op.in]: [1, 2, 3] },
+      },
+      {}
+    );
+  },
 };
