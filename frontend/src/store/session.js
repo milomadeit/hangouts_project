@@ -26,8 +26,33 @@ export const login = (user) => async (dispatch) => {
       password,
     }),
   });
-  const data = await response.json();
-  dispatch(setUser(data.user));
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
+  }
+
+  const errorData = await response.json(); // Parse the JSON from the original response
+  return errorData; // You may want to handle this differently, e.g., throw an error.
+};
+
+// login DEMO user
+export const loginDemo = () => async (dispatch) => {
+  const credential = "Demo";
+  const password = "password";
+  const response = await csrfFetch("/api/session", {
+    method: "POST",
+    body: JSON.stringify({
+      credential,
+      password,
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
+  }
   return response;
 };
 
@@ -39,7 +64,6 @@ export const restoreUser = () => async (dispatch) => {
 
   if (response.ok) {
     const { user } = await response.json();
-    console.log(user);
     dispatch(setUser(user));
     return user;
   }
