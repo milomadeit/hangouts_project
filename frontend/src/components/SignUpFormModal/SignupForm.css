@@ -3,6 +3,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 300px;
+    border-radius: 25px;
 }
 
 .inputField {
@@ -11,10 +14,30 @@
     justify-content: center;
     align-items: center;
 
+
 }
 
-button {
-    margin-top: 5px;
+.inputLabel {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+
+}
+
+.signUpButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.error {
+    margin-top: 2px;
+    font-size: 8px;
+    margin-bottom: 0px;
+    color: red;
 }

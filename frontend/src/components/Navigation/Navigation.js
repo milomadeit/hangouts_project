@@ -2,11 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import OpenModalButton from "../OpenModalButton/ModalButton";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 import { loginDemo } from "../../store/session";
 import "./navigation.css";
+import hangout from "../../images/hangout.png";
 
 function Navigation({ isLoaded }) {
   const dispatch = useDispatch();
@@ -21,35 +22,39 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
+      <li className='navProfile'>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className='navLinks'>
         <OpenModalButton
+          className='loginButton'
           buttonText='Log In'
           modalComponent={<LoginFormModal />}
         />
         <OpenModalButton
+          className='signupButton'
           buttonText='Sign Up'
           modalComponent={<SignupFormModal />}
         />
-        <button onClick={handleDemoUser}>Demo User</button>
       </li>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to='/'>
-          Home
-        </NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <header className='navHeader'>
+      <ul className='navUl'>
+        <li className='navLinkHome'>
+          <NavLink exact to='/'>
+            <img className='homeLogo'
+            src={hangout} alt='hangout logo' />
+          </NavLink>
+        </li>
+        {isLoaded && sessionLinks}
+      </ul>
+    </header>
   );
 }
 
