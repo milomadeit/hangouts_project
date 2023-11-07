@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import * as sessionActions from "../../store/session";
-import "./profileButton.css";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
@@ -49,7 +49,12 @@ function ProfileButton({ user }) {
               <li>Hello, {user.firstName}</li>
               <li>{user.email}</li>
               <li>
-                <button className='logoutButton' className='logoutButton' onClick={logout}>
+                <Link className='viewGroupsLink' to='/groups'>
+                  View Groups
+                </Link>
+              </li>
+              <li>
+                <button className='logoutButton' onClick={logout}>
                   Log Out
                 </button>
               </li>

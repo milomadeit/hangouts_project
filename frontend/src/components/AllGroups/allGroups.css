@@ -12,10 +12,12 @@
 .allEvents {
     color: black;
     margin: 5px;
+    text-decoration: none;
 }
 
 .allEvents:hover {
-    color: teal
+    color: teal;
+    text-decoration: underline;
 
 }
 .group-list-header {

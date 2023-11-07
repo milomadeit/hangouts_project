@@ -23,6 +23,9 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <li className='navProfile'>
+        <NavLink className='startGroup' to='/groups/new'>
+          Start a new group
+        </NavLink>
         <ProfileButton user={sessionUser} />
       </li>
     );
@@ -48,8 +51,7 @@ function Navigation({ isLoaded }) {
       <ul className='navUl'>
         <li className='navLinkHome'>
           <NavLink exact to='/'>
-            <img className='homeLogo'
-            src={hangout} alt='hangout logo' />
+            <img className='homeLogo' src={hangout} alt='hangout logo' />
           </NavLink>
         </li>
         {isLoaded && sessionLinks}

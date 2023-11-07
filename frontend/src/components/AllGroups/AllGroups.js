@@ -7,11 +7,10 @@ import { getGroups } from "../../store/groups";
 function Groups() {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.allGroups);
-
+  const user = useSelector((state) => state.session.user);
   useEffect(() => {
     dispatch(getGroups());
-  }, [dispatch, groups]);
-
+  }, [dispatch, user]);
 
   const groupList = groups ? Object.values(groups) : [];
 
@@ -46,7 +45,7 @@ function Groups() {
                 <div className='group-location'>{group.city}</div>
                 <div className='group-description'>{group.about}</div>
                 <div className='group-events'>
-                  {""} Events
+                  {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
                   <span className='group-dot'>·</span>
                   <span className='group-privacy'>
                     {group.isPrivate ? "Private" : "Public"}

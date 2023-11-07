@@ -50,15 +50,14 @@
     margin-right: 25px;
   }
 
-  /* Styling for Log In and Sign Up buttons to make them stand out */
+
   .loginButton, .signupButton {
     border: 1px solid #333;
     border-radius: 4px;
   }
 
   .navLinks a:hover, .navLinks button:hover {
-    background-color: rgba(169, 167, 167, 0.765); /* A slight background on hover */
-  }
+    background-color: rgba(169, 167, 167, 0.765);}
 
   .profile-dropdown {
     display: flex;
@@ -78,11 +77,39 @@
 
 
   .hidden {
-    display: none; /* Hidden */
+    display: none;
   }
 
   .logoutButton {
     border-radius: 10px;
     display: flex;
     align-items: center;
+  }
+
+  .startGroup {
+    margin-right: 20px;
+    text-decoration: none;
+  }
+  .startGroup:hover {
+    text-decoration: underline;
+    color: teal;
+  }
+
+
+  .viewGroupsLink {
+    text-decoration: none;
+  }
+
+  .viewGroupsLink:hover {
+    text-decoration: underline;
+    color: teal;
+  }
+
+  .logoutButton {
+    margin-top: 3px;
+  }
+
+  .logoutButton:hover {
+    margin-top: 3px;
+    background-color: teal;
   }
