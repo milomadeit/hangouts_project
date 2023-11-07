@@ -1,0 +1,66 @@
+.homePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.column {
+    display: inline-block;
+    margin: center;
+    padding: 10px;
+    /* Add styling to make columns equal and align items as needed */
+}
+
+.groupsLink, .eventsLink, .newGroupLink {
+    text-decoration: none;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.groupsLink:hover, .eventsLink:hover, .newGroupLink:hover {
+    text-decoration: underline;
+}
+
+.disabledNewGroupLink {
+    color: grey;
+    text-decoration: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.hpDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.section1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+.section1 h1, .section1 h4{
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+.section3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.infoGraphic {
+    height: 250px;
+    margin-right: 50px;
+}

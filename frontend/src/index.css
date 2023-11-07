@@ -4,17 +4,7 @@ button {
 }
 
 
-.linkEventGroup {
-    display: flex;
-    flex-direction: row;
-    align-items:center;
-    justify-content: center;
-    margin-top: 250px
-}
 
-.groupsLink, .eventsLink {
-    margin: 10px;
-}
 
 h2 {
     margin: 10px;

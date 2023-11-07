@@ -4,7 +4,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./components/HomePage/HomePage";
-
+import Groups from "./components/AllGroups/AllGroups";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,14 +20,13 @@ function App() {
           <Route exact path='/'>
             <HomePage />
           </Route>
-          <Route path='/groups'>
+          <Route exact path='/groups'>
             <div className='linkEventGroup'>
               {/* should be components below*/}
-              <h2>Groups</h2>
-              <h2>Events</h2>
+              <Groups />
             </div>
           </Route>
-          <Route path='/events'>
+          <Route exact path='/events'>
             <div className='linkEventGroup'>
               {/* should be components below*/}
               <h2>Groups</h2>
