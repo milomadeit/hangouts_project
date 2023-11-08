@@ -25,7 +25,7 @@ function HomePage() {
         </p>
       </section>
       <section className='section3'>
-        <div className='column'>
+        <div className='column A'>
           <Link className='groupsLink' to='/groups'>
             See All Groups
           </Link>

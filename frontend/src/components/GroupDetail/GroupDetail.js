@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupDetail } from "../../store/groups";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EventsByGroup from "../EventsByGroup/EventsByGroup";
+import "./groupDetail.css";
 
 function GroupDetail() {
   const dispatch = useDispatch();
   const { groupId } = useParams();
+  const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     if (groupId) {
@@ -18,40 +21,79 @@ function GroupDetail() {
 
   // If the group data is not yet available, you can return a loading indicator or null
   if (!group) {
-    return <div>Loading group details...</div>;
+    return <div>Loading...</div>;
   }
+
+  let isLoggedIn = false;
+
+  if (sessionUser) isLoggedIn = !isLoggedIn;
+  const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
+
+  console.log(group.Organizer.id, "organizer id");
+  console.log(sessionUser, "session user");
+  console.log(isOrganizer);
 
   return (
     <div>
-      <div className='group-thumbnail-div'>
-        <img className='group-thumbnail' src={group.previewImage} alt=' ' />
+      <div className='breadcrumbLinkGroups'>
+        <p>&larr;</p>
+        <Link to='/groups'>Groups</Link>
       </div>
-      <div className='group-content'>
-        <div className='group-name'>{group.name}</div>
-        <div className='group-location'>{group.city}</div>
-        <div className='group-description'>{group.about}</div>
-        <div className='group-events'>
-          {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
-          <span className='group-dot'>·</span>
-          <span className='group-privacy'>
-            {group.isPrivate ? "Private" : "Public"}
-          </span>
+      <div className='upper-group-details'>
+        <div className='group-detail-thumbnail-div'>
+          <img
+            className='group-detail-thumbnail'
+            src={group.previewImage}
+            alt=' '
+          />
         </div>
-        <div>
-          Orangized by {group.Organizer.firstName} {group.Organizer.lastName}
+        <div className='group-detail-content'>
+          <div className='group-detail-name'>
+            <h3>{group.name}</h3>
+          </div>
+          <div className='group-detail-location'>{group.city}</div>
+          <div className='group-detail-events'>
+            {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
+            <span className='group-detail-dot'>·</span>
+            <span className='group-detail-privacy'>
+              {group.isPrivate ? "Private" : "Public"}
+            </span>
+          </div>
+          <div className='group-detail-organized-by'>
+            <h5>
+              Organized by {group.Organizer.firstName}{" "}
+              {group.Organizer.lastName}
+            </h5>
+          </div>
+          {isLoggedIn && !isOrganizer ? (
+            <button
+              className='group-detail-join'
+              onClick={() => alert("Feature Coming Soon")}
+            >
+              Join this group
+            </button>
+          ) : (
+            <></>
+          )}
+          {isOrganizer && (
+            <div className='organizer-buttons'>
+              <button className='group-detail-create'>Create event</button>
+              <button className='group-detail-update'>Update</button>
+              <button className='group-detail-delete'>Delete</button>
+            </div>
+          )}
         </div>
-        <button> Join this group</button>
       </div>
-      <div>
-        <h4>Organizer</h4>
-        <h6>
+      <div className='lower-group-details'>
+        <h4 className='group-detail-organized-by upper' lower>
+          Organizer
+        </h4>
+        <h5 className='group-detail-organized-by lower'>
           {group.Organizer.firstName} {group.Organizer.lastName}
-        </h6>
-
-        <h4>What we're about</h4>
-        <p>{group.about}</p>
-        <EventsByGroup groupId={group.id
-        } />
+        </h5>
+        <h3 className='group-about-title'>What we're about</h3>
+        <p className='group-about'> {group.about}</p>
+        <EventsByGroup groupId={group.id} />
       </div>
     </div>
   );

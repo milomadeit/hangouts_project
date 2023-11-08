@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 
@@ -9,9 +10,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.column.A {
+    margin-bottom: 1px;
 }
 .groupsLink, .eventsLink, .newGroupLink {
     display: flex;
@@ -50,7 +55,7 @@
 .section1 {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 85%;
     height: 200px;
     margin-top: 30px;
     text-align: left;
@@ -79,7 +84,8 @@
 .section3 {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    margin-left: 80px;
 }
 
 .section4 {

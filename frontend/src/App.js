@@ -34,6 +34,10 @@ function App() {
               <h2>Events</h2>
             </div>
           </Route>
+
+          <Route path='/groups/new'>
+            <h2>New Group Component Here</h2>
+          </Route>
           <Route path='/groups/:groupId'>
             <GroupDetail />
           </Route>
