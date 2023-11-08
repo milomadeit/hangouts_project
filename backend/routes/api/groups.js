@@ -518,7 +518,7 @@ router.get("/:groupId/events", async (req, res) => {
       },
       {
         model: Venue,
-        attributes: ["id", "city", "state"],
+        attributes: ["id", "city", "state", "address"],
       },
     ],
   });
@@ -774,7 +774,6 @@ router.get("/:groupId", async (req, res) => {
   // should include array of GroupImages
   // should include Organizer info (name + id)
   // should include array of Venues
-  console.log(req.params.groupId);
   const group = await Group.findByPk(req.params.groupId, {
     attributes: {
       exclude: ["previewImage"],
@@ -798,7 +797,21 @@ router.get("/:groupId", async (req, res) => {
           exclude: ["createdAt", "updatedAt"],
         },
       },
+      {
+        model: Event, // Your Event model
+        as: "Events", // The alias you defined for the hasMany association
+        attributes: [], // Don't fetch actual event records
+        duplicating: false, // Prevent duplication if you have limit or other modifiers
+      },
     ],
+    // Group and count the events
+    attributes: {
+      include: [
+        [sequelize.fn("COUNT", sequelize.col("Events.id")), "eventCount"],
+      ],
+    },
+    // Group by Group ID to ensure proper count
+    group: ["Group.id"],
   });
 
   if (!group) {

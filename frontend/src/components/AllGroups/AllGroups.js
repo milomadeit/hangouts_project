@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./allGroups.css";
 import { getGroups } from "../../store/groups";
 
 function Groups() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.allGroups);
   const user = useSelector((state) => state.session.user);
@@ -13,6 +14,10 @@ function Groups() {
   }, [dispatch, user]);
 
   const groupList = groups ? Object.values(groups) : [];
+
+  const handleGroupClick = (groupId) => {
+    history.push(`/groups/${groupId}`);
+  };
 
   return (
     <section className='groupsSection'>
@@ -32,7 +37,11 @@ function Groups() {
       {groups ? (
         <ul className='allGroupsSection'>
           {groupList.map((group) => (
-            <li className='group-item' key={group.id}>
+            <li
+              onClick={() => handleGroupClick(group.id)}
+              className='group-item'
+              key={group.id}
+            >
               <div className='group-thumbnail-div'>
                 <img
                   className='group-thumbnail'

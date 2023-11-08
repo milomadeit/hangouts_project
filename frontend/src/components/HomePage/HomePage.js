@@ -26,14 +26,12 @@ function HomePage() {
       </section>
       <section className='section3'>
         <div className='column'>
-          <i className='fa-solid fa-people-group'></i>
           <Link className='groupsLink' to='/groups'>
             See All Groups
           </Link>
           <p className='linkCaption'>Find a group</p>
         </div>
         <div className='column'>
-          <i className='fa-regular fa-calendar-days'></i>
           <Link className='eventsLink' to='/events'>
             Find An Event
           </Link>
@@ -42,7 +40,6 @@ function HomePage() {
         <div className='column'>
           {sessionUser ? (
             <>
-              <i className='fa-solid fa-user-group'></i>
               <Link className='newGroupLink' to='/groups/new'>
                 Start A New Group
               </Link>
@@ -50,7 +47,6 @@ function HomePage() {
             </>
           ) : (
             <>
-              <i className='fa-solid fa-user-group'></i>
               <span className='disabledNewGroupLink'>Find Group</span>
               <p className='linkCaption'>Join today to create a group </p>
             </>
