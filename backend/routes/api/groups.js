@@ -22,7 +22,7 @@ const { Op } = require("sequelize");
 // validate group body data
 const groupValidation = (name, about, type, private, city, state) => {
   const errObj = {};
-  // console.log(type)
+
   if (!name || name.length > 60)
     errObj.name = "Name must be 60 characters or less";
   if (!about || about.length < 50)
@@ -458,6 +458,11 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
       errors: eventErr,
     });
   }
+  // Fetch the user details.
+  const user = await User.findByPk(userId, {
+    attributes: ["id", "firstName", "lastName"],
+  });
+
   const groupId = group.id;
   const numAttending = 1;
   const event = await Event.create({
@@ -471,6 +476,7 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
     numAttending,
     startDate,
     endDate,
+    hostId: userId,
   });
   const eventId = event.id;
   const status = "host";
@@ -487,6 +493,12 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
     description: event.description,
     startDate: event.startDate,
     endDate: event.endDate,
+    host: {
+      id: userId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      status: "host",
+    },
   };
 
   return res.status(200).json(createdEvent); //
@@ -718,8 +730,6 @@ router.post("/:groupId/images", restoreUser, requireAuth, async (req, res) => {
 
 // get all groups ORGANIZED OR JOINED by current user,
 router.get("/current", restoreUser, requireAuth, async (req, res) => {
-  console.log(req.user.id);
-
   const organizedGroups = await Group.findAll({
     where: {
       organizerId: req.user.id,

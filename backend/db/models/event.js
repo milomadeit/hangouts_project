@@ -1,9 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-
-const {Attendance} = require('./attendance')
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
@@ -34,67 +30,84 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // define association here
+
+      Event.belongsTo(models.User, {
+        foreignKey: "hostId",
+        as: "Host",
+      });
+      //! delete above if not working
       Event.belongsToMany(models.User, {
         through: models.Attendance,
-        foreignKey: 'eventId',
-        otherKey: 'userId'
+        foreignKey: "eventId",
+        otherKey: "userId",
       });
 
       Event.hasMany(models.Image, {
-        foreignKey: 'imageableId',
-        as: 'EventImages',
+        foreignKey: "imageableId",
+        as: "EventImages",
         constraints: false,
         scope: {
-          imageableType: 'EventImages'
-        }
+          imageableType: "EventImages",
+        },
       });
       Event.belongsTo(models.Group, {
-        foreignKey: 'groupId',
-        onDelete: 'CASCADE'
-      })
+        foreignKey: "groupId",
+        onDelete: "CASCADE",
+      });
       Event.belongsTo(models.Venue, {
-        foreignKey: 'venueId'
-      })
+        foreignKey: "venueId",
+      });
     }
   }
-  Event.init({
-    groupId: {
-      type: DataTypes.INTEGER
+  Event.init(
+    {
+      groupId: {
+        type: DataTypes.INTEGER,
+      },
+      venueId: {
+        type: DataTypes.INTEGER,
+      },
+      name: {
+        type: DataTypes.TEXT,
+      },
+      type: {
+        type: DataTypes.STRING,
+      },
+      description: {
+        type: DataTypes.STRING,
+      },
+      capacity: {
+        type: DataTypes.INTEGER,
+      },
+      price: {
+        type: DataTypes.DECIMAL,
+      },
+      numAttending: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      previewImage: {
+        type: DataTypes.STRING,
+      },
+      startDate: {
+        type: DataTypes.DATE,
+      },
+      endDate: {
+        type: DataTypes.DATE,
+      },
+      hostId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "User", // Name of the User model, assuming it's 'Users'
+          key: "id",
+        },
+      },
     },
-    venueId: {
-      type: DataTypes.INTEGER
-    },
-    name: {
-      type: DataTypes.TEXT
-    },
-    type: {
-      type: DataTypes.STRING
-    },
-    description: {
-      type: DataTypes.STRING
-    },
-    capacity: {
-      type: DataTypes.INTEGER
-    },
-    price: {
-      type: DataTypes.DECIMAL
-    },
-    numAttending: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-    previewImage: {
-      type: DataTypes.STRING,
-    },
-    startDate: {
-      type: DataTypes.DATE
-    },
-    endDate: {
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: "Event",
     }
-  }, {
-    sequelize,
-    modelName: 'Event',
-  });
+  );
   return Event;
 };
