@@ -1,0 +1,145 @@
+
+.event-detail-top {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    padding-left:  135px;
+}
+
+.breadcrumbLinkEvents {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbLinkEvents > a {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+
+}
+
+.event-detail-name{
+    margin-top: -10px;
+
+}
+
+.group-info-organizer {
+    margin-top: -40px;
+    color: rgb(157, 142, 161);
+}
+
+
+.background-div-color {
+    background-color: rgba(206, 202, 212, 0.478);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upper-event-details {
+    display: flex;
+    justify-content:space-evenly;
+    align-content: center;
+    margin-top: 25px;
+}
+
+.event-image-thumbnail-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 400px;
+    height: 300;
+    margin-right: 20px;
+    margin-left: 20px;
+    min-width: fit-content;
+    min-height: fit-content;
+}
+.group-info-div {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    margin-right: 20px
+}
+.group-info-div:hover {
+    box-shadow: 0px 0px 5px;
+    cursor: pointer;
+
+}
+
+.group-detail-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px black solid;
+    width: 50px;
+    height: 50px;
+}
+
+.group-detail-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+
+.group-detail-name{
+    margin-top: -10px;
+}
+.group-detail-privacy {
+    margin-top: -20px
+}
+
+
+.event-info-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: rgb(157, 142, 161);
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    margin-right: 20px;
+    margin-top: 20px;
+
+}
+
+
+.event-detail-description {
+    display: flex;
+    flex-direction: column;
+    margin-left: 135px;
+}
+
+
+.update-delete-buttons {
+    margin-left: 80px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.event-detail-update, .event-detail-delete{
+    background-color: darkgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.event-detail-update:hover, .event-detail-delete:hover {
+    background-color: darkgrey;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 5px black;
+
+}
