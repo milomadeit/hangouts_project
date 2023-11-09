@@ -16,7 +16,7 @@
 }
 
 .column.A {
-    margin-bottom: 1px;
+    margin-bottom: 5px;
 }
 .groupsLink, .eventsLink, .newGroupLink {
     display: flex;

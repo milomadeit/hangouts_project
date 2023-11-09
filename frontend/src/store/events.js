@@ -2,6 +2,8 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_ALL_EVENTS = "loadAllEvents/LOAD_ALL_EVENTS";
 const LOAD_GROUP_EVENTS = "loadGroupEvents/LOAD_GROUP_EVENTS";
+const GET_EVENT_DETAIL = "getEventDetail/GET_EVENT_DETAIL";
+const GET_ALL_ATTENDEES = "getAllAttendees/GET_ALL_ATTENDEES";
 
 const loadEvents = (events) => ({
   type: LOAD_ALL_EVENTS,
@@ -13,13 +15,23 @@ const loadGroupEvents = (events) => ({
   events,
 });
 
+const loadEventDetail = (event) => ({
+  type: GET_EVENT_DETAIL,
+  event,
+});
+
+const loadAttendees = (attendees) => ({
+  type: GET_ALL_ATTENDEES,
+  attendees,
+});
+
 export const getEvents = () => async (dispatch) => {
   const response = await csrfFetch("/api/events");
 
   if (response.ok) {
-    const events = await response.json();
-    dispatch(loadEvents(events));
-    return events;
+    const { Events } = await response.json();
+    dispatch(loadEvents(Events));
+    return Events;
   }
 
   return response;
@@ -37,6 +49,28 @@ export const getGroupEvents = (groupId) => async (dispatch) => {
   return response;
 };
 
+export const getEventDetail = (eventId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}`);
+
+  if (response.ok) {
+    const event = await response.json();
+    dispatch(loadEventDetail(event));
+    return event;
+  }
+  return response;
+};
+
+export const getAllAttendees = (eventId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}/attendees`);
+
+  if (response.ok) {
+    const attendees = await response.json();
+    dispatch(loadAttendees(attendees));
+    return attendees;
+  }
+  return response;
+};
+
 const initialState = {};
 
 const eventsReducer = (state = initialState, action) => {
@@ -48,7 +82,7 @@ const eventsReducer = (state = initialState, action) => {
       });
       return {
         ...state,
-        allEvents: action.Events,
+        allEvents,
       };
     }
     case LOAD_GROUP_EVENTS: {
@@ -58,7 +92,19 @@ const eventsReducer = (state = initialState, action) => {
       });
       return {
         ...state,
-        allGroupEvents: action.events,
+        allGroupEvents,
+      };
+    }
+    case GET_EVENT_DETAIL: {
+      return {
+        ...state,
+        currentEvent: action.event,
+      };
+    }
+    case GET_ALL_ATTENDEES: {
+      return {
+        ...state,
+        ...action.attendees,
       };
     }
     default:

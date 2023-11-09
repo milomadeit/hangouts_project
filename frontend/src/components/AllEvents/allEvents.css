@@ -1,27 +1,25 @@
 /* Styles for the group list page */
-.allGroups {
-    color: rgb(61, 61, 75);
+.allEventsActive {
+    color:rgb(61, 61, 75);
     margin: 5px;
     text-decoration: underline;
-
 }
-.allGroups:hover {
+.allEventsActive:hover {
     margin: 5px;
     cursor:default;
-
 }
 
-.allEvents {
+.allGroupsNotActive {
     color: teal;
     margin: 5px;
-    text-decoration: none;
+    text-decoration:none;
 }
 
-.allEvents:hover {
+.allGroupsNotActive:hover {
     text-decoration: underline;
 
 }
-.group-list-header {
+.event-list-header {
     color: black;
     padding: 10px;
     font-size: 24px;
@@ -29,14 +27,14 @@
     padding: 20px;
   }
 
-  .group-caption {
+  .event-caption {
     text-align: center;
     font-size: 18px;
     margin-top: -5px;
     color: teal;
   }
 
-  .group-item {
+  .event-item {
     list-style-type: none;
     cursor: pointer;
     padding: 20px;
@@ -44,18 +42,18 @@
     border-top: 1px solid #ccc;
   }
 
-  .group-item:hover {
+  .event-item:hover {
     background-color: #f5f5f5;
   }
 
-  .group-thumbnail {
+  .event-thumbnail {
     display: flex;
     flex-direction: column;
     margin-right: 15px;
     float: left;
     width: 50px;
   }
-  .group-thumbnail-div {
+  .event-thumbnail-div {
     display: flex;
     flex-direction: column;
     margin-right: 15px;
@@ -65,7 +63,7 @@
     border: 1px solid black
   }
 
-  .group-content {
+  .event-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,35 +72,35 @@
     width: 500px;
   }
 
-  .group-name {
+  .event-name {
     font-size: 18px;
     font-weight: bold;
   }
 
-  .group-location {
+  .event-location {
     font-size: 16px;
   }
 
-  .group-description {
+  .event-description {
     font-size: 14px;
   }
 
-  .group-events {
+  .event-events {
     font-size: 14px;
   }
 
-  .group-privacy {
+  .event-privacy {
     font-size: 14px;
   }
 
   /* Style for the centered dot */
-  .group-dot {
+  .event-dot {
     align-items: center;
     margin: 5px;
   }
 
 
-  .allGroupsSection {
+  .allEventsSection {
     display: flex;
     flex-direction: column;
     align-items: center;

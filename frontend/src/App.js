@@ -6,6 +6,8 @@ import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./components/HomePage/HomePage";
 import Groups from "./components/AllGroups/AllGroups";
 import GroupDetail from "./components/GroupDetail/GroupDetail";
+import Events from "./components/AllEvents/AllEvents";
+import EventDetail from "./components/EventDetail/EventDetail";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -30,11 +32,15 @@ function App() {
           <Route exact path='/events'>
             <div className='linkEventGroup'>
               {/* should be components below*/}
-              <h2>Groups</h2>
-              <h2>Events</h2>
+              <Events />
             </div>
           </Route>
-
+          <Route exact path='/events/:eventId'>
+            <div className='EventDetails'>
+              {/* should be components below*/}
+              <EventDetail />
+            </div>
+          </Route>
           <Route path='/groups/new'>
             <h2>New Group Component Here</h2>
           </Route>

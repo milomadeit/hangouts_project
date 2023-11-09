@@ -29,10 +29,6 @@ function GroupDetail() {
   if (sessionUser) isLoggedIn = !isLoggedIn;
   const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
 
-  console.log(group.Organizer.id, "organizer id");
-  console.log(sessionUser, "session user");
-  console.log(isOrganizer);
-
   return (
     <div>
       <div className='breadcrumbLinkGroups'>

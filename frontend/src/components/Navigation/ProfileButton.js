@@ -54,6 +54,11 @@ function ProfileButton({ user }) {
                 </Link>
               </li>
               <li>
+                <Link className='viewEventsLink' to='/events'>
+                  View Events
+                </Link>
+              </li>
+              <li>
                 <button className='logoutButton' onClick={logout}>
                   Log Out
                 </button>

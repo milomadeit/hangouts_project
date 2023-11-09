@@ -1,5 +1,5 @@
 "use strict";
-const { Venue } = require("../backend/db/models");
+const { Venue } = require("../models");
 
 // /** @type {import('sequelize-cli').Migration} */
 

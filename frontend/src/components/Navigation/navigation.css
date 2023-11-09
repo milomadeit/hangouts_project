@@ -105,8 +105,18 @@
     color: teal;
   }
 
+  .viewEventsLink {
+    text-decoration: none;
+  }
+
+  .viewEventsLink:hover {
+    text-decoration: underline;
+    color: teal;
+  }
+
   .logoutButton {
-    margin-top: 3px;
+    margin-top: 5px;
+    margin-bottom: -5px;
   }
 
   .logoutButton:hover {

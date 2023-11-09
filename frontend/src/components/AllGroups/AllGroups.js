@@ -9,6 +9,7 @@ function Groups() {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.allGroups);
   const user = useSelector((state) => state.session.user);
+  
   useEffect(() => {
     dispatch(getGroups());
   }, [dispatch, user]);

@@ -1,6 +1,6 @@
 "use strict";
 
-const { Group } = require("../backend/db/models");
+const { Group } = require("../models");
 
 // /** @type {import('sequelize-cli').Migration} */
 
