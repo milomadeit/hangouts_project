@@ -19,18 +19,15 @@ function LoginFormModal() {
     closeModal();
   };
 
-  useEffect(() => {
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const currErrors = {};
 
     if (credential.length < 4)
       currErrors.credential = "Please enter a username or email";
     if (password.length < 6) currErrors.password = "password is too short";
-
-    setErrors(currErrors);
-  }, [credential, password]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
     setErrors({});
     dispatch(sessionActions.login({ credential, password }))
       .then((response) => {
@@ -75,7 +72,7 @@ function LoginFormModal() {
         </label>
         {errors.login && <p className='error'>{errors.login}</p>}
         <label className='submitButton'>
-          <button type='submit' disabled={errors.credential || errors.password}>
+          <button type='submit' disabled={credential.length < 4 || password.length < 6}>
             Log In
           </button>
         </label>
