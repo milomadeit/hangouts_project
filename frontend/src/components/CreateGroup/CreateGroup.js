@@ -49,6 +49,7 @@ function CreateGroup() {
       currentErrors.about = "Description must be at least 50 characters long";
     if (!type) currentErrors.type = "Group Type is required";
     if (!groupPrivacy) currentErrors.private = "Visibility Type is required";
+    if (!imageUrl) currentErrors.imageUrl = "Image URL is required";
     if (imageUrl.length > 0 && !imageUrl.match(/\.(jpeg|jpg|gif|png)$/))
       currentErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg";
 

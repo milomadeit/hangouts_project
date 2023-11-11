@@ -86,7 +86,11 @@ function EventsByGroup({ groupId }) {
           <h4 className='past events'>Past Events ({pastEvents.length})</h4>
           <ul>
             {pastEvents.map((event) => (
-              <li className='event-item-group' key={event.id}>
+              <li
+                onClick={() => navigateToEvent(event.id)}
+                className='event-item-group'
+                key={event.id}
+              >
                 <div className='event-thumbnail-group'>
                   <img src={event.previewImage} alt=' ' />
                 </div>

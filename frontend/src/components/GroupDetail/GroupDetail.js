@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupDetail } from "../../store/groups";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import EventsByGroup from "../EventsByGroup/EventsByGroup";
 import "./groupDetail.css";
 
 function GroupDetail() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { groupId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -28,6 +29,10 @@ function GroupDetail() {
 
   if (sessionUser) isLoggedIn = !isLoggedIn;
   const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
+
+  const navigateToCreateEvent = (groupId) => {
+    history.push(`/groups/${groupId}/events/new`);
+  };
 
   return (
     <div>
@@ -73,7 +78,12 @@ function GroupDetail() {
           )}
           {isOrganizer && (
             <div className='organizer-buttons'>
-              <button className='group-detail-create'>Create event</button>
+              <button
+                onClick={() => navigateToCreateEvent(group.id)}
+                className='group-detail-create'
+              >
+                Create event
+              </button>
               <button className='group-detail-update'>Update</button>
               <button className='group-detail-delete'>Delete</button>
             </div>

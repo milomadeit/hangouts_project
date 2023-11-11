@@ -877,7 +877,7 @@ router.put("/:groupId", restoreUser, requireAuth, async (req, res) => {
 
 // create a group - require authentication
 router.post("/", restoreUser, requireAuth, async (req, res) => {
-  const { name, about, type, private, city, state } = req.body;
+  const { name, about, type, private, city, state, imageUrl } = req.body;
 
   if (groupValidation(name, about, type, private, city, state) === true) {
     //CREATE NEW GROUP WITH CURRENT USER ID
@@ -896,6 +896,11 @@ router.post("/", restoreUser, requireAuth, async (req, res) => {
       groupId: group.id,
       memberId: organizerId,
       status: "host",
+    });
+
+    const newImage = await Image.create({
+      url: imageUrl,
+      preview: true,
     });
 
     const newGroup = {
