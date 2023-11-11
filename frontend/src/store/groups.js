@@ -46,22 +46,25 @@ export const getGroupDetail = (groupId) => async (dispatch) => {
   return response;
 };
 
-export const createGroup = (group) => async (dispatch) => {
+export const createGroup = (groupData) => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
     method: "POST",
-    body: JSON.stringify(group),
+    body: JSON.stringify(groupData),
     headers: {
       "Content-Type": "application/json",
     },
   });
+
   if (response.ok) {
     const group = await response.json();
     dispatch(loadNewGroup(group));
     return group;
   }
-  const error = await response.json();
-  console.log(response, "FROM THUNK");
-  return error;
+
+  const errorData = await response.json(); // Parse the JSON from the original response
+  console.log(errorData);
+  console.log(response);
+  return errorData;
 };
 
 const initialState = { allGroups: {} };

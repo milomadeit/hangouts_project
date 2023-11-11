@@ -19,8 +19,6 @@ function LoginFormModal() {
     closeModal();
   };
 
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const currErrors = {};
@@ -38,7 +36,6 @@ function LoginFormModal() {
       })
       .catch((error) => {
         error.json().then((errorData) => {
-          // Assuming your error structure has a 'message' key
           if (errorData.message === "Invalid credentials")
             setErrors({ login: "The provided credentials were invalid" });
         });
@@ -72,7 +69,10 @@ function LoginFormModal() {
         </label>
         {errors.login && <p className='error'>{errors.login}</p>}
         <label className='submitButton'>
-          <button type='submit' disabled={credential.length < 4 || password.length < 6}>
+          <button
+            type='submit'
+            disabled={credential.length < 4 || password.length < 6}
+          >
             Log In
           </button>
         </label>

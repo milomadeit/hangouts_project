@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createGroup } from "../../store/groups";
 import "./createGroup.css";
 
 function CreateGroup() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [cityState, setCityState] = useState([]);
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [name, setName] = useState("");
@@ -14,14 +18,46 @@ function CreateGroup() {
   const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState({});
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+  useEffect(() => {
+    console.log(errors, "logging state errors after update");
+  }, [errors]);
 
-  const handleSubmit = (e) => {
+  const handleCityStateChange = (e) => {
+    const value = e.target.value;
+    setCityState(value);
+    splitCityState(value);
+  };
+
+  // split the cityState string into city and state
+  const splitCityState = (cityStateValue) => {
+    const parts = cityStateValue.split(",").map((part) => part.trim()); // split and trim any extra whitespace
+    if (parts.length === 2) {
+      setCity(parts[0]); // set the first part as the city
+      setState(parts[1]); // set the second part as the state
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
+    const currentErrors = {};
 
-    const newGroup = dispatch(
+    if (!city || !state)
+      currentErrors.location =
+        "Location is required (follow format City, STATE)";
+    if (!name) currentErrors.name = "Name is required";
+    if (about.length < 50)
+      currentErrors.about = "Description must be at least 50 characters long";
+    if (!type) currentErrors.type = "Group Type is required";
+    if (!groupPrivacy) currentErrors.private = "Visibility Type is required";
+    if (imageUrl.length > 0 && !imageUrl.match(/\.(jpeg|jpg|gif|png)$/))
+      currentErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg";
+
+    if (Object.keys(currentErrors).length > 0) {
+      setErrors(currentErrors);
+      return; // prevent the form from submitting
+    }
+
+    const newGroup = await dispatch(
       createGroup({
         name,
         about,
@@ -29,23 +65,27 @@ function CreateGroup() {
         private: groupPrivacy === "Private" ? true : false,
         city,
         state,
-        imageUrl,
       })
-    )
-      .then((group) => {
-        if (group) {
-          history.push(`/groups/${group.id}`);
-        }
-      })
-      .catch((errorData) => {
-        if (errorData && errorData.errors) {
-          console.log(errorData, "loggin errors bitch");
-          setErrors(errorData.errors);
-        } else {
-          console.log(errorData);
-          setErrors({ general: "An unexpected error occurred." });
-        }
-      });
+    ).catch(async (error) => {
+      const errorData = await error.json();
+      if (errorData && errorData.errors) {
+        console.log(errorData, "loggin errors bitch");
+        // spread in backend, privacy, location and imageUrl errors
+        setErrors({ ...errorData.errors, ...currentErrors });
+        console.log(errors);
+      } else {
+        console.log(error);
+        setErrors({ general: "An unexpected error occurred." });
+      }
+    });
+
+    if (newGroup) {
+      if (imageUrl) {
+        //do image thing
+        //then push to group details
+        history.push(`/groups/${newGroup.id}`);
+      } else history.push(`/groups/${newGroup.id}`);
+    }
   };
 
   return (
@@ -61,16 +101,13 @@ function CreateGroup() {
           </p>
           <input
             type='text'
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            value={cityState}
+            onChange={handleCityStateChange}
             placeholder='City, STATE'
           ></input>
-          <input
-            type='text'
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            placeholder='City, STATE'
-          ></input>
+          {errors.location && (
+            <p className='errors-group-create'>{errors.location}</p>
+          )}
         </div>
         <div>
           <h2>What will your group's name be?</h2>
@@ -85,6 +122,7 @@ function CreateGroup() {
             onChange={(e) => setName(e.target.value)}
             placeholder='What is your group name?'
           ></input>
+          {errors.name && <p className='errors-group-create'>{errors.name}</p>}
         </div>
         <div>
           <h2>Now describe what your group will be about</h2>
@@ -101,8 +139,11 @@ function CreateGroup() {
             type='text'
             value={about}
             onChange={(e) => setAbout(e.target.value)}
-            placeholder='Please write at least 30 characters'
+            placeholder='Please write at least 50 characters'
           ></textarea>
+          {errors.about && (
+            <p className='errors-group-create'>{errors.about}</p>
+          )}
         </div>
         <div>
           <h2>Final steps...</h2>
@@ -114,6 +155,9 @@ function CreateGroup() {
             <option value='Online'>Online</option>
             <option value='In person'>In person</option>
           </select>
+          {errors.type && (
+            <p className='errors-group-create'>Group Type required</p>
+          )}
           <p>Is this group private or public?</p>
           <select
             value={groupPrivacy}
@@ -125,6 +169,9 @@ function CreateGroup() {
             <option value='Public'>Public</option>
             <option value='Private'>Private</option>
           </select>
+          {errors.private && (
+            <p className='errors-group-create'>Visibility Type is required</p>
+          )}
           <p>Please add an image url for your group below</p>
           <input
             value={imageUrl}
@@ -132,8 +179,10 @@ function CreateGroup() {
             type='text'
             placeholder='Image URL'
           ></input>
+          {errors.imageUrl && (
+            <p className='errors-group-create'>{errors.imageUrl}</p>
+          )}
         </div>
-
         <button>Create group</button>
       </form>
     </div>

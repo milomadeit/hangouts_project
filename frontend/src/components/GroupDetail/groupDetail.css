@@ -15,7 +15,9 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+    margin-left: 20px;
 }
+
 
 
 .group-detail-content {
@@ -38,6 +40,7 @@
 
   }
 
+
   .group-detail-create,
   .group-detail-update,
   .group-detail-delete {
@@ -45,8 +48,11 @@
     color: black;
     border: none;
     cursor: pointer;
-    display: inline;
-    margin: 10px auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: 10px 5px 10px 5px; /* top right bottom left*/
+    min-width: fit-content;
 }
 
 .group-detail-create:hover,
@@ -108,6 +114,6 @@
 
   .organizer-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     margin-left: -20px;
   }
