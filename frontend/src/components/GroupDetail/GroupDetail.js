@@ -31,7 +31,10 @@ function GroupDetail() {
   const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
 
   const navigateToCreateEvent = (groupId) => {
-    history.push(`/groups/${groupId}/events/new`);
+    history.push({
+      pathname: `/groups/${groupId}/events/new`,
+      state: { group: group },
+    });
   };
 
   return (

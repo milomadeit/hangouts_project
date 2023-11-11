@@ -1,30 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { createGroup } from "../../store/groups";
+import { useHistory, useLocation } from "react-router-dom";
+import { createEvent } from "../../store/events";
+
+
 
 function CreateEvent() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+  console.log(location);
+
+  useEffect(() => {}, [dispatch]);
 
   const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const [groupPrivacy, setGroupPrivacy] = useState("");
+  const [eventPrivacy, setEventPrivacy] = useState("");
   const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState({});
 
+  const group = location.state.group;
+  console.log(group);
 
-  const group = useSelector((state) => state.groups.currentGroup);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const currentErrors = {};
+
+    if (!name) currentErrors.name = "Name is required";
+    if (!type) currentErrors.type = "Event Type is required";
+    if (!eventPrivacy) currentErrors.private = "Visibility is required";
+    if (!price) currentErrors.price = "Price is required";
+    if (!startDate) currentErrors.startDate = "Event start is required";
+    if (!endDate) currentErrors.endDate = "Event end is required";
+    if (!imageUrl) currentErrors.imageUrl = "Image URL is required";
+    if (imageUrl.length > 0 && !imageUrl.match(/\.(jpeg|jpg|gif|png)$/))
+      currentErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg";
+    if (description.length < 30)
+      currentErrors.description =
+        "Description must be at least 30 characters long";
+
+    if (Object.keys(currentErrors).length > 0) {
+      setErrors(currentErrors);
+      return; // prevent the form from submitting
+    }
+  };
 
   return (
     <div>
       <h2>Create an event for {group.name} </h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <p>What is the name of your event?</p>
           <input type='text' placeholder='Event Name'></input>
+          {errors.name && <p className='errors-group-create'>{errors.name}</p>}
         </div>
         <div>
           <p>Is this an in person or online event?</p>
@@ -35,7 +67,63 @@ function CreateEvent() {
             <option value='Online'>Online</option>
             <option value='In person'>In person</option>
           </select>
+          {errors.type && (
+            <p className='errors-group-create'>{errors.type}</p>
+          )}
+          <p>Is this event private or public?</p>
+          <select
+            value={eventPrivacy}
+            onChange={(e) => setEventPrivacy(e.target.value)}
+          >
+            <option value='' disabled>
+              (select one)
+            </option>
+            <option value='Public'>Public</option>
+            <option value='Private'>Private</option>
+          </select>
+          {errors.private && (
+            <p className='errors-group-create'>{errors.private}</p>
+          )}
+          <p>What is the price of your event?</p>
+          <input type='number' min='0' placeholder='0'></input>
+          {errors.price && (
+            <p className='errors-group-create'>{errors.price}</p>
+          )}
         </div>
+        <div>
+          <p>When does your event start?</p>
+          <input type='datetime-local'></input>
+          {errors.startDate && (
+            <p className='errors-group-create'>{errors.startDate}</p>
+          )}
+          <p>When does your event end?</p>
+          <input type='datetime-local'></input>
+          {errors.endDate && (
+            <p className='errors-group-create'>{errors.endDate}</p>
+          )}
+        </div>
+        <div>
+          <p>Please add an image URL for your event below:</p>
+          <input
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)} // Updated to call setImageUrl
+            type='text'
+            placeholder='Image URL'
+          ></input>
+          {errors.imageUrl && (
+            <p className='errors-group-create'>{errors.imageUrl}</p>
+          )}
+        </div>
+        <div>
+          <p>Please describe your event</p>
+          <textarea placeholder='Please include at least 30 characters'>
+            {" "}
+          </textarea>
+          {errors.description && (
+            <p className='errors-group-create'>{errors.description}</p>
+          )}
+        </div>
+        <button>Create Event</button>
       </form>
     </div>
   );

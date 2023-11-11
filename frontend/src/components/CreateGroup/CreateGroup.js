@@ -173,7 +173,7 @@ function CreateGroup() {
           {errors.private && (
             <p className='errors-group-create'>Visibility Type is required</p>
           )}
-          <p>Please add an image url for your group below</p>
+          <p>Please add an image URL for your group below:</p>
           <input
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)} // Updated to call setImageUrl
