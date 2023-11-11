@@ -65,9 +65,12 @@ export const getAllAttendees = (eventId) => async (dispatch) => {
 
   if (response.ok) {
     const attendees = await response.json();
+    console.log(attendees);
     dispatch(loadAttendees(attendees));
     return attendees;
   }
+  const data = await response.json();
+  console.log(data);
   return response;
 };
 
