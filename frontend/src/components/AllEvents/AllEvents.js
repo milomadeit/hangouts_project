@@ -11,7 +11,7 @@ function Events() {
   const user = useSelector((state) => state.session.user);
   useEffect(() => {
     dispatch(getEvents());
-  }, [dispatch, user]);
+  }, [dispatch, user, events]);
 
   const eventList = events ? Object.values(events) : [];
 
@@ -21,6 +21,8 @@ function Events() {
   const handleEventClick = (eventId) => {
     history.push(`/events/${eventId}`);
   };
+
+
 
   return (
     <section className='eventsSection'>
@@ -60,7 +62,7 @@ function Events() {
                 </div>
                 <div className='event-name'>{event.name}</div>
                 <div className='event-location'>
-                  {event.Venue.city}, {event.Venue.state}
+                  {event.Group?.city}, {event.Group?.state}
                 </div>
                 <div className='event-description-group'>
                   <p>A member only event for {event.name}</p>

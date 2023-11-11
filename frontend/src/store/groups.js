@@ -62,8 +62,8 @@ export const createGroup = (groupData) => async (dispatch) => {
   }
 
   const errorData = await response.json(); // Parse the JSON from the original response
-  console.log(errorData);
-  console.log(response);
+  // console.log(errorData);
+  // console.log(response);
   return errorData;
 };
 

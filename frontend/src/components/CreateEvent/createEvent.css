@@ -1,0 +1,55 @@
+.create-event-div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-left: 180px;
+    margin-right: 180px;
+}
+
+.create-event-title {
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+
+
+.create-event-div  div {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+
+}
+
+ .event-name-input ,.event-image-input {
+    width: 250px;
+    margin-bottom:10px;
+}
+
+.event-description-input {
+    width: 500px;
+    height:100px;
+    margin-bottom:10px;
+}
+
+.create-event-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+ }
+
+.create-event-button {
+    background-color: red;
+    shape-rendering: square;
+}
+
+
+.create-event-button:hover {
+    color: white;
+    box-shadow: 5px 5px 10px;
+}
+
+
+
+.create-event-name, .create-event-type, .create-event-price, .create-event-start ,.create-event-end, .create-event-image, .create-event-description {
+    margin-top: 20px;
+    margin-bottom: 5px;
+
+}

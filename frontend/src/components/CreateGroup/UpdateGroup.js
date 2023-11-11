@@ -197,6 +197,3 @@ function CreateGroup() {
 
     </div>
   );
-}
-
-export default CreateGroup;

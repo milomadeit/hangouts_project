@@ -4,6 +4,7 @@ const LOAD_ALL_EVENTS = "loadAllEvents/LOAD_ALL_EVENTS";
 const LOAD_GROUP_EVENTS = "loadGroupEvents/LOAD_GROUP_EVENTS";
 const GET_EVENT_DETAIL = "getEventDetail/GET_EVENT_DETAIL";
 const GET_ALL_ATTENDEES = "getAllAttendees/GET_ALL_ATTENDEES";
+const CREATE_EVENT = "createEvent/CREATE_EVENT";
 
 const loadEvents = (events) => ({
   type: LOAD_ALL_EVENTS,
@@ -17,6 +18,11 @@ const loadGroupEvents = (events) => ({
 
 const loadEventDetail = (event) => ({
   type: GET_EVENT_DETAIL,
+  event,
+});
+
+const loadNewEvent = (event) => ({
+  type: CREATE_EVENT,
   event,
 });
 
@@ -58,6 +64,27 @@ export const getEventDetail = (eventId) => async (dispatch) => {
     return event;
   }
   return response;
+};
+
+export const createEvent = (eventData, groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+    method: "POST",
+    body: JSON.stringify(eventData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.ok) {
+    const event = await response.json();
+    dispatch(loadNewEvent(event));
+    return event;
+  }
+
+  const errorData = await response.json(); // Parse the JSON from the original response
+  console.log(errorData);
+  console.log(response);
+  return errorData;
 };
 
 export const getAllAttendees = (eventId) => async (dispatch) => {
@@ -109,6 +136,16 @@ const eventsReducer = (state = initialState, action) => {
         ...state,
         ...action.attendees,
       };
+    }
+    case CREATE_EVENT: {
+      const newState = {
+        ...state,
+        allEvents: {
+          ...state.allEvents,
+          [action.event.id]: action.event,
+        },
+      };
+      return newState;
     }
     default:
       return state;

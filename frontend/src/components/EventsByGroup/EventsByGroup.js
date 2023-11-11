@@ -66,12 +66,12 @@ function EventsByGroup({ groupId }) {
                 <div>
                   <h5 className='event-name-group'>{event.name}</h5>
                   <h6 className='event-location-group'>
-                    {event.Venue.city}, {event.Venue.state}
+                    {event.Group.city}, {event.Group.state}
                   </h6>
                 </div>
                 <div className='event-description-group'>
                   <p>
-                    An event for {currGroup.name} at {event.Venue.address}
+                    {event.description}
                   </p>
                 </div>
               </li>
