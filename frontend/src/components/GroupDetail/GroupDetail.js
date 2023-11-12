@@ -23,9 +23,9 @@ function GroupDetail() {
 
   const group = useSelector((state) => state.groups.currentGroup);
 
-  // if (isLoading || !group) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   let isLoggedIn = false;
 
