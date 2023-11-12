@@ -10,6 +10,7 @@ import Events from "./components/AllEvents/AllEvents";
 import EventDetail from "./components/EventDetail/EventDetail";
 import CreateGroup from "./components/CreateGroup/CreateGroup";
 import CreateEvent from "./components/CreateEvent/CreateEvent";
+import UpdateGroup from "./components/CreateGroup/UpdateGroup";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,7 +49,10 @@ function App() {
             <CreateGroup />
           </Route>
           <Route path='/groups/:groupId/events/new'>
-           <CreateEvent />
+            <CreateEvent />
+          </Route>
+          <Route path='/groups/:groupId/update'>
+            <UpdateGroup />
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetail />

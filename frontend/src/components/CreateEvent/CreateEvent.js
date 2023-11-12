@@ -8,7 +8,6 @@ function CreateEvent() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
 
   useEffect(() => {}, [dispatch]);
 
@@ -22,10 +21,7 @@ function CreateEvent() {
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState({});
 
-  console.log(typeof price);
-
   const group = location.state.group;
-  console.log(group);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +80,7 @@ function CreateEvent() {
       <h2 className='create-event-title'>Create an event for {group.name} </h2>
       <form onSubmit={handleSubmit}>
         <div className='create-event-name-div'>
-          <p className="create-event-name">What is the name of your event?</p>
+          <p className='create-event-name'>What is the name of your event?</p>
           <input
             className='event-name-input'
             type='text'
@@ -95,7 +91,9 @@ function CreateEvent() {
           {errors.name && <p className='errors-group-create'>{errors.name}</p>}
         </div>
         <div>
-          <p className="create-event-type">Is this an in person or online event?</p>
+          <p className='create-event-type'>
+            Is this an in person or online event?
+          </p>
           <select value={type} onChange={(e) => setType(e.target.value)}>
             <option value='' disabled>
               (select one)
@@ -104,7 +102,7 @@ function CreateEvent() {
             <option value='In person'>In person</option>
           </select>
           {errors.type && <p className='errors-group-create'>{errors.type}</p>}
-          <p className="create-event-price">What is the price of your event?</p>
+          <p className='create-event-price'>What is the price of your event?</p>
           <input
             className='event-price-input'
             value={price}
@@ -118,7 +116,7 @@ function CreateEvent() {
           )}
         </div>
         <div>
-          <p className="create-event-start">When does your event start?</p>
+          <p className='create-event-start'>When does your event start?</p>
           <input
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
@@ -127,7 +125,7 @@ function CreateEvent() {
           {errors.startDate && (
             <p className='errors-group-create'>{errors.startDate}</p>
           )}
-          <p className="create-event-end">When does your event end?</p>
+          <p className='create-event-end'>When does your event end?</p>
           <input
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
@@ -138,9 +136,11 @@ function CreateEvent() {
           )}
         </div>
         <div>
-          <p className="create-event-image">Please add an image URL for your event below:</p>
+          <p className='create-event-image'>
+            Please add an image URL for your event below:
+          </p>
           <input
-          className='event-image-input'
+            className='event-image-input'
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)} // Updated to call setImageUrl
             type='text'
@@ -151,9 +151,9 @@ function CreateEvent() {
           )}
         </div>
         <div>
-          <p className="create-event-description">Please describe your event</p>
+          <p className='create-event-description'>Please describe your event</p>
           <textarea
-          className='event-description-input'
+            className='event-description-input'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder='Please include at least 30 characters'
@@ -165,7 +165,7 @@ function CreateEvent() {
           )}
         </div>
         <section className='create-event-section'>
-          <button className="create-event-button" >Create event</button>
+          <button className='create-event-button'>Create event</button>
         </section>
       </form>
     </div>

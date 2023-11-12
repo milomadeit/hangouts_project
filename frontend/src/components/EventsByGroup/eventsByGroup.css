@@ -67,3 +67,9 @@
     margin-top: 2px;
     margin-bottom: 2px;
   }
+
+
+  .event-description-p {
+    overflow-wrap: break-word;
+
+  }

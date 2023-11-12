@@ -9,6 +9,7 @@ import "./groupDetail.css";
 function GroupDetail() {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const { groupId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -33,6 +34,13 @@ function GroupDetail() {
   const navigateToCreateEvent = (groupId) => {
     history.push({
       pathname: `/groups/${groupId}/events/new`,
+      state: { group: group },
+    });
+  };
+
+  const navigateToUpdateGroup = (groupId) => {
+    history.push({
+      pathname: `/groups/${groupId}/update`,
       state: { group: group },
     });
   };
@@ -87,7 +95,7 @@ function GroupDetail() {
               >
                 Create event
               </button>
-              <button className='group-detail-update'>Update</button>
+              <button onClick={() => navigateToUpdateGroup(group.id)} className='group-detail-update'>Update</button>
               <button className='group-detail-delete'>Delete</button>
             </div>
           )}

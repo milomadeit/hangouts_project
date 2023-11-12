@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { createGroup } from "../../store/groups";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import { updateGroup, getGroupDetail } from "../../store/groups";
 import "./createGroup.css";
 
-function CreateGroup() {
+function UpdateGroup() {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [cityState, setCityState] = useState([]);
+  const location = useLocation();
+  const { groupId } = useParams(); // Get groupId from URL params
+  const sessionUser = useSelector((state) => state.session.user);
+  const [isLoading, setIsLoading] = useState(true);
+  const [cityState, setCityState] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [name, setName] = useState("");
@@ -19,8 +22,47 @@ function CreateGroup() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    console.log(errors, "logging state errors after update");
-  }, [errors]);
+    if (groupId) {
+      dispatch(getGroupDetail(groupId))
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Failed to load group details", error);
+          setIsLoading(false);
+        });
+    }
+  }, [dispatch, groupId]);
+
+  const group = useSelector((state) => state.groups.currentGroup);
+
+  //! useEffect for authentication and redirection
+  useEffect(() => {
+    if (group && sessionUser) {
+      // Check if logged-in user is not the organizer
+      if (sessionUser.id !== group.organizerId) {
+        history.push("/");
+      }
+    } else if (!sessionUser) {
+      //! If there is no group data or user is not logged in
+      history.push("/");
+    }
+  }, [sessionUser, group, history]);
+
+  //! useEffect for setting form data after group data is loaded
+  useEffect(() => {
+    if (group) {
+      setCityState(`${group.city}, ${group.state}`);
+      setCity(group.city);
+      setState(group.state);
+      setName(group.name);
+      setAbout(group.about);
+      setType(group.type);
+      group.private === false
+        ? setGroupPrivacy("Private")
+        : setGroupPrivacy("Public");
+    }
+  }, [group]);
 
   const handleCityStateChange = (e) => {
     const value = e.target.value;
@@ -37,6 +79,10 @@ function CreateGroup() {
     }
   };
 
+  if (isLoading) {
+    return <div>Loading group details...</div>;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const currentErrors = {};
@@ -49,7 +95,7 @@ function CreateGroup() {
       currentErrors.about = "Description must be at least 50 characters long";
     if (!type) currentErrors.type = "Group Type is required";
     if (!groupPrivacy) currentErrors.private = "Visibility Type is required";
-    if (!imageUrl) currentErrors.imageUrl = "Image URL is required";
+    // if (!imageUrl) currentErrors.imageUrl = "Image URL is required";
     if (imageUrl.length > 0 && !imageUrl.match(/\.(jpeg|jpg|gif|png)$/))
       currentErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg";
 
@@ -58,15 +104,18 @@ function CreateGroup() {
       return; // prevent the form from submitting
     }
 
-    const newGroup = await dispatch(
-      createGroup({
-        name,
-        about,
-        type,
-        private: groupPrivacy === "Private" ? true : false,
-        city,
-        state,
-      })
+    const updatedGroup = await dispatch(
+      updateGroup(
+        {
+          name,
+          about,
+          type,
+          private: groupPrivacy === "Private" ? true : false,
+          city,
+          state,
+        },
+        group.id
+      )
     ).catch(async (error) => {
       const errorData = await error.json();
       if (errorData && errorData.errors) {
@@ -80,20 +129,22 @@ function CreateGroup() {
       }
     });
 
-    if (newGroup) {
+    if (updatedGroup) {
       if (imageUrl) {
         //do image thing
         //then push to group details
-        history.push(`/groups/${newGroup.id}`);
-      } else history.push(`/groups/${newGroup.id}`);
+        history.push(`/groups/${updatedGroup.id}`);
+      } else history.push(`/groups/${updatedGroup.id}`);
     }
   };
 
   return (
     <div className='create-group-div'>
       <div className='create-group-header'>
-        <h4 className="become-an-organizer">BECOME AN ORGANIZER</h4>
-        <h2 className="create-group-title">We'll walk you through a few steps to build your community</h2>
+        <h4 className='become-an-organizer'>UPDATE YOUR GROUPS INFORMATION</h4>
+        <h2 className='create-group-title'>
+          We'll walk you through a few steps to update your groups information
+        </h2>
       </div>
       <form onSubmit={handleSubmit}>
         <div className='create-group-location-div'>
@@ -129,7 +180,7 @@ function CreateGroup() {
           ></input>
           {errors.name && <p className='errors-group-create'>{errors.name}</p>}
         </div>
-        <div cla>
+        <div>
           <h2>Now describe what your group will be about</h2>
           <p className='group-description-label'>
             People will see this when you promote your group, but you'll be able
@@ -178,7 +229,10 @@ function CreateGroup() {
           {errors.private && (
             <p className='errors-group-create'>Visibility Type is required</p>
           )}
-          <p>Please add an image URL for your group below:</p>
+          <p>
+            To update your Groups picture please add a new image URL for your
+            group below:
+          </p>
           <input
             className='group-image-input'
             value={imageUrl}
@@ -191,9 +245,11 @@ function CreateGroup() {
           )}
         </div>
         <section className='create-group-section'>
-          <button className="create-group-button" >Create group</button>
+          <button className='create-group-button'>Update group</button>
         </section>
       </form>
-
     </div>
   );
+}
+
+export default UpdateGroup;
