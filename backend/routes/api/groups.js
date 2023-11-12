@@ -407,7 +407,10 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
   } = req.body;
   const userId = req.user.id;
   const group = await Group.findByPk(req.params.groupId);
-  const venue = await Venue.findByPk(venueId);
+
+  if (typeof venueId === "number") {
+    const venue = await Venue.findByPk(venueId);
+  }
 
   // check if group exists
   if (!group) {
@@ -434,14 +437,20 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
 
   // body validation for a new event
   const eventErr = {};
-  if (!venue) eventErr.venueId = "Venue does not exist";
+  if (venueId) {
+    if (!venue) eventErr.venueId = "Venue does not exist";
+  }
+
   if (!name || name.length < 5)
     eventErr.name = "Name must be at least 5 characters";
   if (type !== "Online" && type !== "In person")
     eventErr.type = "Type must be Online or In person";
-  if (!capacity || typeof capacity !== "number")
-    eventErr.capacity = "Capacity must be an integer";
-  if (!price || typeof price !== "number" || price < 0)
+
+  if (capacity) {
+    if (typeof capacity !== "number")
+      eventErr.capacity = "Capacity must be an integer";
+  }
+  if (typeof price !== "number" || price < 0)
     eventErr.price = "Price is invalid";
   if (!description || description.length < 1)
     eventErr.description = "Description is required";
@@ -521,7 +530,7 @@ router.get("/:groupId/events", async (req, res) => {
       groupId: group.id,
     },
     attributes: {
-      exclude: ["description", "capacity", "price", "createdAt", "updatedAt"],
+      exclude: ["capacity", "price", "createdAt", "updatedAt"],
     },
     include: [
       {
@@ -901,6 +910,8 @@ router.post("/", restoreUser, requireAuth, async (req, res) => {
     const newImage = await Image.create({
       url: imageUrl,
       preview: true,
+      imageableType: "GroupImages",
+      imageableId: group.id,
     });
 
     const newGroup = {

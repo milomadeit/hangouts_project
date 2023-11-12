@@ -65,13 +65,13 @@ export const createGroup = (groupData) => async (dispatch) => {
 
   if (response.ok) {
     const group = await response.json();
-    dispatch(loadNewGroup(group));
+    await dispatch(loadNewGroup(group));
     return group;
   }
 
   const errorData = await response.json(); // Parse the JSON from the original response
-  // console.log(errorData);
-  // console.log(response);
+  console.log(errorData, "error data, thunk");
+  console.log(response, "response, thunk");
   return errorData;
 };
 
