@@ -1,0 +1,64 @@
+.errors-group-create {
+    color: red;
+    font-size: 10px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.become-an-organizer {
+    color: rgb(157, 142, 161);
+    margin-bottom: 0px;
+}
+
+.create-group-title {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+
+.create-group-div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-left: 180px;
+    margin-right: 180px;
+}
+
+
+.group-location-label, .group-name-label, group-description-label {
+    width: 550px
+}
+
+.group-location-input, .group-name-input, .group-about-input ,.group-image-input {
+    width: 250px
+}
+
+.group-about-input {
+    height: 150px;
+}
+
+
+.create-group-div  div {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.create-group-section {
+   margin-top: 20px;
+   margin-bottom: 20px;
+}
+
+.create-group-button {
+    background-color: red;
+    shape-rendering: square;
+}
+
+
+.create-group-button:hover {
+    color: white;
+    box-shadow: 5px 5px 10px;
+}
+
+

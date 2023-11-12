@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import * as sessionActions from "../../store/session";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import SignupFormModal from "../SignUpFormModal/SignupFormModal";
+import LoginFormModal from "../LoginFormModal/LoginFormModal";
+
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -37,16 +42,46 @@ function ProfileButton({ user }) {
       <button onClick={openMenu}>
         <i className='fas fa-user-circle' />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>
-          {user.firstName} {user.lastName}
-        </li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
-      </ul>
+      <div className='dropDownProfile'>
+        <ul className={ulClassName} ref={ulRef}>
+          {user ? (
+            <>
+              <li>Hello, {user.firstName}</li>
+              <li>{user.email}</li>
+              <li>
+                <Link className='viewGroupsLink' to='/groups'>
+                  View Groups
+                </Link>
+              </li>
+              <li>
+                <Link className='viewEventsLink' to='/events'>
+                  View Events
+                </Link>
+              </li>
+              <li>
+                <button className='logoutButton' onClick={logout}>
+                  Log Out
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <OpenModalButton
+                  buttonText='Log In'
+                  modalComponent={<LoginFormModal />}
+                />
+              </li>
+              <li>
+                <OpenModalButton
+                  buttonText='Sign Up'
+                  modalComponent={<SignupFormModal />}
+                />
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
     </>
   );
 }

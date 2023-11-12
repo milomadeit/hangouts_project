@@ -1,0 +1,110 @@
+/* Styles for the group list page */
+.allGroups {
+    color: rgb(61, 61, 75);
+    margin: 5px;
+    text-decoration: underline;
+
+}
+.allGroups:hover {
+    margin: 5px;
+    cursor:default;
+
+}
+
+.allEvents {
+    color: teal;
+    margin: 5px;
+    text-decoration: none;
+}
+
+.allEvents:hover {
+    text-decoration: underline;
+
+}
+.group-list-header {
+    color: black;
+    padding: 10px;
+    font-size: 24px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .group-caption {
+    text-align: center;
+    font-size: 18px;
+    margin-top: -5px;
+    color: teal;
+  }
+
+  .group-item {
+    list-style-type: none;
+    cursor: pointer;
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+  }
+
+  .group-item:hover {
+    background-color: #f5f5f5;
+  }
+
+  .group-thumbnail {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    float: left;
+    width: 50px;
+  }
+  .group-thumbnail-div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    float: left;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black
+  }
+
+  .group-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    float: center;
+    overflow: hidden; /* Clear float */
+    width: 500px;
+  }
+
+  .group-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .group-location {
+    font-size: 16px;
+  }
+
+  .group-description {
+    font-size: 14px;
+  }
+
+  .group-events {
+    font-size: 14px;
+  }
+
+  .group-privacy {
+    font-size: 14px;
+  }
+
+  /* Style for the centered dot */
+  .group-dot {
+    align-items: center;
+    margin: 5px;
+  }
+
+
+  .allGroupsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

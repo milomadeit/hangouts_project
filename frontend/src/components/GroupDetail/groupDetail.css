@@ -1,0 +1,119 @@
+.breadcrumbLinkGroups {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: -30px;
+    margin-left: 58px;
+}
+.breadcrumbLinkGroups a {
+    margin-left: 5px;
+}
+
+.upper-group-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+
+
+.group-detail-content {
+    float: center;
+    overflow: hidden; /* Clear float */
+    width: 300px;
+  }
+
+  .group-detail-join {
+    float: center;
+    width: 110px;
+    background-color: red;
+    display: block; /* change from float: center; */
+    margin: 0px ; /* center the button */
+  }
+  .group-detail-join:hover {
+    float: center;
+    background-color: red;
+    color: white;
+
+  }
+
+
+  .group-detail-create,
+  .group-detail-update,
+  .group-detail-delete {
+    background-color: darkgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: 10px 5px 10px 5px; /* top right bottom left*/
+    min-width: fit-content;
+}
+
+.group-detail-create:hover,
+  .group-detail-update:hover,
+  .group-detail-delete:hover {
+    background-color: darkgrey;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 5px black;
+}
+
+
+
+  .group-detail-thumbnail-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 500px;
+    border: 1px solid black;
+    margin-right: 20px;
+    margin-top: 20px;
+
+  }
+
+  .group-detail-dot {
+    align-items: center;
+    margin: 5px;
+  }
+
+
+  .group-detail-location, .group-detail-events, .group-detail-dot, .group-detail-privacy, .group-detail-organized-by {
+    color: rgb(157, 142, 161)
+  }
+
+  .lower-group-details {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    background-color: rgba(206, 202, 212, 0.478);
+  }
+
+  .group-detail-organized-by.lower {
+    margin-top: 0px;
+  }
+
+  .group-detail-organized-by.upper {
+    margin-bottom: 0px;
+  }
+
+  .group-about-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .organizer-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: -20px;
+  }

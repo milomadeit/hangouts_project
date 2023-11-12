@@ -1,0 +1,241 @@
+
+.event-detail-top {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.breadcrumbLinkEvents {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbLinkEvents > a {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+
+}
+
+.event-detail-name{
+    margin-top: -10px;
+
+}
+
+.breadcrumbLinkEvents, .event-detail-name, .group-info-organizer {
+    margin-left: 135px;
+}
+
+.group-info-organizer {
+    margin-top: -40px;
+    color: rgb(157, 142, 161);
+}
+
+
+.background-div-color {
+    background-color: rgba(206, 202, 212, 0.478);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.upper-event-details {
+    display: flex;
+    justify-content:center;
+    align-content: center;
+    margin-top: 25px;
+}
+
+.event-image-thumbnail-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 400px;
+    height: 400;
+    margin-right: 20px;
+    margin-left: 90px;
+    min-width: fit-content;
+    min-height: fit-content;
+}
+.group-info-div {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    width: 400px;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    margin-right: 20px;
+    overflow-wrap: break-word;
+    min-width:fit-content;
+}
+.group-info-div:hover {
+    box-shadow: 0px 0px 5px;
+    cursor: pointer;
+
+}
+
+.group-detail-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px black solid;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+}
+
+.group-detail-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+
+.group-detail-name{
+    margin-top: 10px;
+    overflow-wrap: break-word;
+    width: 250px;
+}
+.group-detail-privacy {
+    margin-top: -20px;
+}
+
+.event-info-card {
+    width: 420px;
+    height: 202px;
+}
+
+.event-info-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    color: rgb(157, 142, 161);
+    background-color: white;
+    border-radius: 10px;
+    margin: 0px;
+    display: flex;
+    margin-top: 20px;
+    height: 202px;
+}
+
+.event-info-div > p {
+    margin-left: 20px;
+
+}
+
+.event-info-div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.event-detail-description {
+    display: flex;
+    flex-direction: column;
+    margin-left: 135px;
+}
+
+
+.update-delete-buttons {
+    margin-left: 120px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: -44px;
+}
+
+.event-detail-update, .event-detail-delete{
+    background-color: darkgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.event-detail-update:hover, .event-detail-delete:hover {
+    background-color: darkgrey;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 5px black;
+
+}
+
+.event-start-end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.cards-div {
+    margin-right:100px;
+}
+
+
+.fa-clock, .fa-dollar-sign, .fa-map-pin {
+    color:#858080;
+    margin-right: 10px;
+    margin-left: 5px;
+  }
+
+  #clock, #dollar, #pin {
+    color: rgb(157, 142, 161);
+  }
+
+  .event-info-div-time-start{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 35px;
+    color: black;
+
+  }
+
+  .event-info-div-time-end {
+    margin-top: -15px;
+    color: black;
+    margin-right: 1x;
+
+  }
+  .event-info-p-time-end {
+    margin-left: 91px;
+    margin-top: -20px;  }
+
+  .event-info-div-price {
+    margin-top: 10px;
+    color: black;
+
+  }
+  .event-info-div-pin{
+    color: black;
+    margin-bottom: 30px;
+  }
+
+
+  @media (max-width: 768px) {
+    /* Adjust styles for mobile */
+    .background-div-color {
+        display: flex;
+        flex-direction: column;
+    }
+    .upper-event-details {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin: 0px;
+    }
+
+    .cards-div {
+        display: flex;
+        flex-direction: column;
+    }
+
+  }

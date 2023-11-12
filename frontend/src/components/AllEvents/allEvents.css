@@ -1,0 +1,108 @@
+/* Styles for the group list page */
+.allEventsActive {
+    color:rgb(61, 61, 75);
+    margin: 5px;
+    text-decoration: underline;
+}
+.allEventsActive:hover {
+    margin: 5px;
+    cursor:default;
+}
+
+.allGroupsNotActive {
+    color: teal;
+    margin: 5px;
+    text-decoration:none;
+}
+
+.allGroupsNotActive:hover {
+    text-decoration: underline;
+
+}
+.event-list-header {
+    color: black;
+    padding: 10px;
+    font-size: 24px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .event-caption {
+    text-align: center;
+    font-size: 18px;
+    margin-top: -5px;
+    color: teal;
+  }
+
+  .event-item {
+    list-style-type: none;
+    cursor: pointer;
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+  }
+
+  .event-item:hover {
+    background-color: #f5f5f5;
+  }
+
+  .event-thumbnail {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    float: left;
+    width: 50px;
+  }
+  .event-thumbnail-div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    float: left;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black
+  }
+
+  .event-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    float: center;
+    overflow: hidden; /* Clear float */
+    width: 500px;
+  }
+
+  .event-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .event-location {
+    font-size: 16px;
+  }
+
+  .event-description {
+    font-size: 14px;
+  }
+
+  .event-events {
+    font-size: 14px;
+  }
+
+  .event-privacy {
+    font-size: 14px;
+  }
+
+  /* Style for the centered dot */
+  .event-dot {
+    align-items: center;
+    margin: 5px;
+  }
+
+
+  .allEventsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

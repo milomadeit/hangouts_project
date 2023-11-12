@@ -1,0 +1,109 @@
+.homePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.column.A {
+    margin-bottom: 5px;
+}
+.groupsLink, .eventsLink, .newGroupLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+#allLinks {
+    align-self:baseline;
+}
+
+.groupsLink:hover, .eventsLink:hover, .newGroupLink:hover {
+    text-decoration: underline;
+    color: teal;
+}
+
+.disabledNewGroupLink {
+    color: grey;
+    text-decoration: none;
+    cursor: default;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.hpDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.section1 {
+    display: flex;
+    justify-content: space-between;
+    width: 85%;
+    height: 200px;
+    margin-top: 30px;
+    text-align: left;
+}
+.section1 h1, .section1 h4{
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+.section2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    text-align:center;
+}
+
+.hpCaption {
+    margin-top: -10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.section3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 80px;
+}
+
+.section4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.infoGraphic {
+    height: 200px;
+    margin-right: 75px;
+}
+
+.linkCaption {
+    margin-top: 5px;
+}
+
+.fa-solid {
+   margin-bottom: 5px;
+}

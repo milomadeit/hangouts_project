@@ -3,6 +3,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 250px;
+    height: 250px;
+    border-radius: 25px;
 }
 
 .inputField {
@@ -11,8 +15,39 @@
     justify-content: center;
     align-items: center;
 
+
 }
 
-button {
-    margin-top: 5px;
+.inputLabel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+
+}
+
+.submitButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.demoLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+
+}
+
+
+.error {
+    margin-top: 2px;
+    font-size: 8px;
+    margin-bottom: 0px;
+    color: red;
 }
