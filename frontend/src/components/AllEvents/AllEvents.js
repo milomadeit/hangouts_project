@@ -13,6 +13,7 @@ function Events() {
     dispatch(getEvents());
   }, [dispatch, user, events]);
 
+  //events to an array for .map
   const eventList = events ? Object.values(events) : [];
 
   // Sorts the events by startDate in ascending order (chronologically)
@@ -21,8 +22,6 @@ function Events() {
   const handleEventClick = (eventId) => {
     history.push(`/events/${eventId}`);
   };
-
-
 
   return (
     <section className='eventsSection'>

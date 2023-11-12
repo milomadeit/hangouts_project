@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch, Route} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./components/HomePage/HomePage";
@@ -29,19 +29,16 @@ function App() {
           </Route>
           <Route exact path='/groups'>
             <div className='linkEventGroup'>
-              {/* should be components below*/}
               <Groups />
             </div>
           </Route>
           <Route exact path='/events'>
             <div className='linkEventGroup'>
-              {/* should be components below*/}
               <Events />
             </div>
           </Route>
           <Route exact path='/events/:eventId'>
             <div className='EventDetails'>
-              {/* should be components below*/}
               <EventDetail />
             </div>
           </Route>
