@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupDetail } from "../../store/groups";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import EventsByGroup from "../EventsByGroup/EventsByGroup";
 import "./groupDetail.css";
@@ -9,20 +9,21 @@ import "./groupDetail.css";
 function GroupDetail() {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const { groupId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (groupId) {
-      dispatch(getGroupDetail(parseInt(groupId)));
+      dispatch(getGroupDetail(parseInt(groupId))).then(() => {
+        setIsLoading(false);
+      });
     }
-  }, [dispatch, groupId]); // Ensure that the effect is dependent on groupId as well.
+  }, [dispatch, groupId]);
 
   const group = useSelector((state) => state.groups.currentGroup);
 
-  // If the group data is not yet available, you can return a loading indicator or null
-  if (!group) {
+  if (isLoading || !group) {
     return <div>Loading...</div>;
   }
 
@@ -95,7 +96,12 @@ function GroupDetail() {
               >
                 Create event
               </button>
-              <button onClick={() => navigateToUpdateGroup(group.id)} className='group-detail-update'>Update</button>
+              <button
+                onClick={() => navigateToUpdateGroup(group.id)}
+                className='group-detail-update'
+              >
+                Update
+              </button>
               <button className='group-detail-delete'>Delete</button>
             </div>
           )}
