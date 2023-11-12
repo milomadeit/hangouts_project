@@ -48,7 +48,9 @@ export const getGroupDetail = (groupId) => async (dispatch) => {
 
     return group;
   }
-
+  const data = response.json();
+  console.log(data, "this is thunk data");
+  console.log(response, "this is thunk response");
   return response;
 };
 

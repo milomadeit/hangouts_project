@@ -22,6 +22,7 @@ function GroupDetail() {
   }, [dispatch, groupId]);
 
   const group = useSelector((state) => state.groups.currentGroup);
+  console.log(group, "group info from component");
 
   if (isLoading) {
     return <div>Loading...</div>;
