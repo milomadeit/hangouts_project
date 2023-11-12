@@ -40,7 +40,9 @@ export const getGroups = () => async (dispatch) => {
 };
 
 export const getGroupDetail = (groupId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/groups/${groupId}`);
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "GET",
+  });
 
   if (response.ok) {
     const group = await response.json();
