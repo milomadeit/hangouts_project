@@ -7,7 +7,7 @@ import "./createGroup.css";
 function UpdateGroup() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+//   const location = useLocation();
   const { groupId } = useParams(); // Get groupId from URL params
   const sessionUser = useSelector((state) => state.session.user);
   const [isLoading, setIsLoading] = useState(true);

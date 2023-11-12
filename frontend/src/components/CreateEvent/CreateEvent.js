@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { createEvent } from "../../store/events";
 import "./createEvent.css";
@@ -13,7 +13,7 @@ function CreateEvent() {
 
   const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const [eventPrivacy, setEventPrivacy] = useState("");
+  // const [eventPrivacy, setEventPrivacy] = useState("");
   const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -29,7 +29,7 @@ function CreateEvent() {
 
     if (!name) currentErrors.name = "Name is required";
     if (!type) currentErrors.type = "Event Type is required";
-    if (!eventPrivacy) currentErrors.private = "Visibility is required";
+    // if (!eventPrivacy) currentErrors.private = "Visibility is required";
     if (!price) currentErrors.price = "Price is required";
     if (!startDate) currentErrors.startDate = "Event start is required";
     if (!endDate) currentErrors.endDate = "Event end is required";
