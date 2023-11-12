@@ -21,6 +21,7 @@ function UpdateGroup() {
   const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState({});
 
+
   useEffect(() => {
     if (groupId) {
       dispatch(getGroupDetail(groupId))

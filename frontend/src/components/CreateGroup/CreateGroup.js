@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createGroup } from "../../store/groups";
@@ -17,10 +17,6 @@ function CreateGroup() {
   const [groupPrivacy, setGroupPrivacy] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    console.log(errors, "logging state errors after update");
-  }, [errors]);
 
   const handleCityStateChange = (e) => {
     const value = e.target.value;
@@ -92,8 +88,10 @@ function CreateGroup() {
   return (
     <div className='create-group-div'>
       <div className='create-group-header'>
-        <h4 className="become-an-organizer">BECOME AN ORGANIZER</h4>
-        <h2 className="create-group-title">We'll walk you through a few steps to build your community</h2>
+        <h4 className='become-an-organizer'>BECOME AN ORGANIZER</h4>
+        <h2 className='create-group-title'>
+          We'll walk you through a few steps to build your community
+        </h2>
       </div>
       <form onSubmit={handleSubmit}>
         <div className='create-group-location-div'>
@@ -191,10 +189,9 @@ function CreateGroup() {
           )}
         </div>
         <section className='create-group-section'>
-          <button className="create-group-button" >Create group</button>
+          <button className='create-group-button'>Create group</button>
         </section>
       </form>
-
     </div>
   );
 }
