@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupDetail } from "../../store/groups";
+import { getGroupDetail, getGroupEvents } from "../../store/groups";
 import { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import EventsByGroup from "../EventsByGroup/EventsByGroup";
@@ -15,14 +15,22 @@ function GroupDetail() {
 
   useEffect(() => {
     if (groupId) {
-      dispatch(getGroupDetail(parseInt(groupId))).then(() => {
-        setIsLoading(false);
-      });
+      dispatch(getGroupDetail(parseInt(groupId))).then(() =>
+        setIsLoading(false)
+      );
     }
+
+    // if (groupId) {
+    //   dispatch(getGroupDetail(parseInt(groupId)))
+    //     .then(() => dispatch(getGroupEvents(groupId)))
+    //     .then(() => {
+    //       setIsLoading(false);
+    //     });
+    // }
   }, [dispatch, groupId]);
 
   const group = useSelector((state) => state.groups.currentGroup);
-  console.log(group, "group info from component");
+  // const events = useSelector((state) =)
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -67,7 +75,7 @@ function GroupDetail() {
           </div>
           <div className='group-detail-location'>{group.city}</div>
           <div className='group-detail-events'>
-            {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
+            {group.Events.length} Event{group.Events.length === 1 ? null : "s"}
             <span className='group-detail-dot'>·</span>
             <span className='group-detail-privacy'>
               {group.isPrivate ? "Private" : "Public"}
@@ -109,9 +117,7 @@ function GroupDetail() {
         </div>
       </div>
       <div className='lower-group-details'>
-        <h4 className='group-detail-organized-by upper' lower>
-          Organizer
-        </h4>
+        <h4 className='group-detail-organized-by upper'>Organizer</h4>
         <h5 className='group-detail-organized-by lower'>
           {group.Organizer.firstName} {group.Organizer.lastName}
         </h5>

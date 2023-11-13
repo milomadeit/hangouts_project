@@ -762,7 +762,7 @@ router.get("/current", restoreUser, requireAuth, async (req, res) => {
     },
     include: {
       model: Group,
-      as: "group", 
+      as: "group",
       attributes: [
         "id",
         "organizerId",
@@ -819,18 +819,9 @@ router.get("/:groupId", async (req, res) => {
       {
         model: Event,
         as: "Events",
-        attributes: [],
-        duplicating: false,
+        attributes: ["id", "name"],
       },
     ],
-    // Group and count the events
-    attributes: {
-      include: [
-        [sequelize.fn("COUNT", sequelize.col("Events.id")), "eventCount"],
-      ],
-    },
-    // Group by Group ID to ensure proper count
-    group: ["Group.id", "GroupImages.Id"],
   });
 
   if (!group) {
