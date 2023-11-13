@@ -762,7 +762,7 @@ router.get("/current", restoreUser, requireAuth, async (req, res) => {
     },
     include: {
       model: Group,
-      as: "group", // This should match the alias used in the Member-Group association
+      as: "group", 
       attributes: [
         "id",
         "organizerId",
@@ -817,10 +817,10 @@ router.get("/:groupId", async (req, res) => {
         },
       },
       {
-        model: Event, // Your Event model
-        as: "Events", // The alias you defined for the hasMany association
-        attributes: [], // Don't fetch actual event records
-        duplicating: false, // Prevent duplication if you have limit or other modifiers
+        model: Event,
+        as: "Events",
+        attributes: [],
+        duplicating: false,
       },
     ],
     // Group and count the events
@@ -830,7 +830,7 @@ router.get("/:groupId", async (req, res) => {
       ],
     },
     // Group by Group ID to ensure proper count
-    group: ["Group.id"],
+    group: ["Group.id", "GroupImages.Id"],
   });
 
   if (!group) {
