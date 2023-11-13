@@ -4,6 +4,7 @@ const LOAD_GROUPS = "loadGroups/LOAD_GROUPS";
 const GET_GROUP_DETAIL = "getGroupDetail/GET_GROUP_DETAIL";
 const CREATE_GROUP = "createGroup/CREATE_GROUP";
 const UPDATE_GROUP = "updateGroup/UPDATE_GROUP";
+// const GET_GROUP_EVENTS = "getGroupEvents/GET_GROUP_EVENTS";
 
 const load = (groups) => ({
   type: LOAD_GROUPS,
@@ -24,6 +25,11 @@ const loadUpdatedGroup = (group) => ({
   type: UPDATE_GROUP,
   group,
 });
+
+// const loadGroupEvents = (events) => ({
+//   type: GET_GROUP_EVENTS,
+//   events,
+// });
 
 export const getGroups = () => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
@@ -71,9 +77,7 @@ export const createGroup = (groupData) => async (dispatch) => {
     return group;
   }
 
-  const errorData = await response.json(); // Parse the JSON from the original response
-  console.log(errorData, "error data, thunk");
-  console.log(response, "response, thunk");
+  const errorData = await response.json();
   return errorData;
 };
 
@@ -97,6 +101,21 @@ export const updateGroup = (groupData, groupId) => async (dispatch) => {
   // console.log(response);
   return errorData;
 };
+
+// export const getGroupEvents = (groupId) => async (dispatch) => {
+//   const response = await csrfFetch(`/api/${groupId}/events`, {
+//     method: "GET",
+//   });
+
+//   if (response.ok) {
+//     const events = await response.json();
+//     dispatch(loadGroupEvents);
+//     return events;
+//   }
+
+//   const errorData = await response.json();
+//   return errorData;
+// };
 
 const initialState = { allGroups: {} };
 
@@ -128,8 +147,30 @@ const groupsReducer = (state = initialState, action) => {
       };
       return newState;
     }
+    case UPDATE_GROUP: {
+      const updatedGroup = action.group;
+      return {
+        ...state,
+        allGroups: {
+          ...state.allGroups,
+          [updatedGroup.id]: updatedGroup,
+        },
+        currentGroup: updatedGroup,
+      };
+    }
     default:
       return state;
   }
 };
 export default groupsReducer;
+
+// case GET_GROUP_EVENTS: {
+//   const groupEvents = {};
+//   action.events.forEach((event) => {
+//     groupEvents[event.id] = event;
+//   });
+//   return {
+//     ...state,
+//     groupEvents,
+//   };
+// }

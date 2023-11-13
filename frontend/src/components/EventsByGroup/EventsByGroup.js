@@ -70,9 +70,7 @@ function EventsByGroup({ groupId }) {
                   </h6>
                 </div>
                 <div className='event-description-group'>
-                  <p className="event-description-p">
-                    {event.description}
-                  </p>
+                  <p className='event-description-p'>{event.description}</p>
                 </div>
               </li>
             ))}
