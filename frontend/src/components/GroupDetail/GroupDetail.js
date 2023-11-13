@@ -75,7 +75,7 @@ function GroupDetail() {
           </div>
           <div className='group-detail-location'>{group.city}</div>
           <div className='group-detail-events'>
-            {group.Events.length} Event{group.Events.length === 1 ? null : "s"}
+            {group.Events.length === 0 ? 0 : group.Events.length} Event{group.Events.length === 1 ? null : "s"}
             <span className='group-detail-dot'>·</span>
             <span className='group-detail-privacy'>
               {group.isPrivate ? "Private" : "Public"}
