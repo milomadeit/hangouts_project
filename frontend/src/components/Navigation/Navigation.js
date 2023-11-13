@@ -1,23 +1,22 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
-import { loginDemo } from "../../store/session";
 import "./navigation.css";
 import hangout from "../../images/hangout.png";
 
 function Navigation({ isLoaded }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
 
-  const handleDemoUser = (e) => {
-    e.preventDefault();
+  // const handleDemoUser = (e) => {
+  //   e.preventDefault();
 
-    dispatch(loginDemo());
-  };
+  //   dispatch(loginDemo());
+  // };
 
   let sessionLinks;
   if (sessionUser) {

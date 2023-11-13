@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { updateGroup, getGroupDetail } from "../../store/groups";
 import "./createGroup.css";
 
 function UpdateGroup() {
   const dispatch = useDispatch();
   const history = useHistory();
-//   const location = useLocation();
+  //   const location = useLocation();
   const { groupId } = useParams(); // Get groupId from URL params
   const sessionUser = useSelector((state) => state.session.user);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,6 @@ function UpdateGroup() {
   const [groupPrivacy, setGroupPrivacy] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState({});
-
 
   useEffect(() => {
     if (groupId) {
