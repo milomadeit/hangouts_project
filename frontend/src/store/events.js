@@ -5,6 +5,7 @@ const LOAD_GROUP_EVENTS = "loadGroupEvents/LOAD_GROUP_EVENTS";
 const GET_EVENT_DETAIL = "getEventDetail/GET_EVENT_DETAIL";
 const GET_ALL_ATTENDEES = "getAllAttendees/GET_ALL_ATTENDEES";
 const CREATE_EVENT = "createEvent/CREATE_EVENT";
+const DELETE_EVENT = "deleteEvent/DELETE_EVENT";
 
 const loadEvents = (events) => ({
   type: LOAD_ALL_EVENTS,
@@ -29,6 +30,11 @@ const loadNewEvent = (event) => ({
 const loadAttendees = (attendees) => ({
   type: GET_ALL_ATTENDEES,
   attendees,
+});
+
+const loadDeletedEvent = (eventId) => ({
+  type: DELETE_EVENT,
+  eventId,
 });
 
 export const getEvents = () => async (dispatch) => {
@@ -84,6 +90,20 @@ export const createEvent = (eventData, groupId) => async (dispatch) => {
   const errorData = await response.json(); // Parse the JSON from the original response
   console.log(errorData);
   console.log(response);
+  return errorData;
+};
+
+export const deleteEvent = (eventId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    const successMessage = await response.json();
+    dispatch(loadDeletedEvent(eventId));
+    return successMessage;
+  }
+  const errorData = await response.json();
   return errorData;
 };
 
@@ -146,6 +166,18 @@ const eventsReducer = (state = initialState, action) => {
         },
       };
       return newState;
+    }
+    case DELETE_EVENT: {
+      const eventToDelete = action.eventId;
+
+      // destructure the event to remove out of allEvents state
+      const { [eventToDelete]: deletedEvent, ...remainingEvents } =
+        state.allGroupEvents;
+
+      return {
+        ...state,
+        allGroupEvents: remainingEvents,
+      };
     }
     default:
       return state;

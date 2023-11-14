@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupDetail, getGroupEvents } from "../../store/groups";
+import { getGroupDetail } from "../../store/groups";
 import { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import EventsByGroup from "../EventsByGroup/EventsByGroup";
+import { getGroupEvents } from "../../store/events";
+import DeleteGroupModal from "../DeleteGroupsEventsModal/DeleteGroupModal";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import "./groupDetail.css";
 
 function GroupDetail() {
@@ -15,22 +18,18 @@ function GroupDetail() {
 
   useEffect(() => {
     if (groupId) {
-      dispatch(getGroupDetail(parseInt(groupId))).then(() =>
-        setIsLoading(false)
-      );
+      dispatch(getGroupDetail(parseInt(groupId)))
+        .then((groupId) => getGroupEvents(groupId))
+        .then(() => setIsLoading(false));
     }
-
-    // if (groupId) {
-    //   dispatch(getGroupDetail(parseInt(groupId)))
-    //     .then(() => dispatch(getGroupEvents(groupId)))
-    //     .then(() => {
-    //       setIsLoading(false);
-    //     });
-    // }
   }, [dispatch, groupId]);
 
   const group = useSelector((state) => state.groups.currentGroup);
   // const events = useSelector((state) =)
+  const currentGroupEvents = useSelector(
+    (state) => state.events.allGroupEvents
+  );
+  const numOfEvents = Object.keys(currentGroupEvents).length;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -75,7 +74,8 @@ function GroupDetail() {
           </div>
           <div className='group-detail-location'>{group.city}</div>
           <div className='group-detail-events'>
-            {group.Events.length === 0 ? 0 : group.Events.length} Event{group.Events.length === 1 ? null : "s"}
+            {numOfEvents === 0 ? 0 : group.Events.length} Event
+            {numOfEvents === 1 ? null : "s"}
             <span className='group-detail-dot'>·</span>
             <span className='group-detail-privacy'>
               {group.isPrivate ? "Private" : "Public"}
@@ -111,7 +111,11 @@ function GroupDetail() {
               >
                 Update
               </button>
-              <button className='group-detail-delete'>Delete</button>
+              <OpenModalButton
+                className='group-detail-delete'
+                buttonText='Delete'
+                modalComponent={<DeleteGroupModal />}
+              />
             </div>
           )}
         </div>

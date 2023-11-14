@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupEvents } from "../../store/events";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
 import "./eventsByGroup.css";
 
@@ -11,14 +12,15 @@ function EventsByGroup({ groupId }) {
   const history = useHistory();
   const events = useSelector((state) => state.events.allGroupEvents);
   const currGroup = useSelector((state) => state.groups.currentGroup);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (groupId) {
-      dispatch(getGroupEvents(groupId));
+      dispatch(getGroupEvents(groupId)).then(() => setIsLoading(false));
     }
   }, [dispatch, groupId]); // Add groupId to the dependency array.
 
-  if (!events || !groupId) {
+  if (!events || !groupId || isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -89,24 +91,26 @@ function EventsByGroup({ groupId }) {
                 className='event-item-group'
                 key={event.id}
               >
-                <div className='event-thumbnail-group'>
-                  <img src={event.previewImage} alt=' ' />
+                <div className='event-thumbnail-div'>
+                  <img
+                    className='event-thumbnail-group'
+                    src={event.previewImage}
+                    alt=' '
+                  />
                 </div>
-                <div>
+                <div className='event-date-time-group'>
                   {event.startDate.slice(0, 10)}
                   <span className='group-dot'>·</span>
-                  {event.startDate.slice(11, 17)}
+                  {event.startDate.slice(11, 16)}
                 </div>
                 <div>
-                  <h5>{event.name}</h5>
-                  <h6>
-                    {event.Venue.city}, {event.Venue.state}
+                  <h5 className='event-name-group'>{event.name}</h5>
+                  <h6 className='event-location-group'>
+                    {event.Group.city}, {event.Group.state}
                   </h6>
                 </div>
-                <div>
-                  <p>
-                    An event for {currGroup.name} at {event.Venue.address}
-                  </p>
+                <div className='event-description-group'>
+                  <p className='event-description-p'>{event.description}</p>
                 </div>
               </li>
             ))}

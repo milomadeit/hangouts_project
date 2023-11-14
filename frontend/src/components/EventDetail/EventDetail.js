@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEventDetail } from "../../store/events";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "./eventDetail.css";
 import { getAllAttendees } from "../../store/events";
 import { getGroupDetail } from "../../store/groups";
+import DeleteEvent from "../DeleteGroupsEventsModal/DeleteEventModal";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import "./eventDetail.css";
 
 function EventDetail() {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const { eventId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -49,8 +51,8 @@ function EventDetail() {
   }
 
   const goToGroup = (groupId) => {
-    history.push(`/groups/${groupId}`)
-  }
+    history.push(`/groups/${groupId}`);
+  };
 
   return (
     <div className=''>
@@ -84,7 +86,10 @@ function EventDetail() {
                 src={group.previewImage}
                 alt=' '
               />
-              <div className='group-detail-info' onClick={() => goToGroup(group.id)}>
+              <div
+                className='group-detail-info'
+                onClick={() => goToGroup(group.id)}
+              >
                 <h4 className='group-detail-name'>{group.name}</h4>
                 <h6 className='group-detail-privacy'>
                   {group.isPrivate ? "Private" : "Public"}
@@ -110,7 +115,8 @@ function EventDetail() {
                   {"    "}
                   <p className='event-info-p-time-end'>
                     {event.endDate.slice(0, 10)}
-                    <span className='group-dot'>·</span>{""}
+                    <span className='group-dot'>·</span>
+                    {""}
                     {event.endDate.slice(11, 16)}
                   </p>
                 </p>
@@ -126,7 +132,11 @@ function EventDetail() {
                 {isCreator && (
                   <div className='update-delete-buttons'>
                     <button className='event-detail-update'>Update</button>
-                    <button className='event-detail-delete'>Delete</button>
+                    <OpenModalButton
+                      className='event-detail-delete'
+                      buttonText='Delete'
+                      modalComponent={<DeleteEvent />}
+                    />
                   </div>
                 )}
               </div>
