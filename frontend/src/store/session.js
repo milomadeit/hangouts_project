@@ -33,7 +33,7 @@ export const login = (user) => async (dispatch) => {
   }
 
   const errorData = await response.json(); // Parse the JSON from the original response
-  return errorData; // You may want to handle this differently, e.g., throw an error.
+  return errorData;
 };
 
 // login DEMO user
