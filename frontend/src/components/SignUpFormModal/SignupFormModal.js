@@ -66,7 +66,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className='error'>{errors.email}</p>}
         <label className='inputLabel'>
           Username
           <input
@@ -77,7 +77,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className='error'>{errors.username}</p>}
         <label className='inputLabel'>
           First Name
           <input
@@ -88,7 +88,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className='error'>{errors.firstName}</p>}
         <label className='inputLabel'>
           Last Name
           <input
@@ -98,7 +98,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className='error'>{errors.lastName}</p>}
         <label className='inputLabel'>
           Password
           <input
@@ -108,7 +108,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className='error'>{errors.password}</p>}
         <label className='inputLabel'>
           Confirm Password
           <input
@@ -118,7 +118,9 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        {errors.confirmPassword && (
+          <p className='error'>{errors.confirmPassword}</p>
+        )}
         <label className='signUpButton'>
           <button type='submit' disabled={isButtonDisabled}>
             Sign Up
