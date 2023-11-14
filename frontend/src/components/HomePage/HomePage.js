@@ -47,7 +47,7 @@ function HomePage() {
             </>
           ) : (
             <>
-              <span className='disabledNewGroupLink'>Find Group</span>
+              <span className='disabledNewGroupLink'>Start A New Group</span>
               <p className='linkCaption'>Join today to create a group </p>
             </>
           )}

@@ -4,7 +4,7 @@ const LOAD_GROUPS = "loadGroups/LOAD_GROUPS";
 const GET_GROUP_DETAIL = "getGroupDetail/GET_GROUP_DETAIL";
 const CREATE_GROUP = "createGroup/CREATE_GROUP";
 const UPDATE_GROUP = "updateGroup/UPDATE_GROUP";
-// const GET_GROUP_EVENTS = "getGroupEvents/GET_GROUP_EVENTS";
+const DELETE_GROUP = "deleteGroup/DELETE_GROUP";
 
 const load = (groups) => ({
   type: LOAD_GROUPS,
@@ -26,10 +26,10 @@ const loadUpdatedGroup = (group) => ({
   group,
 });
 
-// const loadGroupEvents = (events) => ({
-//   type: GET_GROUP_EVENTS,
-//   events,
-// });
+const loadDeletedGroup = (groupId) => ({
+  type: DELETE_GROUP,
+  groupId,
+});
 
 export const getGroups = () => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
@@ -102,20 +102,19 @@ export const updateGroup = (groupData, groupId) => async (dispatch) => {
   return errorData;
 };
 
-// export const getGroupEvents = (groupId) => async (dispatch) => {
-//   const response = await csrfFetch(`/api/${groupId}/events`, {
-//     method: "GET",
-//   });
+export const deleteGroup = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "DELETE",
+  });
 
-//   if (response.ok) {
-//     const events = await response.json();
-//     dispatch(loadGroupEvents);
-//     return events;
-//   }
-
-//   const errorData = await response.json();
-//   return errorData;
-// };
+  if (response.ok) {
+    const successMessage = await response.json();
+    dispatch(loadDeletedGroup(groupId));
+    return successMessage;
+  }
+  const errorData = await response.json();
+  return errorData;
+};
 
 const initialState = { allGroups: {} };
 
@@ -156,6 +155,19 @@ const groupsReducer = (state = initialState, action) => {
           [updatedGroup.id]: updatedGroup,
         },
         currentGroup: updatedGroup,
+      };
+    }
+    case DELETE_GROUP: {
+
+      const groupToDelete = action.groupId;
+      // destructure the group to remove out of the allGroups state
+      const { [groupToDelete]: deletedGroup, ...remainingGroups } =
+        state.allGroups;
+
+      // return the current state plus allGroups with remainingGroups
+      return {
+        ...state,
+        allGroups: remainingGroups,
       };
     }
     default:

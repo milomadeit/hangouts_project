@@ -1,0 +1,45 @@
+.delete-modal-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.delete-modal-title-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.delete-modal-title {
+    margin-top: 5px;
+}
+
+.delete-modal-p {
+    margin-top: -15px;
+    font-size: 15px;
+}
+
+.delete-modal-button-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-delete-button {
+    margin-bottom: 5px;
+    background-color: red
+}
+
+.modal-delete-button:hover {
+    color: white;
+}
+
+.modal-keep-button {
+    background-color: grey;
+}
+
+.modal-keep-button:hover {
+    color: white;
+}
