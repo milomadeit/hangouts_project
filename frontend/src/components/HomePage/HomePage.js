@@ -19,28 +19,34 @@ function HomePage() {
       <section className='section2'>
         <h3>How Hangouts Work</h3>
         <p className='hpCaption'>
-          Find groups and browse events. To join a group or attend an event, sign
-          up and create a user profile then request to join the group you'd like
-          to be a part of or create your own.
+          Find groups and browse events. To join a group or attend an event,
+          sign up and create a user profile then request to join the group you'd
+          like to be a part of or create your own.
         </p>
       </section>
       <section className='section3'>
         <div className='column A'>
-          <div className="icon-holder"><i class="fa-solid fa-people-group"></i></div>
+          <div className='icon-holder'>
+            <i className='fa-solid fa-people-group'></i>
+          </div>
           <Link className='togroupsLink' to='/groups'>
             See All Groups
           </Link>
           <p className='linkCaption'>Find a group</p>
         </div>
         <div className='column'>
-          <div className="icon-holder"><i class="fa-solid fa-ticket"></i></div>
+          <div className='icon-holder'>
+            <i className='fa-solid fa-ticket'></i>
+          </div>
           <Link className='eventsLink' to='/events'>
             Find An Event
           </Link>
           <p className='linkCaption'>Join a community to attend</p>
         </div>
         <div className='column'>
-          <div className="icon-holder"><i class="fa-solid fa-right-to-bracket"></i></div>
+          <div className='icon-holder'>
+            <i className='fa-solid fa-right-to-bracket'></i>
+          </div>
           {sessionUser ? (
             <>
               <Link className='newGroupLink' to='/groups/new'>
