@@ -55,7 +55,7 @@ function SignupFormModal() {
   return (
     <div className='SignUpFormDiv'>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="signup-form" onSubmit={handleSubmit}>
         <label className='inputLabel'>
           Email
           <input
@@ -122,7 +122,11 @@ function SignupFormModal() {
           <p className='error'>{errors.confirmPassword}</p>
         )}
         <label className='signUpButton'>
-          <button type='submit' disabled={isButtonDisabled}>
+          <button
+            id={isButtonDisabled ? "inactive" : "activeButton"}
+            type='submit'
+            disabled={isButtonDisabled}
+          >
             Sign Up
           </button>
         </label>

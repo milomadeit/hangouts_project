@@ -62,8 +62,8 @@
 }
 
 .event-image-thumbnail {
-    height: 400px;
-    width: 400px
+    height: 300px;
+    width: 300px
 }
 .group-info-div {
     display: flex;
@@ -165,7 +165,7 @@
 }
 
 
-.event-detail-update:hover, .event-detail-delete:hover {
+.event-detail-update:hover, .event-detail-delete:hover, .update-delete-buttons > button:hover {
     background-color: darkgrey;
     color: white;
     border: none;

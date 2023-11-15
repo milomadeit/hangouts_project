@@ -12,6 +12,8 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const isButtonDisabled = credential.length < 4 || password.length < 6;
+
   const handleDemoUser = (e) => {
     e.preventDefault();
 
@@ -68,18 +70,19 @@ function LoginFormModal() {
           />
         </label>
         {errors.login && <p className='error'>{errors.login}</p>}
-        <label className='submitButton'>
+        <label className='login-button'>
           <button
+            id={isButtonDisabled ? "inactive" : "activeButton"}
             type='submit'
-            disabled={credential.length < 4 || password.length < 6}
+            disabled={isButtonDisabled}
           >
             Log In
           </button>
         </label>
-        <label className='demoLabel'>
-          <button className='demoButton' onClick={handleDemoUser}>
+        <label className='demo-div'>
+          <p className='demo-button' onClick={handleDemoUser}>
             Demo User
-          </button>
+          </p>
         </label>
       </form>
     </div>

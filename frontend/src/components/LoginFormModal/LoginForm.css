@@ -27,7 +27,7 @@
 
 }
 
-.submitButton {
+.login-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,13 +35,26 @@
     margin-top: 10px;
 }
 
-.demoLabel {
+.login-button:hover {
+    color: white;
+}
+
+.demo-div{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: -5px;
     margin-bottom: 20px;
 
+}
+
+.demo-button {
+    text-decoration: underline;
+}
+
+.demo-button:hover {
+    cursor: pointer;
+    color: orangered;
 }
 
 

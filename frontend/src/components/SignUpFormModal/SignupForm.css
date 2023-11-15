@@ -13,7 +13,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
 
+.signup-form {
+    margin-top: -20px;
 
 }
 
@@ -31,8 +34,30 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+
+}
+
+
+.signUpButton > button:hover {
+    color: white
+}
+
+#inactive {
+    background-color: grey;
+    height: 25px;
+    width: 145px;
+}
+
+#activeButton {
+    background-color: orangered;
+    height: 25px;
+    width: 145px;
+}
+
+#activeButton:hover {
+    color: white;
 }
 
 .error {
