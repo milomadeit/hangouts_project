@@ -44,7 +44,13 @@
     margin-left: -15px;
   }
   .homeLogo {
-    width: 150px;
+    width: 170px;
+    height: 30px;
+  }
+
+  .homeLogo:hover {
+    width: 175px;
+    height: 35px;
   }
 
 
