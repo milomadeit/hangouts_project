@@ -19,6 +19,14 @@
 }
 
 
+.group-about {
+
+  width: 450px;
+  overflow-wrap: break-word;
+  text-align: center;
+
+}
+
 
 .group-detail-content {
     float: center;
@@ -70,7 +78,7 @@
 
 .group-detail-create:hover,
   .group-detail-update:hover,
-  .group-detail-delete:hover {
+  .group-detail-delete:hover, .organizer-buttons > button:hover {
     background-color: darkgrey;
     color: white;
     border: none;

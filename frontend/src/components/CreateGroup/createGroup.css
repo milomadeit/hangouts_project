@@ -51,7 +51,7 @@
 }
 
 .create-group-button {
-    background-color: red;
+    background-color: orangered;
     shape-rendering: square;
 }
 
@@ -60,5 +60,3 @@
     color: white;
     box-shadow: 5px 5px 10px;
 }
-
-
