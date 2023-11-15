@@ -61,12 +61,9 @@ function CreateEvent() {
     ).catch(async (error) => {
       const errorData = await error.json();
       if (errorData && errorData.errors) {
-        console.log(errorData, "loggin errors bitch");
         // spread in backend, privacy, location and imageUrl errors
         setErrors({ ...errorData.errors, ...currentErrors });
-        console.log(errors);
       } else {
-        console.log(error);
         setErrors({ general: "An unexpected error occurred." });
       }
     });

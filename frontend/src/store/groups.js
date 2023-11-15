@@ -57,8 +57,6 @@ export const getGroupDetail = (groupId) => async (dispatch) => {
     return group;
   }
   const data = response.json();
-  console.log(data, "this is thunk data");
-  console.log(response, "this is thunk response");
   return response;
 };
 
@@ -97,8 +95,7 @@ export const updateGroup = (groupData, groupId) => async (dispatch) => {
   }
 
   const errorData = await response.json(); // Parse the JSON from the original response
-  // console.log(errorData);
-  // console.log(response);
+
   return errorData;
 };
 
@@ -158,7 +155,6 @@ const groupsReducer = (state = initialState, action) => {
       };
     }
     case DELETE_GROUP: {
-
       const groupToDelete = action.groupId;
       // destructure the group to remove out of the allGroups state
       const { [groupToDelete]: deletedGroup, ...remainingGroups } =

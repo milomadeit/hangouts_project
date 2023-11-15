@@ -56,7 +56,7 @@ function Groups() {
                 <div className='group-location'>{group.city}</div>
                 <div className='group-description'>{group.about}</div>
                 <div className='group-events'>
-                  {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
+                  {group.eventCount} Event{group.eventCount === 1 ? "" : "s"}
                   <span className='group-dot'>·</span>
                   <span className='group-privacy'>
                     {group.private ? "Private" : "Public"}

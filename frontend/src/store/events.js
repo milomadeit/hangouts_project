@@ -88,8 +88,6 @@ export const createEvent = (eventData, groupId) => async (dispatch) => {
   }
 
   const errorData = await response.json(); // Parse the JSON from the original response
-  console.log(errorData);
-  console.log(response);
   return errorData;
 };
 
@@ -112,12 +110,11 @@ export const getAllAttendees = (eventId) => async (dispatch) => {
 
   if (response.ok) {
     const attendees = await response.json();
-    console.log(attendees);
     dispatch(loadAttendees(attendees));
     return attendees;
   }
   const data = await response.json();
-  console.log(data);
+
   return response;
 };
 
