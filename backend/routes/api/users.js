@@ -36,7 +36,7 @@ const validateSignup = [
     .custom(async (value) => {
       const usernameExists = await User.findOne({
         where: {
-          username: username,
+          username: value,
         },
       });
       if (usernameExists) {
