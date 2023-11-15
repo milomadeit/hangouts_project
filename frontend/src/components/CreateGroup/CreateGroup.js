@@ -70,7 +70,6 @@ function CreateGroup() {
         // spread in backend, privacy, location and imageUrl errors
         setErrors({ ...errorData.errors, ...currentErrors });
       } else {
-        console.log(error);
         setErrors({ general: "An unexpected error occurred." });
       }
     });
