@@ -84,6 +84,7 @@ export const createEvent = (eventData, groupId) => async (dispatch) => {
   if (response.ok) {
     const event = await response.json();
     dispatch(loadNewEvent(event));
+    dispatch(getEvents());
     return event;
   }
 

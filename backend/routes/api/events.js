@@ -649,7 +649,7 @@ router.get("/", async (req, res) => {
   try {
     const allEvents = await Event.findAll({
       attributes: {
-        exclude: ["description", "capacity", "price", "createdAt", "updatedAt"],
+        exclude: ["capacity", "price", "createdAt", "updatedAt"],
       },
       include: [
         {
