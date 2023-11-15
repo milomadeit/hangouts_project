@@ -59,7 +59,7 @@ function Groups() {
                   {group.eventCount} Event{group.eventCount === 1 ? null : "s"}
                   <span className='group-dot'>·</span>
                   <span className='group-privacy'>
-                    {group.isPrivate ? "Private" : "Public"}
+                    {group.private ? "Private" : "Public"}
                   </span>
                 </div>
               </div>

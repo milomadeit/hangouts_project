@@ -100,7 +100,7 @@ function EventDetail() {
               >
                 <h4 className='group-detail-name'>{group.name}</h4>
                 <h6 className='group-detail-privacy'>
-                  {group.isPrivate ? "Private" : "Public"}
+                  {group.private ? "Private" : "Public"}
                 </h6>
               </div>
             </div>

@@ -47,7 +47,6 @@ function GroupDetail() {
   const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
 
   let numOfEvents = group.Events.length;
-  console.log(currentGroupEvents);
 
   const previewImage = group.GroupImages.find(
     (image) => image.preview === true
@@ -91,7 +90,7 @@ function GroupDetail() {
             {numOfEvents === 1 ? null : "s"}
             <span className='group-detail-dot'>·</span>
             <span className='group-detail-privacy'>
-              {group.isPrivate ? "Private" : "Public"}
+              {group.private ? "Private" : "Public"}
             </span>
           </div>
           <div className='group-detail-organized-by'>
