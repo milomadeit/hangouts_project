@@ -11,7 +11,7 @@ function Events() {
   const user = useSelector((state) => state.session.user);
   useEffect(() => {
     dispatch(getEvents());
-  }, [dispatch, user, events]);
+  }, [dispatch, user]);
 
   //events to an array for .map
   const eventList = events ? Object.values(events) : [];
@@ -64,7 +64,7 @@ function Events() {
                   {event.Group?.city}, {event.Group?.state}
                 </div>
                 <div className='event-description-group'>
-                  <p>A member only event for {event.name}</p>
+                  <p className='event-description-p'>{event.description}</p>
                 </div>
               </div>
             </li>
