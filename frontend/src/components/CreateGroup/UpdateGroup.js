@@ -58,7 +58,7 @@ function UpdateGroup() {
       setName(group.name);
       setAbout(group.about);
       setType(group.type);
-      group.private === false
+      group.private === true
         ? setGroupPrivacy("Private")
         : setGroupPrivacy("Public");
     }
