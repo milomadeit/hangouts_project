@@ -41,6 +41,19 @@
   }
 
 
+.organizer-buttons > button {
+  background-color: darkgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: 10px 5px 10px 5px; /* top right bottom left*/
+    min-width: fit-content;
+
+}
+
   .group-detail-create,
   .group-detail-update,
   .group-detail-delete {
@@ -72,11 +85,16 @@
     justify-content: center;
     align-items: center;
     height: 250px;
-    width: 500px;
+    width: 300px;
     border: 1px solid black;
     margin-right: 20px;
     margin-top: 20px;
 
+  }
+
+  .group-detail-thumbnail {
+    max-width: 300px;
+    max-height: 250px;
   }
 
   .group-detail-dot {
@@ -116,4 +134,44 @@
     display: flex;
     justify-content: space-evenly;
     margin-left: -20px;
+  }
+
+
+  @media (max-width: 768px) {
+    /* .main-group-div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+    } */
+
+    .upper-group-details {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin: 0px;
+    }
+
+    .group-detail-organized-by {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin: 0px;
+
+    }
+    .lower-group-details {
+      display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin: 0px;
+    }
+
+    .group-about {
+      width: 400px;
+      overflow-wrap: break-word;
+    }
   }

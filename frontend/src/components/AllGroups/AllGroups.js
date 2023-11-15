@@ -46,7 +46,7 @@ function Groups() {
             >
               <div className='group-thumbnail-div'>
                 <img
-                  className='group-thumbnail'
+                  className='group-thumbnail-small'
                   src={group.previewImage}
                   alt=' '
                 />

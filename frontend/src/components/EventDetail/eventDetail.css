@@ -60,6 +60,11 @@
     min-width: fit-content;
     min-height: fit-content;
 }
+
+.event-image-thumbnail {
+    height: 400px;
+    width: 400px
+}
 .group-info-div {
     display: flex;
     align-items: center;
@@ -149,13 +154,16 @@
     margin-top: -44px;
 }
 
-.event-detail-update, .event-detail-delete{
+.update-delete-buttons > button {
+
     background-color: darkgrey;
     color: black;
     border: none;
     cursor: pointer;
     margin: 10px;
+
 }
+
 
 .event-detail-update:hover, .event-detail-delete:hover {
     background-color: darkgrey;
@@ -214,13 +222,17 @@
 
   }
   .event-info-div-pin{
-    color: black;
+    color: rgb(157, 142, 161);
     margin-bottom: 30px;
   }
 
 
   @media (max-width: 768px) {
     /* Adjust styles for mobile */
+    .body {
+        display: flex;
+        flex-direction: column;
+    }
     .background-div-color {
         display: flex;
         flex-direction: column;
@@ -236,6 +248,31 @@
     .cards-div {
         display: flex;
         flex-direction: column;
+        margin-right: 0px;
+    }
+    .cards-div > div {
+       margin: auto;
+    }
+
+    .event-info-div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .event-image-thumbnail-div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .event-detail-description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+
     }
 
   }

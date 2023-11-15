@@ -14,6 +14,9 @@ function GroupDetail() {
   const history = useHistory();
   const { groupId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
+  const currentGroupEvents = useSelector(
+    (state) => state.events.allGroupEvents
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -22,23 +25,33 @@ function GroupDetail() {
         .then((groupId) => getGroupEvents(groupId))
         .then(() => setIsLoading(false));
     }
-  }, [dispatch, groupId]);
+  }, [dispatch, groupId, currentGroupEvents]);
 
   const group = useSelector((state) => state.groups.currentGroup);
+
   // const events = useSelector((state) =)
-  const currentGroupEvents = useSelector(
-    (state) => state.events.allGroupEvents
-  );
-  const numOfEvents = Object.keys(currentGroupEvents).length;
+
+  // if (currentGroupEvents === null || undefined) {
+  //   numOfEvents = 0;
+
+  // } else {
+  //   numOfEvents = Object.keys(currentGroupEvents).length;
+  // }
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   let isLoggedIn = false;
-
   if (sessionUser) isLoggedIn = !isLoggedIn;
   const isOrganizer = isLoggedIn && sessionUser?.id === group.Organizer.id;
+
+  let numOfEvents = group.Events.length;
+  console.log(currentGroupEvents);
+
+  const previewImage = group.GroupImages.find(
+    (image) => image.preview === true
+  );
 
   const navigateToCreateEvent = (groupId) => {
     history.push({
@@ -55,7 +68,7 @@ function GroupDetail() {
   };
 
   return (
-    <div>
+    <div className='main-group-div'>
       <div className='breadcrumbLinkGroups'>
         <p>&larr;</p>
         <Link to='/groups'>Groups</Link>
@@ -64,7 +77,7 @@ function GroupDetail() {
         <div className='group-detail-thumbnail-div'>
           <img
             className='group-detail-thumbnail'
-            src={group.previewImage}
+            src={previewImage.url}
             alt=' '
           />
         </div>
@@ -74,7 +87,7 @@ function GroupDetail() {
           </div>
           <div className='group-detail-location'>{group.city}</div>
           <div className='group-detail-events'>
-            {numOfEvents === 0 ? 0 : group.Events.length} Event
+            {numOfEvents === 0 ? 0 : numOfEvents} Event
             {numOfEvents === 1 ? null : "s"}
             <span className='group-detail-dot'>·</span>
             <span className='group-detail-privacy'>

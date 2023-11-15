@@ -54,6 +54,7 @@ function CreateEvent() {
           description,
           startDate: new Date(startDate),
           endDate: new Date(endDate),
+          url: imageUrl,
         },
         group.id
       )
