@@ -48,16 +48,17 @@
     background-color: #f5f5f5;
   }
 
-  .group-thumbnail {
+  .group-thumbnail-small {
     display: flex;
     flex-direction: column;
-    margin-right: 15px;
-    float: left;
-    width: 50px;
+    width: 100px;
+    height: 1000px;
   }
   .group-thumbnail-div {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-right: 15px;
     float: left;
     width: 100px;

@@ -404,6 +404,7 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
     description,
     startDate,
     endDate,
+    url,
   } = req.body;
   const userId = req.user.id;
   const group = await Group.findByPk(req.params.groupId);
@@ -486,10 +487,17 @@ router.post("/:groupId/events", restoreUser, requireAuth, async (req, res) => {
     startDate,
     endDate,
     hostId: userId,
+    previewImage: url,
   });
   const eventId = event.id;
   const status = "host";
   const setHost = await Attendance.create({ userId, eventId, status });
+  const newImage = await Image.create({
+    url: url,
+    preview: true,
+    imageableType: "EventImages",
+    imageableId: eventId,
+  });
 
   const createdEvent = {
     id: event.id,
@@ -877,7 +885,8 @@ router.put("/:groupId", restoreUser, requireAuth, async (req, res) => {
 
 // create a group - require authentication
 router.post("/", restoreUser, requireAuth, async (req, res) => {
-  const { name, about, type, private, city, state, imageUrl } = req.body;
+  const { name, about, type, private, city, state, url } = req.body;
+  console.log(url, "IMAGE URL YOOOOOOO");
 
   if (groupValidation(name, about, type, private, city, state) === true) {
     //CREATE NEW GROUP WITH CURRENT USER ID
@@ -890,6 +899,7 @@ router.post("/", restoreUser, requireAuth, async (req, res) => {
       private,
       city,
       state,
+      previewImage: url,
     });
     // add organizerId and memberId to members table.
     const newMember = await Member.create({
@@ -899,7 +909,7 @@ router.post("/", restoreUser, requireAuth, async (req, res) => {
     });
 
     const newImage = await Image.create({
-      url: imageUrl,
+      url: url,
       preview: true,
       imageableType: "GroupImages",
       imageableId: group.id,

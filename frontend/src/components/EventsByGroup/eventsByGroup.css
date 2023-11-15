@@ -29,9 +29,9 @@
   .event-thumbnail-group {
     display: flex;
     flex-direction: column;
-    margin-right: 15px;
     float: left;
-    width: 50px;
+    width: 100px;
+    height: 100px;
   }
   .event-thumbnail-div-group {
     display: flex;

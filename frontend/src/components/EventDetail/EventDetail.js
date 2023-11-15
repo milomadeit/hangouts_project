@@ -41,6 +41,14 @@ function EventDetail() {
     return <div>Loading...</div>;
   }
 
+  const previewImageGroup = group.GroupImages.find(
+    (image) => image.preview === true
+  );
+
+  const previewImageEvent = event.EventImages.find(
+    (image) => image.preview === true
+  );
+
   const host = attendees.find((attendee) => (attendee.status = "host"));
 
   let isCreator = false;
@@ -75,7 +83,7 @@ function EventDetail() {
           <div className='event-image-thumbnail-div'>
             <img
               className='event-image-thumbnail'
-              src={event.previewImage}
+              src={previewImageEvent?.url}
               alt=' '
             />
           </div>
@@ -83,7 +91,7 @@ function EventDetail() {
             <div className='group-info-div'>
               <img
                 className='group-detail-image'
-                src={group.previewImage}
+                src={previewImageGroup.url}
                 alt=' '
               />
               <div
