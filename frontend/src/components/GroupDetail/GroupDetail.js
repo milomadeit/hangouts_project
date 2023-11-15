@@ -84,7 +84,9 @@ function GroupDetail() {
           <div className='group-detail-name'>
             <h3>{group.name}</h3>
           </div>
-          <div className='group-detail-location'>{group.city}</div>
+          <div className='group-detail-location'>
+            {group.city}, {group.state}
+          </div>
           <div className='group-detail-events'>
             {numOfEvents === 0 ? 0 : numOfEvents} Event
             {numOfEvents === 1 ? null : "s"}
