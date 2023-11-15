@@ -53,11 +53,13 @@ function Groups() {
               </div>
               <div className='group-content'>
                 <div className='group-name'>{group.name}</div>
-                <div className='group-location'>{group.city}</div>
+                <div className='group-location'>
+                  {group.city}, {group.state}
+                </div>
                 <div className='group-description'>{group.about}</div>
                 <div className='group-events'>
                   {group.eventCount} Event
-                  {Number(group.eventCount) === 1 ? "" : "s"}
+                  {group.eventCount == 1 ? "" : "s"}
                   <span className='group-dot'>·</span>
                   <span className='group-privacy'>
                     {group.private ? "Private" : "Public"}
