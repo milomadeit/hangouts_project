@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .icon-holder {
@@ -13,10 +13,13 @@
 .column {
     display: flex;
     flex-direction: column;
+    align-content: center;
     align-items: center;
-    justify-content: space-around;
+    text-align: center;
+    justify-content: center;
     margin-left: 30px;
     margin-right: 30px;
+    width: 200px
 }
 
 .togroupsLink, .eventsLink, .newGroupLink {
@@ -29,9 +32,6 @@
     cursor: pointer;
 }
 
-#allLinks {
-    align-self:baseline;
-}
 
 .togroupsLink:hover, .eventsLink:hover, .newGroupLink:hover {
     text-decoration: underline;
@@ -54,6 +54,10 @@
     justify-content: center;
 }
 
+.homepage-sub-title, .homepage-title{
+    text-align: left;
+}
+
 .section1 {
     display: flex;
     justify-content: space-between;
@@ -62,18 +66,14 @@
     margin-top: 30px;
     text-align: left;
 }
-.section1 h1, .section1 h4{
-    justify-content: center;
-    align-items: flex-start;
-    margin-left: 50px;
-}
+
 
 .section2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    width: 500px;
     text-align:center;
 }
 
@@ -85,11 +85,8 @@
 
 .section3 {
     display: flex;
-    align-items: center;
     align-content: center;
     justify-content: space-around;
-    margin-left: 82px;
-    float: center;
     margin-top: 20px;
 }
 
@@ -122,7 +119,7 @@
 }
 
 .fa-solid {
-   margin-bottom: 5px;
+
 }
 
 
@@ -143,6 +140,7 @@
         align-items: center;
         justify-content: center;
         margin: auto;
+        margin-top:100px;
     }
 
     .infoGraphic {
@@ -161,7 +159,7 @@
         align-items: center;
         justify-content: center;
         margin: auto;
-        margin-top: 90px;
+        margin-top: 120px;
     }
 
     .column {

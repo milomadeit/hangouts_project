@@ -11,8 +11,8 @@ function HomePage() {
     <div className='homePage'>
       <section className='section1'>
         <div className='hpDiv'>
-          <h1>Find a hangout or create one!</h1>
-          <h4>We're bringing people and communities together digitally.</h4>
+          <h1 className="homepage-title">Find a hangout or create one!</h1>
+          <h4 className="homepage-sub-title">We're bringing people and communities together digitally.</h4>
         </div>
         <img className='infoGraphic' src={DESKS} alt='' />
       </section>
@@ -25,14 +25,14 @@ function HomePage() {
         </p>
       </section>
       <section className='section3'>
-        <div className='column A'>
+        <div className='column'>
           <div className='icon-holder'>
             <i className='fa-solid fa-people-group'></i>
           </div>
           <Link className='togroupsLink' to='/groups'>
             See All Groups
           </Link>
-          <p className='linkCaption'>Find a group</p>
+          <p className='linkCaption'>Find a group in your area or online</p>
         </div>
         <div className='column'>
           <div className='icon-holder'>
