@@ -12,15 +12,17 @@ if (process.env.NODE_ENV === "production") {
 const groupData = [
   {
     organizerId: 1,
-    name: "Dog People Group",
-    about: "A group for people who love dogs",
-    type: "In person",
+    name: "Pixel_Squad",
+    about: "Lorem ipsum dolor sit amet, consectetuer adipiscin",
+    type: "Online",
     private: false,
-    city: "Decatur",
-    state: "GA",
+    city: "Meta",
+    state: "VERSE",
+    previewImage:
+      "https://i.pinimg.com/originals/d7/06/42/d70642e3c1fb33fd56772e5cdf3ae944.png",
   },
   {
-    organizerId: 2,
+    organizerId: 1,
     name: "Cat People Group",
     about: "A group for people who love cats",
     type: "In person",
