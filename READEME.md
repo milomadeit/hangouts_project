@@ -1,5 +1,7 @@
 <img src="./images/hangout.png" style="width:600px, margin:auto;" />
 
+### Link to live site [here](https://hangouts-6kfn.onrender.com/)
+
 ## Description
 
 Hangouts is web application designed to allow users to create groups and events for their local or online communities. Hangouts is a clone of meetup.com
@@ -9,7 +11,7 @@ Hangouts is web application designed to allow users to create groups and events 
 <br>
 <p float="left">
 
- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="width:75px;" />
+ <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="height:75px;" />
   &nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" style="width:75px;" />
   &nbsp;
@@ -74,12 +76,22 @@ Hangouts is web application designed to allow users to create groups and events 
 
 ## Features
 
+### Current Features:
+
 - Users can create an account or log in with the Demo user.
 - Users can create, update, and delete groups.
-- Users can create, update, and delete events.
-- Users can request to join a group (feature coming soon)
+- Users can create and delete events.
 - Users can request to join an event if they are a member of the group (feature coming soon)
 - Unauthenticated users can view current groups and events but cannot join a group or request to attend an event until signed up and a member.
+
+### Future Features
+
+- Users can update an event they created
+- Creating a 'My Events' and 'My Groups' pages
+- Would like to update the authentication to web3/wallet authentication for new a returning users utilizing thirdweb's Auth
+- Continue to refine UI design.
+
+
 
 ## Screenshots
 
@@ -90,3 +102,8 @@ Hangouts is web application designed to allow users to create groups and events 
 <img src="./images/screenshots/hangout-events.png" style="width:600px;" />
 <img src="./images/screenshots/hangout-group-detail.png" style="width:600px;" />
 <img src="./images/screenshots/hangout-event-detail.png" style="width:600px;" />
+
+
+## Database Schema and API
+
+Information on how the database is set up and the current API routes for the application can be found in the backend folder's readme or in the[github wiki]()
