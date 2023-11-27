@@ -106,4 +106,4 @@ Hangouts is web application designed to allow users to create groups and events 
 
 ## Database Schema and API
 
-Information on how the database is set up and the current API routes for the application can be found in the backend folder's readme or in the[github wiki]()
+Information on how the database is set up and the current API routes for the application can be found in the backend folder's readme or in the [github wiki]()
