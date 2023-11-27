@@ -20,6 +20,7 @@
 
 .event-detail-name{
     margin-top: -10px;
+    margin-bottom: 7px;
 
 }
 
@@ -224,6 +225,10 @@
   .event-info-div-pin{
     color: rgb(157, 142, 161);
     margin-bottom: 30px;
+  }
+
+  .fa-map-pin {
+    margin-right: -1px;
   }
 
 
